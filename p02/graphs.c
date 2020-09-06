@@ -95,3 +95,44 @@ void add_vertex(struct Graph *graph){
     // printGraph(*graph);
     graph->vertices[graph->vernum - 1] = NULL;
 }
+
+void remove_vertex(struct Graph *graph, int vertex){
+    struct Vertex *prev, *cur;
+    int i;
+    prev = graph->vertices[vertex];
+    if(prev != NULL){
+        while (prev != NULL)
+        {
+            cur = prev->next;
+            free(prev);
+            prev = cur;
+        }
+    }
+    for(i = vertex+1; i < graph -> vernum; i++)
+        graph -> vertices[i - 1] = graph -> vertices[i];
+    graph -> vernum -= 1;
+    for(i = 0; i < graph -> vernum; i++){
+        cur = graph -> vertices[i];
+        prev = graph -> vertices[i];
+        while(cur != NULL){
+            if(cur -> number == vertex){
+                if(prev == cur){
+                    cur = cur -> next;
+                    free(prev);
+                    prev = cur;
+                    graph -> vertices[i] = cur;
+                    continue;
+                }
+                prev -> next = cur -> next;
+                free(cur);
+                cur = prev;
+            }
+            else if(cur -> number > vertex){
+                cur -> number -= 1;
+            }
+            prev = cur;
+            cur = cur -> next;
+        }
+    }
+    
+}
