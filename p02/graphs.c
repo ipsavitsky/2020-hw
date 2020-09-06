@@ -88,3 +88,10 @@ void delete_graph(struct Graph *graph){
     }
     free(graph -> vertices);
 }
+
+void add_vertex(struct Graph *graph){
+    graph->vernum += 1;
+    graph->vertices = realloc(graph->vertices, graph->vernum * sizeof(struct Graph));
+    // printGraph(*graph);
+    graph->vertices[graph->vernum - 1] = NULL;
+}

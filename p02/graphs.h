@@ -42,4 +42,6 @@ void printGraph(struct Graph graph);
 void addEdge(struct Graph *graph, int from, int to);
 
 void delete_graph(struct Graph *graph);
+
+void add_vertex(struct Graph *graph);
 #endif
