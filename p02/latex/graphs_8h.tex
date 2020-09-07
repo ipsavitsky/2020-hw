@@ -33,7 +33,11 @@ void \mbox{\hyperlink{graphs_8h_a053569f042954b97e695bdbafe1d7400}{delete\+\_\+g
 void \mbox{\hyperlink{graphs_8h_acf21bb54e48009ad0f9e24ed10391266}{add\+\_\+vertex}} (struct \mbox{\hyperlink{structGraph}{Graph}} $\ast$graph)
 \begin{DoxyCompactList}\small\item\em add a vertex to a graph \end{DoxyCompactList}\item 
 void \mbox{\hyperlink{graphs_8h_a5be0e3005b2f6b61fd9b802ddbfe7305}{remove\+\_\+vertex}} (struct \mbox{\hyperlink{structGraph}{Graph}} $\ast$graph, int vertex)
-\begin{DoxyCompactList}\small\item\em remove a vertex from a graph \end{DoxyCompactList}\end{DoxyCompactItemize}
+\begin{DoxyCompactList}\small\item\em remove a vertex from a graph \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{graphs_8h_a25c720f25b9884992297e946950d56d5}{remove\+\_\+edge}} (struct \mbox{\hyperlink{structGraph}{Graph}} $\ast$graph, int from, int to)
+\begin{DoxyCompactList}\small\item\em remove an edge from the graph \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{graphs_8h_a05a8674f537df49368424696ed33fdab}{way\+\_\+count\+\_\+node}} (struct \mbox{\hyperlink{structGraph}{Graph}} graph, int from, int to, int $\ast$control)
+\begin{DoxyCompactList}\small\item\em counts the amount of paths between two vertices \end{DoxyCompactList}\end{DoxyCompactItemize}
 
 
 \doxysubsection{Detailed Description}
@@ -106,6 +110,25 @@ print graph in a readable manner
 {\em graph} & graph that needs to be printed \\
 \hline
 \end{DoxyParams}
+\mbox{\Hypertarget{graphs_8h_a25c720f25b9884992297e946950d56d5}\label{graphs_8h_a25c720f25b9884992297e946950d56d5}} 
+\index{graphs.h@{graphs.h}!remove\_edge@{remove\_edge}}
+\index{remove\_edge@{remove\_edge}!graphs.h@{graphs.h}}
+\doxysubsubsection{\texorpdfstring{remove\_edge()}{remove\_edge()}}
+{\footnotesize\ttfamily void remove\+\_\+edge (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{structGraph}{Graph}} $\ast$}]{graph,  }\item[{int}]{from,  }\item[{int}]{to }\end{DoxyParamCaption})}
+
+
+
+remove an edge from the graph 
+
+
+\begin{DoxyParams}{Parameters}
+{\em graph} & graph from which the edge should be removed \\
+\hline
+{\em from} & \\
+\hline
+{\em to} & \\
+\hline
+\end{DoxyParams}
 \mbox{\Hypertarget{graphs_8h_a5be0e3005b2f6b61fd9b802ddbfe7305}\label{graphs_8h_a5be0e3005b2f6b61fd9b802ddbfe7305}} 
 \index{graphs.h@{graphs.h}!remove\_vertex@{remove\_vertex}}
 \index{remove\_vertex@{remove\_vertex}!graphs.h@{graphs.h}}
@@ -123,8 +146,11 @@ remove a vertex from a graph
 {\em vertex} & number of vertex that should be removed \\
 \hline
 \end{DoxyParams}
+\begin{DoxyWarning}{Warning}
+this function is cringe 
+\end{DoxyWarning}
 \begin{DoxyRefDesc}{Todo}
-\item[\mbox{\hyperlink{todo__todo000002}{Todo}}]this function is cringe \end{DoxyRefDesc}
+\item[\mbox{\hyperlink{todo__todo000002}{Todo}}]document the function better to make it less cringe \end{DoxyRefDesc}
 \mbox{\Hypertarget{graphs_8h_a8a4c80494055e8c76e3c600f41929eaf}\label{graphs_8h_a8a4c80494055e8c76e3c600f41929eaf}} 
 \index{graphs.h@{graphs.h}!upload\_graph@{upload\_graph}}
 \index{upload\_graph@{upload\_graph}!graphs.h@{graphs.h}}
@@ -143,3 +169,27 @@ initialize graph from file
 \begin{DoxyReturn}{Returns}
 graph which the matrix determines 
 \end{DoxyReturn}
+\mbox{\Hypertarget{graphs_8h_a05a8674f537df49368424696ed33fdab}\label{graphs_8h_a05a8674f537df49368424696ed33fdab}} 
+\index{graphs.h@{graphs.h}!way\_count\_node@{way\_count\_node}}
+\index{way\_count\_node@{way\_count\_node}!graphs.h@{graphs.h}}
+\doxysubsubsection{\texorpdfstring{way\_count\_node()}{way\_count\_node()}}
+{\footnotesize\ttfamily int way\+\_\+count\+\_\+node (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{structGraph}{Graph}}}]{graph,  }\item[{int}]{from,  }\item[{int}]{to,  }\item[{int $\ast$}]{control }\end{DoxyParamCaption})}
+
+
+
+counts the amount of paths between two vertices 
+
+
+\begin{DoxyParams}{Parameters}
+{\em graph} & the graph in which the ways are searched \\
+\hline
+{\em from} & the start of the path \\
+\hline
+{\em to} & the end of path \\
+\hline
+{\em control} & U\+S\+ED I\+N\+T\+E\+R\+N\+A\+L\+LY IN R\+E\+C\+U\+R\+S\+I\+ON \\
+\hline
+\end{DoxyParams}
+\begin{DoxyWarning}{Warning}
+do not call this function with something other then a blanc array of int of size graph.\+vernum 
+\end{DoxyWarning}
