@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <assert.h>
 #include "graphs.h"
 
 /**
@@ -13,8 +14,10 @@ struct Graph upload_graph(char *filename)
     int i, flag, j;
     struct Graph result;
     filein = fopen(filename, "r");
+    assert(filein != NULL);
     fscanf(filein, "%d", &(result.vernum));
     result.vertices = malloc(result.vernum * sizeof(struct Vertex));
+    assert(result.vertices != NULL);
     for (i = 0; i < result.vernum; i++)
     {
         for (j = 0; j < result.vernum; j++)
@@ -30,10 +33,13 @@ struct Graph upload_graph(char *filename)
 
 void add_edge(struct Graph *graph, int from, int to)
 {
+    assert(from < graph->vernum);
+    assert(to < graph->vernum);
     struct Vertex *cur = graph->vertices[from];
     if (cur == NULL)
     {
         graph->vertices[from] = malloc(sizeof(struct Vertex));
+        assert(graph->vertices[from] != NULL);
         graph->vertices[from]->next = NULL;
         graph->vertices[from]->number = to;
         //graph -> vertexes[from] -> weight = weight;
@@ -44,6 +50,7 @@ void add_edge(struct Graph *graph, int from, int to)
         cur = cur->next;
     }
     cur->next = malloc(sizeof(struct Vertex));
+    assert(cur->next != NULL);
     cur->next->next = NULL;
     cur->next->number = to;
     return;
@@ -92,6 +99,7 @@ void delete_graph(struct Graph *graph){
 void add_vertex(struct Graph *graph){
     graph->vernum += 1;
     graph->vertices = realloc(graph->vertices, graph->vernum * sizeof(struct Graph));
+    assert(graph->vertices != NULL);
     // printGraph(*graph);
     graph->vertices[graph->vernum - 1] = NULL;
 }
@@ -99,6 +107,7 @@ void add_vertex(struct Graph *graph){
 void remove_vertex(struct Graph *graph, int vertex){
     struct Vertex *prev, *cur;
     int i;
+    assert(vertex < graph->vernum);
     prev = graph->vertices[vertex];
     if(prev != NULL){
         while (prev != NULL)
@@ -134,10 +143,11 @@ void remove_vertex(struct Graph *graph, int vertex){
             cur = cur -> next;
         }
     }
-    
 }
 
 void remove_edge(struct Graph *graph, int from, int to){
+    assert(from < graph->vernum);
+    assert(to < graph->vernum);
     struct Vertex *cur = graph->vertices[from];
     struct Vertex *prev = graph->vertices[from];
     while (cur != NULL)
@@ -159,4 +169,28 @@ void remove_edge(struct Graph *graph, int from, int to){
         prev = cur;
         cur = cur->next;
     }
+}
+
+int way_count_node(struct Graph graph, int from, int to, int *control)
+{
+    struct Vertex *cur = malloc(sizeof(struct Vertex));
+    int *ncontrol = malloc(sizeof(int) * graph.vernum);
+    int sum = 0, i;
+    for (i = 0; i < graph.vernum; i++)
+    {
+        ncontrol[i] = control[i];
+    }
+    if (from == to)
+        return 1;
+    cur = graph.vertices[from];
+    ncontrol[from] = 1;
+    while (cur != NULL)
+    {
+        if (ncontrol[cur->number] == 0)
+        {
+            sum += way_count_node(graph, cur->number, to, ncontrol);
+        }
+        cur = cur->next;
+    }
+    return sum;
 }

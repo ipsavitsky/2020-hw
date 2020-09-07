@@ -10,7 +10,6 @@
  * \brief structure of a graph
  * \todo maybe rework? the way to store a graph is too convoluted
  */
-
 struct Graph
 {
     struct Vertex **vertices; /**< an array of l1 lists to store relations*/
@@ -20,7 +19,6 @@ struct Graph
 /**
  * \brief structure of a vertex l1 list
  */
-
 struct Vertex
 {
     int number; /**< storing an end to an edge*/
@@ -33,14 +31,12 @@ struct Vertex
  * \param filename name of the file from which to upload
  * \return graph which the matrix determines
  */
-
 struct Graph upload_graph(char *filename);
 
 /**
  * \brief print graph in a readable manner
  * \param graph graph that needs to be printed
  */
-
 void print_graph(struct Graph graph);
 
 /**
@@ -49,7 +45,6 @@ void print_graph(struct Graph graph);
  * \param from where the start of a vertex is
  * \param to where the end of a vertex is
  */
-
 void add_edge(struct Graph *graph, int from, int to);
 
 /**
@@ -80,4 +75,19 @@ void remove_vertex(struct Graph *graph, int vertex);
  * \param to
  */
 void remove_edge(struct Graph *graph, int from, int to);
+
+/**
+ * \brief counts the amount of paths between two vertices
+ * \param graph the graph in which the ways are searched
+ * \param from the start of the path
+ * \param to the end of path
+ * \param control USED INTERNALLY IN RECURSION
+ * \warning do not call this function with something other then a blanc array of int of size graph.vernum
+ */
+int way_count_node(struct Graph graph, int from, int to, int *control);
+
+/**
+ * 
+ */
+
 #endif
