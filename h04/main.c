@@ -32,8 +32,10 @@ int length(char *c)
     \brief compare two strings just like strcmp() in strings.h
     \param a pointer to first null-terminated string 
     \param b pointer to second null-terminated string 
-    \return 1 if a > b \n 
-           -1 if a < b \n 
+    \return 1 if a > b 
+           \n 
+           -1 if a < b 
+           \n 
             0 if a = b 
 */
 int compare(char *a, char *b)
