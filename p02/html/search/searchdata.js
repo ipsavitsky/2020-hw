@@ -1,24 +1,30 @@
 var indexSectionsWithContent =
 {
-  0: "grtv",
+  0: "adgnprtuv",
   1: "gv",
-  2: "v",
-  3: "rt"
+  2: "g",
+  3: "adpru",
+  4: "nv",
+  5: "rt"
 };
 
 var indexSectionNames =
 {
   0: "all",
   1: "classes",
-  2: "variables",
-  3: "pages"
+  2: "files",
+  3: "functions",
+  4: "variables",
+  5: "pages"
 };
 
 var indexSectionLabels =
 {
   0: "All",
-  1: "Classes",
-  2: "Variables",
-  3: "Pages"
+  1: "Data Structures",
+  2: "Files",
+  3: "Functions",
+  4: "Variables",
+  5: "Pages"
 };
 

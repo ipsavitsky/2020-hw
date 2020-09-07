@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['vernum_8',['vernum',['../structGraph.html#a7d0a575e1333aa4fe1296c12d4e54f75',1,'Graph']]],
-  ['vertices_9',['vertices',['../structGraph.html#ab3f9a04bb3bd42a3aee91112ff7e730c',1,'Graph']]]
+  ['next_26',['next',['../structVertex.html#a08612f92582322f8d07f61beece27362',1,'Vertex']]],
+  ['number_27',['number',['../structVertex.html#a57602368a7700536c61c380411c51b7f',1,'Vertex']]]
 ];

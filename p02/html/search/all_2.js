@@ -1,4 +1,6 @@
 var searchData=
 [
-  ['todo_20list_2',['Todo List',['../todo.html',1,'']]]
+  ['graph_3',['Graph',['../structGraph.html',1,'']]],
+  ['graphs_2ec_4',['graphs.c',['../graphs_8c.html',1,'']]],
+  ['graphs_2eh_5',['graphs.h',['../graphs_8h.html',1,'']]]
 ];
