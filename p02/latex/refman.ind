@@ -1,15 +1,71 @@
 \begin{theindex}
 
-  \item {Graph}, \hyperpage{7}
-    \subitem {vernum}, \hyperpage{8}
-    \subitem {vertices}, \hyperpage{8}
+  \item {add\_edge}
+    \subitem {graphs.c}, \hyperpage{14}
+    \subitem {graphs.h}, \hyperpage{17}
+  \item {add\_vertex}
+    \subitem {graphs.c}, \hyperpage{14}
+    \subitem {graphs.h}, \hyperpage{17}
+
+  \indexspace
+
+  \item {delete\_graph}
+    \subitem {graphs.c}, \hyperpage{14}
+    \subitem {graphs.h}, \hyperpage{17}
+
+  \indexspace
+
+  \item {Graph}, \hyperpage{9}
+    \subitem {vernum}, \hyperpage{10}
+    \subitem {vertices}, \hyperpage{10}
+  \item {graphs.c}, \hyperpage{13}
+    \subitem {add\_edge}, \hyperpage{14}
+    \subitem {add\_vertex}, \hyperpage{14}
+    \subitem {delete\_graph}, \hyperpage{14}
+    \subitem {print\_graph}, \hyperpage{15}
+    \subitem {remove\_vertex}, \hyperpage{15}
+    \subitem {upload\_graph}, \hyperpage{15}
+  \item {graphs.h}, \hyperpage{16}
+    \subitem {add\_edge}, \hyperpage{17}
+    \subitem {add\_vertex}, \hyperpage{17}
+    \subitem {delete\_graph}, \hyperpage{17}
+    \subitem {print\_graph}, \hyperpage{17}
+    \subitem {remove\_vertex}, \hyperpage{18}
+    \subitem {upload\_graph}, \hyperpage{18}
+
+  \indexspace
+
+  \item {next}
+    \subitem {Vertex}, \hyperpage{11}
+  \item {number}
+    \subitem {Vertex}, \hyperpage{11}
+
+  \indexspace
+
+  \item {print\_graph}
+    \subitem {graphs.c}, \hyperpage{15}
+    \subitem {graphs.h}, \hyperpage{17}
+
+  \indexspace
+
+  \item {remove\_vertex}
+    \subitem {graphs.c}, \hyperpage{15}
+    \subitem {graphs.h}, \hyperpage{18}
+
+  \indexspace
+
+  \item {upload\_graph}
+    \subitem {graphs.c}, \hyperpage{15}
+    \subitem {graphs.h}, \hyperpage{18}
 
   \indexspace
 
   \item {vernum}
-    \subitem {Graph}, \hyperpage{8}
-  \item {Vertex}, \hyperpage{8}
+    \subitem {Graph}, \hyperpage{10}
+  \item {Vertex}, \hyperpage{10}
+    \subitem {next}, \hyperpage{11}
+    \subitem {number}, \hyperpage{11}
   \item {vertices}
-    \subitem {Graph}, \hyperpage{8}
+    \subitem {Graph}, \hyperpage{10}
 
 \end{theindex}
