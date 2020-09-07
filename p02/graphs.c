@@ -136,3 +136,27 @@ void remove_vertex(struct Graph *graph, int vertex){
     }
     
 }
+
+void remove_edge(struct Graph *graph, int from, int to){
+    struct Vertex *cur = graph->vertices[from];
+    struct Vertex *prev = graph->vertices[from];
+    while (cur != NULL)
+    {
+        if (cur->number == to)
+        {
+            if (prev == cur)
+            {
+                cur = cur->next;
+                free(prev);
+                prev = cur;
+                graph->vertices[from] = cur;
+                continue;
+            }
+            prev->next = cur->next;
+            free(cur);
+            cur = prev;
+        }
+        prev = cur;
+        cur = cur->next;
+    }
+}

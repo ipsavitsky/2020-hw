@@ -68,7 +68,16 @@ void add_vertex(struct Graph *graph);
  * \brief remove a vertex from a graph
  * \param graph graph from which the vertex should be removed
  * \param vertex number of vertex that should be removed
- * \todo this function is cringe
+ * \warning this function is cringe
+ * \todo document the function better to make it less cringe
  */
 void remove_vertex(struct Graph *graph, int vertex);
+
+/**
+ * \brief remove an edge from the graph
+ * \param graph graph from which the edge should be removed
+ * \param from 
+ * \param to
+ */
+void remove_edge(struct Graph *graph, int from, int to);
 #endif

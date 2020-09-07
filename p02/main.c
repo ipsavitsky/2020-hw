@@ -8,7 +8,8 @@ int main(void)
     struct Graph graph;
     graph = upload_graph("test.txt");
     print_graph(graph);
-    remove_vertex(&graph, 2);
+    // remove_vertex(&graph, 2);
+    remove_edge(&graph, 1, 2);
     print_graph(graph);
     delete_graph(&graph);
 }
