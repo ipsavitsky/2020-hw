@@ -3,11 +3,11 @@
 #include "graphs.h"
 
 /**
- * \brief initialize graph from file
- * \param filename name of the file from which to upload
- * \return graph which the matrix determines
+ * \file
+ * \brief graph implementation
  */
-struct Graph uploadGraph(char *filename)
+
+struct Graph upload_graph(char *filename)
 {
     FILE *filein;
     int i, flag, j;
@@ -21,14 +21,14 @@ struct Graph uploadGraph(char *filename)
         {
             fscanf(filein, "%d", &flag);
             if (flag == 1)
-                addEdge(&result, i, j);
+                add_edge(&result, i, j);
         }
     }
     fclose(filein);
     return result;
 }
 
-void addEdge(struct Graph *graph, int from, int to)
+void add_edge(struct Graph *graph, int from, int to)
 {
     struct Vertex *cur = graph->vertices[from];
     if (cur == NULL)
@@ -49,7 +49,7 @@ void addEdge(struct Graph *graph, int from, int to)
     return;
 }
 
-void printGraph(struct Graph graph)
+void print_graph(struct Graph graph)
 {
     int i;
     struct Vertex *safe;

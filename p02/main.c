@@ -6,9 +6,9 @@
 int main(void)
 {
     struct Graph graph;
-    graph = uploadGraph("test.txt");
-    printGraph(graph);
+    graph = upload_graph("test.txt");
+    print_graph(graph);
     remove_vertex(&graph, 2);
-    printGraph(graph);
+    print_graph(graph);
     delete_graph(&graph);
 }
