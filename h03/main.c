@@ -1,7 +1,11 @@
 #include<stdio.h>
 
-//clarification 1: numbers are considered integer, so their average is double
-//clarification 2: main(void) is there only for ejudje
+/**
+ * \file
+ * \warning numbers are considered integer, so their average is double
+ * \warning main(void) is there only for ejudge
+ * \warning in this example an average of 5 numbers is calculated
+ */
 
 /*!
     \brief calculate average of n numbers taken from input 
