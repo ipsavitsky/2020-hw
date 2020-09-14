@@ -9,8 +9,7 @@ graph implementation
 {\ttfamily \#include $<$stdlib.\+h$>$}\newline
 {\ttfamily \#include $<$assert.\+h$>$}\newline
 {\ttfamily \#include \char`\"{}graphs.\+h\char`\"{}}\newline
-Include dependency graph for graphs.\+c\+:
-\nopagebreak
+Include dependency graph for graphs.\+c\+:\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
@@ -26,6 +25,8 @@ void \mbox{\hyperlink{graphs_8c_ad962e8bde98e87bfa7d70dddf2b46627}{add\+\_\+edge
 \begin{DoxyCompactList}\small\item\em add a correlation between two vertices \end{DoxyCompactList}\item 
 void \mbox{\hyperlink{graphs_8c_aaa8d581b8e1135fc06cac83f5998e49f}{print\+\_\+graph}} (struct \mbox{\hyperlink{structGraph}{Graph}} graph)
 \begin{DoxyCompactList}\small\item\em print graph in a readable manner \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{graphs_8c_acd6b1d70c1ce8a211a16943ea4f55a0f}{print\+\_\+graphviz}} (struct \mbox{\hyperlink{structGraph}{Graph}} graph)
+\begin{DoxyCompactList}\small\item\em better way to output graphs \end{DoxyCompactList}\item 
 void \mbox{\hyperlink{graphs_8c_a053569f042954b97e695bdbafe1d7400}{delete\+\_\+graph}} (struct \mbox{\hyperlink{structGraph}{Graph}} $\ast$graph)
 \begin{DoxyCompactList}\small\item\em delete graph and all of its members \end{DoxyCompactList}\item 
 void \mbox{\hyperlink{graphs_8c_acf21bb54e48009ad0f9e24ed10391266}{add\+\_\+vertex}} (struct \mbox{\hyperlink{structGraph}{Graph}} $\ast$graph)
@@ -34,8 +35,10 @@ void \mbox{\hyperlink{graphs_8c_a5be0e3005b2f6b61fd9b802ddbfe7305}{remove\+\_\+v
 \begin{DoxyCompactList}\small\item\em remove a vertex from a graph \end{DoxyCompactList}\item 
 void \mbox{\hyperlink{graphs_8c_a25c720f25b9884992297e946950d56d5}{remove\+\_\+edge}} (struct \mbox{\hyperlink{structGraph}{Graph}} $\ast$graph, int from, int to)
 \begin{DoxyCompactList}\small\item\em remove an edge from the graph \end{DoxyCompactList}\item 
-int \mbox{\hyperlink{graphs_8c_a05a8674f537df49368424696ed33fdab}{way\+\_\+count\+\_\+node}} (struct \mbox{\hyperlink{structGraph}{Graph}} graph, int from, int to, int $\ast$control)
-\begin{DoxyCompactList}\small\item\em counts the amount of paths between two vertices \end{DoxyCompactList}\end{DoxyCompactItemize}
+int \mbox{\hyperlink{graphs_8c_abc8ea2fafade7c00639102454d9134fc}{way\+\_\+count}} (struct \mbox{\hyperlink{structGraph}{Graph}} graph, int from, int to, int $\ast$control)
+\begin{DoxyCompactList}\small\item\em counts the amount of paths between two vertices \end{DoxyCompactList}\item 
+struct \mbox{\hyperlink{structGraph}{Graph}} \mbox{\hyperlink{graphs_8c_a7519af2b4633228384e9f09eeb974ce1}{revert\+\_\+graph}} (struct \mbox{\hyperlink{structGraph}{Graph}} ingraph)
+\begin{DoxyCompactList}\small\item\em revert all paths in graph \end{DoxyCompactList}\end{DoxyCompactItemize}
 
 
 \doxysubsection{Detailed Description}
@@ -108,6 +111,21 @@ print graph in a readable manner
 {\em graph} & graph that needs to be printed \\
 \hline
 \end{DoxyParams}
+\mbox{\Hypertarget{graphs_8c_acd6b1d70c1ce8a211a16943ea4f55a0f}\label{graphs_8c_acd6b1d70c1ce8a211a16943ea4f55a0f}} 
+\index{graphs.c@{graphs.c}!print\_graphviz@{print\_graphviz}}
+\index{print\_graphviz@{print\_graphviz}!graphs.c@{graphs.c}}
+\doxysubsubsection{\texorpdfstring{print\_graphviz()}{print\_graphviz()}}
+{\footnotesize\ttfamily void print\+\_\+graphviz (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{structGraph}{Graph}}}]{graph }\end{DoxyParamCaption})}
+
+
+
+better way to output graphs 
+
+
+\begin{DoxyParams}{Parameters}
+{\em graph} & graph that needs to be printed \\
+\hline
+\end{DoxyParams}
 \mbox{\Hypertarget{graphs_8c_a25c720f25b9884992297e946950d56d5}\label{graphs_8c_a25c720f25b9884992297e946950d56d5}} 
 \index{graphs.c@{graphs.c}!remove\_edge@{remove\_edge}}
 \index{remove\_edge@{remove\_edge}!graphs.c@{graphs.c}}
@@ -122,9 +140,9 @@ remove an edge from the graph
 \begin{DoxyParams}{Parameters}
 {\em graph} & graph from which the edge should be removed \\
 \hline
-{\em from} & \\
+{\em from} & -\/ starting point of an edge \\
 \hline
-{\em to} & \\
+{\em to} & -\/ ending point of an edge \\
 \hline
 \end{DoxyParams}
 \mbox{\Hypertarget{graphs_8c_a5be0e3005b2f6b61fd9b802ddbfe7305}\label{graphs_8c_a5be0e3005b2f6b61fd9b802ddbfe7305}} 
@@ -149,6 +167,24 @@ this function is cringe
 \end{DoxyWarning}
 \begin{DoxyRefDesc}{Todo}
 \item[\mbox{\hyperlink{todo__todo000002}{Todo}}]document the function better to make it less cringe \end{DoxyRefDesc}
+\mbox{\Hypertarget{graphs_8c_a7519af2b4633228384e9f09eeb974ce1}\label{graphs_8c_a7519af2b4633228384e9f09eeb974ce1}} 
+\index{graphs.c@{graphs.c}!revert\_graph@{revert\_graph}}
+\index{revert\_graph@{revert\_graph}!graphs.c@{graphs.c}}
+\doxysubsubsection{\texorpdfstring{revert\_graph()}{revert\_graph()}}
+{\footnotesize\ttfamily struct \mbox{\hyperlink{structGraph}{Graph}} revert\+\_\+graph (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{structGraph}{Graph}}}]{graph }\end{DoxyParamCaption})}
+
+
+
+revert all paths in graph 
+
+
+\begin{DoxyParams}{Parameters}
+{\em graph} & input graph that needs to be reverted \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+returns a new, reversrd graph 
+\end{DoxyReturn}
 \mbox{\Hypertarget{graphs_8c_a8a4c80494055e8c76e3c600f41929eaf}\label{graphs_8c_a8a4c80494055e8c76e3c600f41929eaf}} 
 \index{graphs.c@{graphs.c}!upload\_graph@{upload\_graph}}
 \index{upload\_graph@{upload\_graph}!graphs.c@{graphs.c}}
@@ -159,6 +195,27 @@ this function is cringe
 
 initialize graph from file 
 
+Initializes a graph from a file of a following structure\+: ~\newline
+First number is the amount of vertices ~\newline
+Then follows n x n matrix of 0 and 1, where 1 means a prescense of an edge and 0 is its absence This way 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{4}
+\DoxyCodeLine{0 0 0 0}
+\DoxyCodeLine{1 0 0 0}
+\DoxyCodeLine{1 1 0 0}
+\DoxyCodeLine{0 1 1 0}
+\end{DoxyCode}
+
+
+will be translated to\+: 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{[0]: NULL}
+\DoxyCodeLine{[1]: 0 -\/> NULL}
+\DoxyCodeLine{[2]: 0 -\/> 1 -\/> NULL}
+\DoxyCodeLine{[3]: 1 -\/> 2 -\/> NULL}
+\end{DoxyCode}
+
+
 
 \begin{DoxyParams}{Parameters}
 {\em filename} & name of the file from which to upload \\
@@ -167,11 +224,14 @@ initialize graph from file
 \begin{DoxyReturn}{Returns}
 graph which the matrix determines 
 \end{DoxyReturn}
-\mbox{\Hypertarget{graphs_8c_a05a8674f537df49368424696ed33fdab}\label{graphs_8c_a05a8674f537df49368424696ed33fdab}} 
-\index{graphs.c@{graphs.c}!way\_count\_node@{way\_count\_node}}
-\index{way\_count\_node@{way\_count\_node}!graphs.c@{graphs.c}}
-\doxysubsubsection{\texorpdfstring{way\_count\_node()}{way\_count\_node()}}
-{\footnotesize\ttfamily int way\+\_\+count\+\_\+node (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{structGraph}{Graph}}}]{graph,  }\item[{int}]{from,  }\item[{int}]{to,  }\item[{int $\ast$}]{control }\end{DoxyParamCaption})}
+\begin{DoxyWarning}{Warning}
+T\+HE F\+U\+N\+C\+T\+I\+ON T\+A\+K\+ES F\+I\+LE S\+T\+R\+U\+C\+T\+U\+RE F\+OR G\+R\+A\+N\+T\+ED, IT D\+O\+ES N\+OT C\+H\+E\+CK W\+H\+AT IS F\+ED TO IT 
+\end{DoxyWarning}
+\mbox{\Hypertarget{graphs_8c_abc8ea2fafade7c00639102454d9134fc}\label{graphs_8c_abc8ea2fafade7c00639102454d9134fc}} 
+\index{graphs.c@{graphs.c}!way\_count@{way\_count}}
+\index{way\_count@{way\_count}!graphs.c@{graphs.c}}
+\doxysubsubsection{\texorpdfstring{way\_count()}{way\_count()}}
+{\footnotesize\ttfamily int way\+\_\+count (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{structGraph}{Graph}}}]{graph,  }\item[{int}]{from,  }\item[{int}]{to,  }\item[{int $\ast$}]{control }\end{DoxyParamCaption})}
 
 
 
@@ -188,6 +248,9 @@ counts the amount of paths between two vertices
 {\em control} & U\+S\+ED I\+N\+T\+E\+R\+N\+A\+L\+LY IN R\+E\+C\+U\+R\+S\+I\+ON \\
 \hline
 \end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+amount of ways between two vertices 
+\end{DoxyReturn}
 \begin{DoxyWarning}{Warning}
 do not call this function with something other then a blanc array of int of size graph.\+vernum 
 \end{DoxyWarning}

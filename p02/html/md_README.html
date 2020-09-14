@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.17"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>Graphs: README</title>
+<title>Graphs: Graphs</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -62,10 +62,18 @@ $(function() {
 </div><!-- top -->
 <div class="PageDoc"><div class="header">
   <div class="headertitle">
-<div class="title">README </div>  </div>
+<div class="title">Graphs </div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"></div></div><!-- contents -->
+<div class="textblock"><p>This task consists of 3 files:</p>
+<ol type="1">
+<li><a class="el" href="graphs_8h.html" title="graph header">graphs.h</a> - a header for <a class="el" href="graphs_8c.html" title="graph implementation">graphs.c</a> file. REFER TO THIS FILE in case you need additional documentation. This file is also documented in doxygen(dox_conf is the config)</li>
+<li><a class="el" href="graphs_8c.html" title="graph implementation">graphs.c</a> - implementation of <a class="el" href="graphs_8h.html" title="graph header">graphs.h</a></li>
+<li>main.c - whatever you want to do with the graph</li>
+</ol>
+<p>Note that some functions are meant to be launched in a specific manner(waycount(), for example). It WOULD be easier to write functions to properly launch such functions, but for now I reserved to writing special warnings.</p>
+<p>This repo also has a simple makefile which utilises clang as the default compiler </p>
+</div></div><!-- contents -->
 </div><!-- PageDoc -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>

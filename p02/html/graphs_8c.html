@@ -98,6 +98,9 @@ Functions</h2></td></tr>
 <tr class="memitem:aaa8d581b8e1135fc06cac83f5998e49f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="graphs_8c.html#aaa8d581b8e1135fc06cac83f5998e49f">print_graph</a> (struct <a class="el" href="structGraph.html">Graph</a> graph)</td></tr>
 <tr class="memdesc:aaa8d581b8e1135fc06cac83f5998e49f"><td class="mdescLeft">&#160;</td><td class="mdescRight">print graph in a readable manner  <a href="graphs_8c.html#aaa8d581b8e1135fc06cac83f5998e49f">More...</a><br /></td></tr>
 <tr class="separator:aaa8d581b8e1135fc06cac83f5998e49f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acd6b1d70c1ce8a211a16943ea4f55a0f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="graphs_8c.html#acd6b1d70c1ce8a211a16943ea4f55a0f">print_graphviz</a> (struct <a class="el" href="structGraph.html">Graph</a> graph)</td></tr>
+<tr class="memdesc:acd6b1d70c1ce8a211a16943ea4f55a0f"><td class="mdescLeft">&#160;</td><td class="mdescRight">better way to output graphs  <a href="graphs_8c.html#acd6b1d70c1ce8a211a16943ea4f55a0f">More...</a><br /></td></tr>
+<tr class="separator:acd6b1d70c1ce8a211a16943ea4f55a0f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a053569f042954b97e695bdbafe1d7400"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="graphs_8c.html#a053569f042954b97e695bdbafe1d7400">delete_graph</a> (struct <a class="el" href="structGraph.html">Graph</a> *graph)</td></tr>
 <tr class="memdesc:a053569f042954b97e695bdbafe1d7400"><td class="mdescLeft">&#160;</td><td class="mdescRight">delete graph and all of its members  <a href="graphs_8c.html#a053569f042954b97e695bdbafe1d7400">More...</a><br /></td></tr>
 <tr class="separator:a053569f042954b97e695bdbafe1d7400"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -110,9 +113,12 @@ Functions</h2></td></tr>
 <tr class="memitem:a25c720f25b9884992297e946950d56d5"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="graphs_8c.html#a25c720f25b9884992297e946950d56d5">remove_edge</a> (struct <a class="el" href="structGraph.html">Graph</a> *graph, int from, int to)</td></tr>
 <tr class="memdesc:a25c720f25b9884992297e946950d56d5"><td class="mdescLeft">&#160;</td><td class="mdescRight">remove an edge from the graph  <a href="graphs_8c.html#a25c720f25b9884992297e946950d56d5">More...</a><br /></td></tr>
 <tr class="separator:a25c720f25b9884992297e946950d56d5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a05a8674f537df49368424696ed33fdab"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="graphs_8c.html#a05a8674f537df49368424696ed33fdab">way_count_node</a> (struct <a class="el" href="structGraph.html">Graph</a> graph, int from, int to, int *control)</td></tr>
-<tr class="memdesc:a05a8674f537df49368424696ed33fdab"><td class="mdescLeft">&#160;</td><td class="mdescRight">counts the amount of paths between two vertices  <a href="graphs_8c.html#a05a8674f537df49368424696ed33fdab">More...</a><br /></td></tr>
-<tr class="separator:a05a8674f537df49368424696ed33fdab"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abc8ea2fafade7c00639102454d9134fc"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="graphs_8c.html#abc8ea2fafade7c00639102454d9134fc">way_count</a> (struct <a class="el" href="structGraph.html">Graph</a> graph, int from, int to, int *control)</td></tr>
+<tr class="memdesc:abc8ea2fafade7c00639102454d9134fc"><td class="mdescLeft">&#160;</td><td class="mdescRight">counts the amount of paths between two vertices  <a href="graphs_8c.html#abc8ea2fafade7c00639102454d9134fc">More...</a><br /></td></tr>
+<tr class="separator:abc8ea2fafade7c00639102454d9134fc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7519af2b4633228384e9f09eeb974ce1"><td class="memItemLeft" align="right" valign="top">struct <a class="el" href="structGraph.html">Graph</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="graphs_8c.html#a7519af2b4633228384e9f09eeb974ce1">revert_graph</a> (struct <a class="el" href="structGraph.html">Graph</a> ingraph)</td></tr>
+<tr class="memdesc:a7519af2b4633228384e9f09eeb974ce1"><td class="mdescLeft">&#160;</td><td class="mdescRight">revert all paths in graph  <a href="graphs_8c.html#a7519af2b4633228384e9f09eeb974ce1">More...</a><br /></td></tr>
+<tr class="separator:a7519af2b4633228384e9f09eeb974ce1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>graph implementation </p>
@@ -239,6 +245,32 @@ Functions</h2></td></tr>
 
 </div>
 </div>
+<a id="acd6b1d70c1ce8a211a16943ea4f55a0f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acd6b1d70c1ce8a211a16943ea4f55a0f">&#9670;&nbsp;</a></span>print_graphviz()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void print_graphviz </td>
+          <td>(</td>
+          <td class="paramtype">struct <a class="el" href="structGraph.html">Graph</a>&#160;</td>
+          <td class="paramname"><em>graph</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>better way to output graphs </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">graph</td><td>graph that needs to be printed </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <a id="a25c720f25b9884992297e946950d56d5"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a25c720f25b9884992297e946950d56d5">&#9670;&nbsp;</a></span>remove_edge()</h2>
 
@@ -275,8 +307,8 @@ Functions</h2></td></tr>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">graph</td><td>graph from which the edge should be removed </td></tr>
-    <tr><td class="paramname">from</td><td></td></tr>
-    <tr><td class="paramname">to</td><td></td></tr>
+    <tr><td class="paramname">from</td><td>- starting point of an edge </td></tr>
+    <tr><td class="paramname">to</td><td>- ending point of an edge </td></tr>
   </table>
   </dd>
 </dl>
@@ -322,6 +354,33 @@ Functions</h2></td></tr>
 
 </div>
 </div>
+<a id="a7519af2b4633228384e9f09eeb974ce1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7519af2b4633228384e9f09eeb974ce1">&#9670;&nbsp;</a></span>revert_graph()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">struct <a class="el" href="structGraph.html">Graph</a> revert_graph </td>
+          <td>(</td>
+          <td class="paramtype">struct <a class="el" href="structGraph.html">Graph</a>&#160;</td>
+          <td class="paramname"><em>graph</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>revert all paths in graph </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">graph</td><td>input graph that needs to be reverted </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>returns a new, reversrd graph </dd></dl>
+
+</div>
+</div>
 <a id="a8a4c80494055e8c76e3c600f41929eaf"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a8a4c80494055e8c76e3c600f41929eaf">&#9670;&nbsp;</a></span>upload_graph()</h2>
 
@@ -339,24 +398,36 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>initialize graph from file </p>
-<dl class="params"><dt>Parameters</dt><dd>
+<p>Initializes a graph from a file of a following structure: <br  />
+First number is the amount of vertices <br  />
+Then follows n x n matrix of 0 and 1, where 1 means a prescense of an edge and 0 is its absence This way </p><div class="fragment"><div class="line">4</div>
+<div class="line">0 0 0 0</div>
+<div class="line">1 0 0 0</div>
+<div class="line">1 1 0 0</div>
+<div class="line">0 1 1 0</div>
+</div><!-- fragment --><p>will be translated to: </p><div class="fragment"><div class="line">[0]: NULL</div>
+<div class="line">[1]: 0 -&gt; NULL</div>
+<div class="line">[2]: 0 -&gt; 1 -&gt; NULL</div>
+<div class="line">[3]: 1 -&gt; 2 -&gt; NULL</div>
+</div><!-- fragment --><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">filename</td><td>name of the file from which to upload </td></tr>
   </table>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>graph which the matrix determines </dd></dl>
+<dl class="section warning"><dt>Warning</dt><dd>THE FUNCTION TAKES FILE STRUCTURE FOR GRANTED, IT DOES NOT CHECK WHAT IS FED TO IT </dd></dl>
 
 </div>
 </div>
-<a id="a05a8674f537df49368424696ed33fdab"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a05a8674f537df49368424696ed33fdab">&#9670;&nbsp;</a></span>way_count_node()</h2>
+<a id="abc8ea2fafade7c00639102454d9134fc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abc8ea2fafade7c00639102454d9134fc">&#9670;&nbsp;</a></span>way_count()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">int way_count_node </td>
+          <td class="memname">int way_count </td>
           <td>(</td>
           <td class="paramtype">struct <a class="el" href="structGraph.html">Graph</a>&#160;</td>
           <td class="paramname"><em>graph</em>, </td>
@@ -397,6 +468,7 @@ Functions</h2></td></tr>
   </table>
   </dd>
 </dl>
+<dl class="section return"><dt>Returns</dt><dd>amount of ways between two vertices </dd></dl>
 <dl class="section warning"><dt>Warning</dt><dd>do not call this function with something other then a blanc array of int of size graph.vernum </dd></dl>
 
 </div>
