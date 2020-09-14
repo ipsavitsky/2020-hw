@@ -208,3 +208,21 @@ int way_count(struct Graph graph, int from, int to, int *control)
     free(ncontrol);
     return sum;
 }
+
+struct Graph revert_graph(struct Graph ingraph){
+    int i = 0;
+    struct Graph ngrph;
+    struct Vertex *cur;
+    ngrph.vernum = ingraph.vernum;
+    ngrph.vertices = malloc(ngrph.vernum * sizeof(struct Vertex));
+    for(i = 0; i < ngrph.vernum; i++)
+        ngrph.vertices[i] = NULL;
+    for(i = 0; i < ingraph.vernum; i++){
+        cur = ingraph.vertices[i];
+        while(cur != NULL){
+            add_edge(&ngrph, cur -> number, i);
+            cur = cur -> next;
+        }
+    }
+    return ngrph;
+}

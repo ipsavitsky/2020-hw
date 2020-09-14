@@ -82,24 +82,15 @@ void remove_edge(struct Graph *graph, int from, int to);
  * \param from the start of the path
  * \param to the end of path
  * \param control USED INTERNALLY IN RECURSION
+ * \return amount of ways between two vertices
  * \warning do not call this function with something other then a blanc array of int of size graph.vernum
  */
 int way_count(struct Graph graph, int from, int to, int *control);
 
 /**
- * \brief initialize a blanc path structure needed for correct recursion in print_all_paths()
- * \param len length parameter USED INTERNALLY
- * \warning DO NOT LAUNCH WITH ANYTHING OTHER THAN 1 IN len
+ * \brief revert all paths in graph
+ * \param graph input graph that needs to be reverted
+ * \return returns a new, reversrd graph
  */
-struct Path *init_path(int len);
-
-/**
- * \brief print all paths from from vertex to to vertex
- * \param graph the graph in which to search paths
- * \param from the start of path
- * \param to the end of path
- * \param curpath USED INTERNALLY
- * \warning DO NOT LAUNCH WITH ANYTHIN OTHER THAN A PATH CREATED BY init_path(1)
- */
-void print_all_paths(struct Graph graph, int from, int to, struct Path* curpath);
+struct Graph revert_graph(struct Graph graph);
 #endif
