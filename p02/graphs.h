@@ -26,12 +26,6 @@ struct Vertex
     //int weight;
 };
 
-struct Path
-{
-    int *path;
-    int length;
-};
-
 /**
  * \brief initialize graph from file
  * \param filename name of the file from which to upload
