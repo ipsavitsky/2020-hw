@@ -81,6 +81,33 @@ void print_graph(struct Graph graph)
     }
 }
 
+void print_graphviz(struct Graph graph){
+    int i;
+    struct Vertex *safe;
+    FILE* output = fopen("out.dot", "w");
+    assert(output != NULL);
+    printf("outputting to out.dot");
+    fprintf(output, "digraph\n{\n");
+    for (i = 0; i < graph.vernum; i++)
+    {
+        fprintf(output, "%d -> ", i);
+        fprintf(output, "{");
+        safe = graph.vertices[i];
+        if (safe == NULL){
+            fprintf(output, "}\n");
+            continue;
+        }
+        
+        while (safe != NULL)
+        {
+            fprintf(output, "%d ", safe->number);
+            safe = safe->next;
+        }
+        fprintf(output, "}\n");
+    }
+    fprintf(output, "}");
+}
+
 void delete_graph(struct Graph *graph){
     int i;
     struct Vertex *safe, *prev;
@@ -187,8 +214,7 @@ int way_count(struct Graph graph, int from, int to, int *control)
     assert(from >= 0);
     assert(to >= 0);
     assert(control != NULL);
-    struct Vertex *cur = malloc(sizeof(struct Vertex));
-    assert(cur != NULL);
+    struct Vertex *cur;
     int *ncontrol = malloc(sizeof(int) * graph.vernum);
     assert(ncontrol != NULL);
     int sum = 0, i;
@@ -213,8 +239,11 @@ struct Graph revert_graph(struct Graph ingraph){
     int i = 0;
     struct Graph ngrph;
     struct Vertex *cur;
+    assert(ingraph.vertices != NULL);
     ngrph.vernum = ingraph.vernum;
     ngrph.vertices = malloc(ngrph.vernum * sizeof(struct Vertex));
+    assert(ngrph.vertices != NULL);
+    // TODO: segfault without this for, maybe optimize with the next for
     for(i = 0; i < ngrph.vernum; i++)
         ngrph.vertices[i] = NULL;
     for(i = 0; i < ingraph.vernum; i++){
