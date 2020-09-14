@@ -26,6 +26,12 @@ struct Vertex
     //int weight;
 };
 
+struct Path
+{
+    int *path;
+    int length;
+};
+
 /**
  * \brief initialize graph from file
  * \param filename name of the file from which to upload
@@ -84,10 +90,22 @@ void remove_edge(struct Graph *graph, int from, int to);
  * \param control USED INTERNALLY IN RECURSION
  * \warning do not call this function with something other then a blanc array of int of size graph.vernum
  */
-int way_count_node(struct Graph graph, int from, int to, int *control);
+int way_count(struct Graph graph, int from, int to, int *control);
 
 /**
- * 
+ * \brief initialize a blanc path structure needed for correct recursion in print_all_paths()
+ * \param len length parameter USED INTERNALLY
+ * \warning DO NOT LAUNCH WITH ANYTHING OTHER THAN 1 IN len
  */
+struct Path *init_path(int len);
 
+/**
+ * \brief print all paths from from vertex to to vertex
+ * \param graph the graph in which to search paths
+ * \param from the start of path
+ * \param to the end of path
+ * \param curpath USED INTERNALLY
+ * \warning DO NOT LAUNCH WITH ANYTHIN OTHER THAN A PATH CREATED BY init_path(1)
+ */
+void print_all_paths(struct Graph graph, int from, int to, struct Path* curpath);
 #endif

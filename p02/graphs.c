@@ -33,6 +33,9 @@ struct Graph upload_graph(char *filename)
 
 void add_edge(struct Graph *graph, int from, int to)
 {
+    assert(from >= 0);
+    assert(to >= 0);
+    assert(graph != NULL);
     assert(from < graph->vernum);
     assert(to < graph->vernum);
     struct Vertex *cur = graph->vertices[from];
@@ -97,6 +100,7 @@ void delete_graph(struct Graph *graph){
 }
 
 void add_vertex(struct Graph *graph){
+    assert(graph != NULL);
     graph->vernum += 1;
     graph->vertices = realloc(graph->vertices, graph->vernum * sizeof(struct Graph));
     assert(graph->vertices != NULL);
@@ -107,6 +111,8 @@ void add_vertex(struct Graph *graph){
 void remove_vertex(struct Graph *graph, int vertex){
     struct Vertex *prev, *cur;
     int i;
+    assert(vertex >= 0);
+    assert(graph != NULL);
     assert(vertex < graph->vernum);
     prev = graph->vertices[vertex];
     if(prev != NULL){
@@ -146,6 +152,9 @@ void remove_vertex(struct Graph *graph, int vertex){
 }
 
 void remove_edge(struct Graph *graph, int from, int to){
+    assert(from >= 0);
+    assert(to >= 0);
+    assert(graph != NULL);
     assert(from < graph->vernum);
     assert(to < graph->vernum);
     struct Vertex *cur = graph->vertices[from];
@@ -171,15 +180,20 @@ void remove_edge(struct Graph *graph, int from, int to){
     }
 }
 
-int way_count_node(struct Graph graph, int from, int to, int *control)
+int way_count(struct Graph graph, int from, int to, int *control)
 {
+    assert(from < graph.vernum);
+    assert(to < graph.vernum);
+    assert(from >= 0);
+    assert(to >= 0);
+    assert(control != NULL);
     struct Vertex *cur = malloc(sizeof(struct Vertex));
+    assert(cur != NULL);
     int *ncontrol = malloc(sizeof(int) * graph.vernum);
+    assert(ncontrol != NULL);
     int sum = 0, i;
     for (i = 0; i < graph.vernum; i++)
-    {
         ncontrol[i] = control[i];
-    }
     if (from == to)
         return 1;
     cur = graph.vertices[from];
@@ -187,10 +201,55 @@ int way_count_node(struct Graph graph, int from, int to, int *control)
     while (cur != NULL)
     {
         if (ncontrol[cur->number] == 0)
-        {
-            sum += way_count_node(graph, cur->number, to, ncontrol);
-        }
+            sum += way_count(graph, cur->number, to, ncontrol);
         cur = cur->next;
     }
+    free(cur);
+    free(ncontrol);
     return sum;
+}
+
+struct Path* init_path(int len)
+{
+    struct Path* new = malloc(sizeof(struct Path));
+    new -> length = len;
+    new -> path = malloc(sizeof(int) * new -> length);
+    assert(new -> path != NULL);
+    return new;
+}
+
+void print_all_paths(struct Graph graph, int from, int to, struct Path* curpath)
+{
+    assert(from < graph.vernum);
+    assert(to < graph.vernum);
+    struct Vertex *cur = malloc(sizeof(struct Vertex));
+    assert(cur != NULL);
+    int i;
+    struct Path *npath = malloc(sizeof(struct Path));
+    npath -> length = curpath->length + 1;
+    npath->path = malloc(sizeof(int) * npath->length);
+    assert(npath->path != NULL);
+    for (i = 0; i < curpath -> length; i++)
+        npath -> path[i] = curpath -> path[i];
+    // printf("waycount(graph, %d, %d)\n", from, to);
+    printf("who am i\n");
+    if (from == to)
+    {
+        for (i = 0; i < curpath -> length - 1; i++)
+            printf("%d; ", curpath -> path[i]);
+        printf("\n");
+        return;
+    }
+    cur = graph.vertices[from];
+    // graph.visited[from] = 1;
+    while (cur != NULL)
+    {
+        npath -> path[curpath -> length - 1] = cur->number;
+        print_all_paths(graph, cur->number, to, npath);
+        cur = cur->next;
+    }
+    free(npath -> path);
+    free(npath);
+    free(cur);
+    return;
 }
