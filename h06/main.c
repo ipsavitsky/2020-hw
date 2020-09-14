@@ -2,6 +2,12 @@
 #include <stdlib.h>
 
 /**
+ * \file
+ * \warning all specifications will be in doxygen warnings
+ * \warning the max size of the input string is 256 characters
+ */
+
+/**
  * \brief structure of a node of a tree
 */
 struct TreeNode
@@ -76,22 +82,68 @@ void tree_print(struct TreeNode *cur)
 /**
  * \brief delete the tree from memory
  * \param in the root of subtree you want to delete
+ * \warning this solution is dumb and it is probably a better way to do it
+ * \warning adapted for c from https://www.geeksforgeeks.org/non-recursive-program-to-delete-an-entire-binary-tree/
  */
 
 void tree_delete(struct TreeNode *in){
-    if(in == NULL){
+    int i;
+    // Base Case
+    if (in == NULL)
         return;
+
+    // Create an empty queue for level order traversal
+    struct TreeNode **q = malloc(3*sizeof(struct TreeNode));
+    
+    int queue_size = 1;
+    // Do level order traversal starting from root
+    q[0] = in;
+    // printf("first element %c\n", q[0]->c);
+    while (queue_size > 0)
+    {
+        struct TreeNode *node = q[0];
+        // q.pop();
+        // printf("popping %c\n", q[0] -> c);
+        for(i = 0; i < queue_size-1; i++){
+            q[i] = q[i+1];
+        }
+        // q = realloc(q, --queue_size);
+        --queue_size;
+        // for(i = 0; i < queue_size; i++)
+        //     printf("%c", q[i] -> c);
+        // printf("\n");
+        if (node->left != NULL){
+            // q.push(node->left);
+            // q = realloc(q, ++queue_size);
+            ++queue_size;
+            q[queue_size - 1] = node->left;
+            // printf("adding left %c\n", q[queue_size - 1]->c);
+        }
+        if (node->right != NULL){
+            // q.push(node->right);
+            // q = realloc(q, ++queue_size);
+            ++queue_size;
+            q[queue_size - 1] = node->right;
+            // printf("adding right %c\n", q[queue_size - 1]->c);
+        }
+        free(node);
     }
-    tree_delete(in -> right);
-    tree_delete(in -> left);
-    free(in);
+    free(q);
 }
 
-int main(void){
-    struct TreeNode* tree = NULL;
-    add_element_rec(&tree, 5);
-    add_element_rec(&tree, 4);
-    add_element_rec(&tree, 6);
+int main(void)
+{
+    struct TreeNode *tree = NULL;
+    char *prompt = malloc(256 * sizeof(char));
+    scanf("%s", prompt);
+    // printf("%s", prompt);
+    char *cur = prompt;
+    while (*cur != '\0')
+    {
+        add_element_rec(&tree, *cur);
+        cur++;
+    }
+    free(prompt);
     tree_print(tree);
     tree_delete(tree);
     return 0;
