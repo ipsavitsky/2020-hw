@@ -16,7 +16,7 @@ struct Graph upload_graph(char *filename)
     filein = fopen(filename, "r");
     assert(filein != NULL);
     fscanf(filein, "%d", &(result.vernum));
-    result.vertices = malloc(result.vernum * sizeof(struct Vertex));
+    result.vertices = calloc(result.vernum, sizeof(struct Vertex));
     assert(result.vertices != NULL);
     for (i = 0; i < result.vernum; i++)
     {
@@ -106,6 +106,7 @@ void print_graphviz(struct Graph graph){
         fprintf(output, "}\n");
     }
     fprintf(output, "}");
+    fclose(output);
 }
 
 void delete_graph(struct Graph *graph){
@@ -214,15 +215,17 @@ int way_count(struct Graph graph, int from, int to, int *control)
     assert(from >= 0);
     assert(to >= 0);
     assert(control != NULL);
-    struct Vertex *cur;
+    
     int *ncontrol = malloc(sizeof(int) * graph.vernum);
     assert(ncontrol != NULL);
     int sum = 0, i;
     for (i = 0; i < graph.vernum; i++)
         ncontrol[i] = control[i];
-    if (from == to)
+    if (from == to){
+        free(ncontrol);
         return 1;
-    cur = graph.vertices[from];
+    }
+    struct Vertex *cur = graph.vertices[from];
     ncontrol[from] = 1;
     while (cur != NULL)
     {

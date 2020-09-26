@@ -11,10 +11,10 @@
  * each element of this array is practically an l1 list of relations
  * So this graph:
  * ```
- * 0--+2            
- * |  /+            
+ * 0+--2            
+ * +  /+            
  * | / |            
- * ++  |            
+ * |+  |            
  * 1+--3
  * ```
  * (where '+' is a representation of an arrow) \n
@@ -93,19 +93,19 @@ void print_graphviz(struct Graph graph);
  */
     void add_edge(struct Graph * graph, int from, int to);
 
-    /**
+/**
  * \brief delete graph and all of its members
  * \param graph graph to delete
  */
     void delete_graph(struct Graph * graph);
 
-    /**
+/**
  * \brief add a vertex to a graph
  * \param graph graph to which the vertex should be added
  */
     void add_vertex(struct Graph * graph);
 
-    /**
+/**
  * \brief remove a vertex from a graph
  * \param graph graph from which the vertex should be removed
  * \param vertex number of vertex that should be removed
@@ -114,7 +114,7 @@ void print_graphviz(struct Graph graph);
  */
     void remove_vertex(struct Graph * graph, int vertex);
 
-    /**
+/**
  * \brief remove an edge from the graph
  * \param graph graph from which the edge should be removed
  * \param from - starting point of an edge
@@ -122,7 +122,7 @@ void print_graphviz(struct Graph graph);
  */
     void remove_edge(struct Graph * graph, int from, int to);
 
-    /**
+/**
  * \brief counts the amount of paths between two vertices
  * \param graph the graph in which the ways are searched
  * \param from the start of the path
@@ -133,7 +133,7 @@ void print_graphviz(struct Graph graph);
  */
     int way_count(struct Graph graph, int from, int to, int *control);
 
-    /**
+/**
  * \brief revert all paths in graph
  * \param graph input graph that needs to be reverted
  * \return returns a new, reversrd graph
