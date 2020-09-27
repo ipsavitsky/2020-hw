@@ -81,23 +81,25 @@ void print_graph(struct Graph graph)
     }
 }
 
-void print_graphviz(struct Graph graph){
+void print_graphviz(struct Graph graph)
+{
     int i;
     struct Vertex *safe;
-    FILE* output = fopen("out.dot", "w");
+    FILE *output = fopen("out.dot", "w");
     assert(output != NULL);
-    printf("outputting to out.dot");
+    printf("outputting to out.dot\n");
     fprintf(output, "digraph\n{\n");
     for (i = 0; i < graph.vernum; i++)
     {
         fprintf(output, "%d -> ", i);
         fprintf(output, "{");
         safe = graph.vertices[i];
-        if (safe == NULL){
+        if (safe == NULL)
+        {
             fprintf(output, "}\n");
             continue;
         }
-        
+
         while (safe != NULL)
         {
             fprintf(output, "%d ", safe->number);
@@ -109,13 +111,14 @@ void print_graphviz(struct Graph graph){
     fclose(output);
 }
 
-void delete_graph(struct Graph *graph){
+void delete_graph(struct Graph *graph)
+{
     int i;
     struct Vertex *safe, *prev;
     for (i = 0; i < graph->vernum; i++)
     {
         prev = graph->vertices[i];
-        if(prev == NULL)
+        if (prev == NULL)
             continue;
         while (prev != NULL)
         {
@@ -124,10 +127,11 @@ void delete_graph(struct Graph *graph){
             prev = safe;
         }
     }
-    free(graph -> vertices);
+    free(graph->vertices);
 }
 
-void add_vertex(struct Graph *graph){
+void add_vertex(struct Graph *graph)
+{
     assert(graph != NULL);
     graph->vernum += 1;
     graph->vertices = realloc(graph->vertices, graph->vernum * sizeof(struct Graph));
@@ -136,14 +140,16 @@ void add_vertex(struct Graph *graph){
     graph->vertices[graph->vernum - 1] = NULL;
 }
 
-void remove_vertex(struct Graph *graph, int vertex){
+void remove_vertex(struct Graph *graph, int vertex)
+{
     struct Vertex *prev, *cur;
     int i;
     assert(vertex >= 0);
     assert(graph != NULL);
     assert(vertex < graph->vernum);
     prev = graph->vertices[vertex];
-    if(prev != NULL){
+    if (prev != NULL)
+    {
         while (prev != NULL)
         {
             cur = prev->next;
@@ -151,35 +157,41 @@ void remove_vertex(struct Graph *graph, int vertex){
             prev = cur;
         }
     }
-    for(i = vertex+1; i < graph -> vernum; i++)
-        graph -> vertices[i - 1] = graph -> vertices[i];
-    graph -> vernum -= 1;
-    for(i = 0; i < graph -> vernum; i++){
-        cur = graph -> vertices[i];
-        prev = graph -> vertices[i];
-        while(cur != NULL){
-            if(cur -> number == vertex){
-                if(prev == cur){
-                    cur = cur -> next;
+    for (i = vertex + 1; i < graph->vernum; i++)
+        graph->vertices[i - 1] = graph->vertices[i];
+    graph->vernum -= 1;
+    for (i = 0; i < graph->vernum; i++)
+    {
+        cur = graph->vertices[i];
+        prev = graph->vertices[i];
+        while (cur != NULL)
+        {
+            if (cur->number == vertex)
+            {
+                if (prev == cur)
+                {
+                    cur = cur->next;
                     free(prev);
                     prev = cur;
-                    graph -> vertices[i] = cur;
+                    graph->vertices[i] = cur;
                     continue;
                 }
-                prev -> next = cur -> next;
+                prev->next = cur->next;
                 free(cur);
                 cur = prev;
             }
-            else if(cur -> number > vertex){
-                cur -> number -= 1;
+            else if (cur->number > vertex)
+            {
+                cur->number -= 1;
             }
             prev = cur;
-            cur = cur -> next;
+            cur = cur->next;
         }
     }
 }
 
-void remove_edge(struct Graph *graph, int from, int to){
+void remove_edge(struct Graph *graph, int from, int to)
+{
     assert(from >= 0);
     assert(to >= 0);
     assert(graph != NULL);
@@ -215,13 +227,14 @@ int way_count(struct Graph graph, int from, int to, int *control)
     assert(from >= 0);
     assert(to >= 0);
     assert(control != NULL);
-    
+
     int *ncontrol = malloc(sizeof(int) * graph.vernum);
     assert(ncontrol != NULL);
     int sum = 0, i;
     for (i = 0; i < graph.vernum; i++)
         ncontrol[i] = control[i];
-    if (from == to){
+    if (from == to)
+    {
         free(ncontrol);
         return 1;
     }
@@ -238,7 +251,8 @@ int way_count(struct Graph graph, int from, int to, int *control)
     return sum;
 }
 
-struct Graph revert_graph(struct Graph ingraph){
+struct Graph revert_graph(struct Graph ingraph)
+{
     int i = 0;
     struct Graph ngrph;
     struct Vertex *cur;
@@ -247,13 +261,15 @@ struct Graph revert_graph(struct Graph ingraph){
     ngrph.vertices = malloc(ngrph.vernum * sizeof(struct Vertex));
     assert(ngrph.vertices != NULL);
     // TODO: segfault without this for, maybe optimize with the next for
-    for(i = 0; i < ngrph.vernum; i++)
+    for (i = 0; i < ngrph.vernum; i++)
         ngrph.vertices[i] = NULL;
-    for(i = 0; i < ingraph.vernum; i++){
+    for (i = 0; i < ingraph.vernum; i++)
+    {
         cur = ingraph.vertices[i];
-        while(cur != NULL){
-            add_edge(&ngrph, cur -> number, i);
-            cur = cur -> next;
+        while (cur != NULL)
+        {
+            add_edge(&ngrph, cur->number, i);
+            cur = cur->next;
         }
     }
     return ngrph;
