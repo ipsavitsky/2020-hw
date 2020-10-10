@@ -7,29 +7,28 @@
  */
 
 /**
-  * Each vertex in a graph is an element in vertices array, but the
-  * each element of this array is practically an l1 list of relations
-  * So this graph:
-  * ```
-  * 0+--2
-  * +  /+
-  * | / |
-  * |+  |
-  * 1+--3
-  * ```
-  * (where '+' is a representation of an arrow) \n
-  * Will translate to this: \n
-  * ```
-  * [0]: NULL
-  * [1]: 0 -> NULL
-  * [2]: 0 -> 1 -> NULL
-  * [3]: 1 -> 2 -> NULL
-  * ```
-  * \brief structure of a graph
-  * \todo maybe rework? the way to store a graph is too convoluted
-  */
-struct Graph
-{
+ * Each vertex in a graph is an element in vertices array, but the
+ * each element of this array is practically an l1 list of relations
+ * So this graph:
+ * ```
+ * 0+--2
+ * +  /+
+ * | / |
+ * |+  |
+ * 1+--3
+ * ```
+ * (where '+' is a representation of an arrow) \n
+ * Will translate to this: \n
+ * ```
+ * [0]: NULL
+ * [1]: 0 -> NULL
+ * [2]: 0 -> 1 -> NULL
+ * [3]: 1 -> 2 -> NULL
+ * ```
+ * \brief structure of a graph
+ * \todo maybe rework? the way to store a graph is too convoluted
+ */
+struct Graph {
     struct Vertex **vertices; /**< an array of l1 lists to store edges*/
     int vernum;               /**< store the amount of verices in a graph*/
 };
@@ -37,18 +36,17 @@ struct Graph
 /**
  * \brief structure of a vertex l1 list
  */
-struct Vertex
-{
+struct Vertex {
     int number;          /**< storing an end to an edge*/
     struct Vertex *next; /**< pointer to next in list structure*/
-    //int weight;
+    // int weight;
 };
 
 /**
  * Initializes a graph from a file of a following structure: \n
  * First number is the amount of vertices \n
- * Then follows n x n matrix of 0 and 1, where 1 means a prescense of an edge and 0 is its absence
- * This way
+ * Then follows n x n matrix of 0 and 1, where 1 means a prescense of an edge
+ * and 0 is its absence This way
  * ```
  * 4
  * 0 0 0 0
@@ -67,7 +65,8 @@ struct Vertex
  * \brief initialize graph from file
  * \param filename name of the file from which to upload
  * \return graph which the matrix determines
- * \warning THE FUNCTION TAKES FILE STRUCTURE FOR GRANTED, IT DOES NOT CHECK WHAT IS FED TO IT
+ * \warning THE FUNCTION TAKES FILE STRUCTURE FOR GRANTED, IT DOES NOT CHECK
+ * WHAT IS FED TO IT
  */
 struct Graph upload_graph(char *filename);
 
@@ -129,7 +128,8 @@ void remove_edge(struct Graph *graph, int from, int to);
  * \param to the end of path
  * \param control USED INTERNALLY IN RECURSION
  * \return amount of ways between two vertices
- * \warning do not call this function with something other then a blank array of int of size graph.vernum
+ * \warning do not call this function with something other then a blank array of
+ * int of size graph.vernum
  */
 int way_count(struct Graph graph, int from, int to, int *control);
 
