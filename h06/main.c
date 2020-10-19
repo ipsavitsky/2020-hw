@@ -1,21 +1,21 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-// specification1: the max size of the input string is determined by MAXLEN enum
-// specification2: newline symbol (code 10 in ascii) is considered a part of am
-// input string specification3: the mount of nodes in a tree fits in an unsigned
-// int specification4: character can not be encountered more than MAX_INT times
-// specification5: if malloc()/realloc() fails to allocate/reallocate memory the
-// program exits immideately
+// specification1: the program read characters from stdin until \n
 
-enum { MAXLEN = 256 };
+// specification2: the amount of nodes in a tree fits in an unsigned int
+
+// specification3: character can not be encountered more than MAX_INT times
+
+// specification4: if malloc()/realloc() fails to allocate/reallocate memory the
+// program exits immideately
 
 /**
  * \brief structure of a node of a tree
  */
 struct TreeNode {
-    unsigned char c;         /**< character as a key to the tree*/
-    int n;                   /**< amoutnt of times we've seen c*/
+    char c;                  /**< character as a key to the tree*/
+    int n;                   /**< amount of times we've seen c*/
     struct TreeNode *left;   /**< pointer to left subtree*/
     struct TreeNode *right;  /**< pointer to right subtree*/
     struct TreeNode *parent; /**< pointer to the parent of the node*/
@@ -27,7 +27,7 @@ struct TreeNode {
  * \param ch character needed to be added to the tree
  */
 
-void add_element_rec(struct TreeNode **in, unsigned char ch) {
+void add_element_rec(struct TreeNode **in, char ch) {
     if (*in == NULL) {
         *in = malloc(sizeof(struct TreeNode));
         (*in)->c = ch;
@@ -39,9 +39,9 @@ void add_element_rec(struct TreeNode **in, unsigned char ch) {
     }
     if ((*in)->c == ch)
         (*in)->n++;
-    else if (((*in)->c < ch) && ((*in)->right != NULL))
+    else if (((unsigned char)((*in)->c) < (unsigned char)ch) && (((*in)->right) != NULL))
         add_element_rec(&((*in)->right), ch);
-    else if (((*in)->c < ch) && ((*in)->right == NULL)) {
+    else if (((unsigned char)((*in)->c) < (unsigned char)ch) && ((*in)->right == NULL)) {
         struct TreeNode *new = malloc(sizeof(struct TreeNode));
         new->c = ch;
         new->n = 1;
@@ -49,9 +49,9 @@ void add_element_rec(struct TreeNode **in, unsigned char ch) {
         new->right = NULL;
         new->parent = *in;
         (*in)->right = new;
-    } else if (((*in)->c > ch) && ((*in)->left != NULL))
+    } else if (((unsigned char)((*in)->c) > (unsigned char)ch) && ((*in)->left != NULL))
         add_element_rec(&((*in)->left), ch);
-    else if (((*in)->c > ch) && ((*in)->left == NULL)) {
+    else if (((unsigned char)((*in)->c) > (unsigned char)ch) && ((*in)->left == NULL)) {
         struct TreeNode *new = malloc(sizeof(struct TreeNode));
         new->c = ch;
         new->n = 1;
@@ -70,7 +70,7 @@ void add_element_rec(struct TreeNode **in, unsigned char ch) {
 void tree_print(struct TreeNode *cur) {
     if (cur == NULL) return;
     tree_print(cur->left);
-    printf("%c(%d) %d time(s)\n", cur->c, cur->c, cur->n);
+    printf("%c(%d) %d time(s)\n", cur->c, (unsigned int)cur->c, cur->n);
     tree_print(cur->right);
 }
 
@@ -78,7 +78,8 @@ void tree_print(struct TreeNode *cur) {
  * \brief delete the tree from memory
  * \param in the root of subtree you want to delete
  * \warning this solution is dumb and it is probably a better way to do it(there
- * is, see below) \warning adapted for c from
+ * is, see below)
+ * \warning adapted for c from
  * https://www.geeksforgeeks.org/non-recursive-program-to-delete-an-entire-binary-tree/
  */
 
@@ -136,35 +137,50 @@ void tree_delete(struct TreeNode *in) {
 void tree_delete_par(struct TreeNode *in) {
     struct TreeNode *node = in;
     struct TreeNode *par;
-    while(1){
+    if(in == NULL) return;
+    while (1) {
         while (!((node->left == NULL) && (node->right == NULL))) {
             if (node->left != NULL)
                 node = node->left;
             else if (node->right != NULL)
                 node = node->right;
         }
-        par = node -> parent;
-        if(par == NULL){
+        par = node->parent;
+        if (par == NULL) {
             free(node);
             break;
         }
         // remember lazy evaluation!
-        if((par->right != NULL) && (par->right == node)) par->right = NULL;
-        else if((par->left != NULL) && (par->left == node)) par->left = NULL;
+        if ((par->right != NULL) && (par->right == node))
+            par->right = NULL;
+        else if ((par->left != NULL) && (par->left == node))
+            par->left = NULL;
         free(node);
         node = par;
     }
 }
 
+// int LLVMFuzzerTestOneInput(const unsigned char *Data, size_t Size) {
+//     struct TreeNode *tree = NULL;
+//     int a, i;
+//     // unsigned char prompt[MAXLEN];
+//     // fgets(prompt, MAXLEN, stdin);
+//     // char *cur = prompt;
+//     if(Size < 2) return 0;
+//     for(i = 0; i < Size; i++) add_element_rec(&tree, Data[i]);
+//     // while ((a = getchar()) != EOF) add_element_rec(&tree, a);
+//     tree_print(tree);
+//     tree_delete_par(tree);
+//     return 0;
+// }
+
 int main(void) {
     struct TreeNode *tree = NULL;
-    unsigned char prompt[MAXLEN];
-    fgets(prompt, MAXLEN, stdin);
-    char *cur = prompt;
-    while (*cur != '\0') {
-        add_element_rec(&tree, *cur);
-        cur++;
-    }
+    int a;
+    // unsigned char prompt[MAXLEN];
+    // fgets(prompt, MAXLEN, stdin);
+    // char *cur = prompt;
+    while ((a = getchar()) != EOF) add_element_rec(&tree, a);
     tree_print(tree);
     tree_delete_par(tree);
     return 0;
