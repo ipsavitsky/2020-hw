@@ -9,11 +9,11 @@
 #define TEST_SIZE 10000 /* maximum size of each test */
 
 // specification1: if tou plan to run tests, ensure that directory tests exists
-// specification2: the size of  file is less than long int(in bytes)
+// specification2: the size of file is less than long int(in bytes)
 
 /**
  * \brief reverse the input file
- * \param fi already opened file that needs to be
+ * \param fi already opened file that needs to be reversed(file opened in "r+" mode - consider this specification)
  */
 void freverse(FILE *fi) {
     assert(fi != NULL);
