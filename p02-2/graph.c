@@ -164,40 +164,41 @@ void delete_graph(graph *del_graph) {
     free(del_graph->vertices);
 }
 
-void add_edge(graph *graph, int offset1, int offset2) {
-    graph->vertices[offset1].edges = realloc(
-        graph->vertices[offset1].edges,
-        (++(graph->vertices[offset1].num_edges)) * sizeof(graph_node *));
-    graph->vertices[offset1].edges[graph->vertices[offset1].num_edges - 1] = graph->vertices + offset2;
+void add_edge(graph_node *node1, graph_node *node2) {
+    node1->edges =
+        realloc(node1->edges, (++(node1->num_edges)) * sizeof(graph_node *));
+    node1->edges[node1->num_edges - 1] = node2;
 }
 
-void grapviz_output(graph pr_graph, char *filename){
+void grapviz_output(graph pr_graph, char *filename) {
     FILE *output = fopen(filename, "w");
     fprintf(output, "digraph\n{\n");
-    for(int i = 0; i < pr_graph.num_vertices; ++i){
-        
+    for (int i = 0; i < pr_graph.num_vertices; ++i) {
         graph_node *cur = NULL;
-        for(int j = 0; j < pr_graph.vertices[i].num_edges; ++j){
+        for (int j = 0; j < pr_graph.vertices[i].num_edges; ++j) {
             fprintf(output, "\"");
             for (int k = 0; k < pr_graph.vertices[i].data_size; ++k) {
                 switch (pr_graph.vertices[i].data_type) {
                     case INTEGER:
-                        fprintf(output, "%d ", *((int *)pr_graph.vertices[i].data + k));
+                        fprintf(output, "%d ",
+                                *((int *)pr_graph.vertices[i].data + k));
                         break;
 
                     case DOUBLE:
-                        fprintf(output, "%lf ", *((double *)pr_graph.vertices[i].data + k));
+                        fprintf(output, "%lf ",
+                                *((double *)pr_graph.vertices[i].data + k));
                         break;
 
                     case CHAR:
-                        fprintf(output, "%c", *((char *)pr_graph.vertices[i].data + k));
+                        fprintf(output, "%c",
+                                *((char *)pr_graph.vertices[i].data + k));
                         break;
                 }
             }
             fprintf(output, "\"->\"");
             // fprintf(output, "\"");
             cur = pr_graph.vertices[i].edges[j];
-            for(int k = 0; k < cur->data_size; ++k){
+            for (int k = 0; k < cur->data_size; ++k) {
                 switch (cur->data_type) {
                     case INTEGER:
                         fprintf(output, "%d ", *((int *)(cur->data) + k));
@@ -217,4 +218,55 @@ void grapviz_output(graph pr_graph, char *filename){
         // fprintf(output, "\n");
     }
     fprintf(output, "}");
+    fclose(output);
+}
+
+void delete_edge(graph_node *node1, graph_node *node2) {
+    for (int i = 0; i < node1->num_edges; ++i) {
+        if (node1->edges[i] == node2) {
+            for (int j = i; j < node1->num_edges - 1; ++j) {
+                node1->edges[j] = node1->edges[j + 1];
+            }
+            node1->edges = realloc(
+                node1->edges, (--(node1->num_edges)) * sizeof(graph_node *));
+            // i = 0;
+            return;
+        }
+    }
+}
+
+void delete_vertex(graph *gr, graph_node *node) {
+    int i;
+    for (i = 0; i < gr->num_vertices; ++i){
+        if (gr->vertices + i == node) {
+            for (int j = i; j < gr->num_vertices - 1; ++j){
+                gr->vertices[j].data_size = gr->vertices[j + 1].data_size;
+                gr->vertices[j].data_type = gr->vertices[j + 1].data_type;
+                gr->vertices[j].num_edges = gr->vertices[j + 1].num_edges;
+                gr->vertices[j].edges = realloc(gr->vertices[j].edges, (gr->vertices[j+1].num_edges) * sizeof(graph_node *));
+                for(int k = 0; k < gr->vertices[j].num_edges; ++k) gr->vertices[j].edges[k] = gr->vertices[j+1].edges[k];
+                for (int k = 0; k < gr->vertices[j].data_size; ++k) {
+                    switch (gr->vertices[j].data_type) {
+                        case INTEGER:
+                            *((int *)(gr->vertices[j].data) + k) = *((int *)(gr->vertices[j+1].data) + k);
+                            break;
+
+                        case DOUBLE:
+                            *((double *)(gr->vertices[j].data) + k) = *((double *)(gr->vertices[j+1].data) + k);
+                            break;
+
+                        case CHAR:
+                            *((char *)(gr->vertices[j].data) + k) = *((char *)(gr->vertices[j+1].data) + k);
+                            break;
+                    }
+                }
+            }
+        }
+    }
+    for (i = 0; i < gr->num_vertices - 1; ++i){
+        for(int j = 0; j < gr->vertices[i].num_edges; ++j){
+            if(gr->vertices[i].edges[j] > node) (gr->vertices[i].edges[j])--;
+        }
+    }
+    gr->vertices = realloc(gr->vertices, (--(gr->num_vertices)) * sizeof(graph_node *));
 }
