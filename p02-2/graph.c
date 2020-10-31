@@ -2,6 +2,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 graph upload_graph(char *filename) {
     FILE *input = fopen(filename, "r");
@@ -84,76 +85,102 @@ void save_graph(char *filename, graph sv_graph) {
 }
 
 void print_graph(graph in_graph) {
+    int ctr = 0;
     for (int i = 0; i < in_graph.num_vertices; ++i) {
-        printf("================vertex [%d]================\n", i);
-        printf("data(%zu):\n", in_graph.vertices[i].data_size);
-        for (int j = 0; j < in_graph.vertices[i].data_size; ++j) {
-            switch (in_graph.vertices[i].data_type) {
-                case INTEGER:
-                    printf("%d ", *((int *)in_graph.vertices[i].data + j));
-                    break;
-                case DOUBLE:
-                    printf("%lf ", *((double *)in_graph.vertices[i].data + j));
-                    break;
-                case CHAR:
-                    printf("%c", *((char *)in_graph.vertices[i].data + j));
-                default:
-                    break;
+        if(in_graph.vertices[i].existent){
+            printf("================vertex [%d]================\n", i);
+            printf("data(%zu):\n", in_graph.vertices[i].data_size);
+            for (int j = 0; j < in_graph.vertices[i].data_size; ++j) {
+                switch (in_graph.vertices[i].data_type) {
+                    case INTEGER:
+                        printf("%d ", *((int *)in_graph.vertices[i].data + j));
+                        break;
+                    case DOUBLE:
+                        printf("%lf ", *((double *)in_graph.vertices[i].data + j));
+                        break;
+                    case CHAR:
+                        printf("%c", *((char *)in_graph.vertices[i].data + j));
+                        break;
+                    default:
+                        break;
+                }
             }
+            printf("\n");
+            int relative_address;
+            printf("has edges to vertces(%zu):\n", in_graph.vertices[i].num_edges);
+            for (int j = 0; j < in_graph.vertices[i].num_edges; ++j) {
+                if(in_graph.vertices[i].edges[j] -> existent){
+                    relative_address =
+                        in_graph.vertices[i].edges[j] - in_graph.vertices;
+                    printf("%d ", relative_address);    
+                }
+            }
+            printf("\n");
+             ++ctr;
         }
-        printf("\n");
-        int relative_address;
-        printf("has edges to vertces(%zu):\n", in_graph.vertices[i].num_edges);
-        for (int j = 0; j < in_graph.vertices[i].num_edges; ++j) {
-            relative_address =
-                in_graph.vertices[i].edges[j] - in_graph.vertices;
-            printf("%d ", relative_address);
-        }
-        printf("\n");
     }
-    // printf("\n");
+    printf("===========================================\n");
+    printf("there are also %lu non-existent vertices\n", in_graph.num_vertices - ctr);
 }
 
 void add_vertex(graph *in_graph, enum Types data_type, void *data,
                 size_t data_size) {
-    in_graph->vertices = realloc(
-        in_graph->vertices, (++(in_graph->num_vertices)) * sizeof(graph_node));
-    in_graph->vertices[in_graph->num_vertices - 1].data_size = data_size;
-    in_graph->vertices[in_graph->num_vertices - 1].data_type = data_type;
-    in_graph->vertices[in_graph->num_vertices - 1].num_edges = 0;
-    in_graph->vertices[in_graph->num_vertices - 1].edges = NULL;
-    size_t arr_size;
-    switch (data_type) {
-        case INTEGER:
-            arr_size = sizeof(int);
-            break;
-
-        case DOUBLE:
-            arr_size = sizeof(double);
-            break;
-
-        case CHAR:
-            arr_size = sizeof(char);
-            break;
-    }
-    in_graph->vertices[in_graph->num_vertices - 1].data =
-        malloc(data_size * arr_size);
-    for (int i = 0; i < data_size; ++i) {
+    int pos;
+    for(pos = 0; pos < in_graph->num_vertices; pos++)
+        if(in_graph->vertices[pos].existent == 0) break;
+    if(pos == in_graph->num_vertices){
+        in_graph->vertices = realloc(
+            in_graph->vertices, (++(in_graph->num_vertices)) * sizeof(graph_node));
+        in_graph->vertices[in_graph->num_vertices - 1].data_size = data_size;
+        in_graph->vertices[in_graph->num_vertices - 1].data_type = data_type;
+        in_graph->vertices[in_graph->num_vertices - 1].num_edges = 0;
+        in_graph->vertices[in_graph->num_vertices - 1].edges = NULL;
+        in_graph->vertices[in_graph->num_vertices - 1].existent = 1;
+        size_t arr_size;
         switch (data_type) {
             case INTEGER:
-                ((int *)(in_graph->vertices[in_graph->num_vertices - 1]
-                             .data))[i] = ((int *)data)[i];
+                arr_size = sizeof(int);
                 break;
+
             case DOUBLE:
-                ((double *)(in_graph->vertices[in_graph->num_vertices - 1]
-                                .data))[i] = ((double *)data)[i];
+                arr_size = sizeof(double);
                 break;
+
             case CHAR:
-                ((char *)(in_graph->vertices[in_graph->num_vertices - 1]
-                              .data))[i] = ((char *)data)[i];
+                arr_size = sizeof(char);
                 break;
         }
+        in_graph->vertices[in_graph->num_vertices - 1].data =
+            malloc(data_size * arr_size);
+        
+        memmove(in_graph->vertices[in_graph->num_vertices - 1].data, data, data_size * arr_size);
     }
+    else{
+        in_graph->vertices[pos].data_type = data_type;
+        in_graph->vertices[pos].data_size = data_size;
+        in_graph->vertices[pos].num_edges = 0;
+        in_graph->vertices[pos].edges = 0;
+        in_graph->vertices[pos].existent = 1;
+        size_t arr_size;
+        switch (data_type) {
+            case INTEGER:
+                arr_size = sizeof(int);
+                break;
+
+            case DOUBLE:
+                arr_size = sizeof(double);
+                break;
+
+            case CHAR:
+                arr_size = sizeof(char);
+                break;
+        }
+        in_graph->vertices[pos].data =
+            malloc(data_size * arr_size);
+
+        memmove(in_graph->vertices[pos].data, data, data_size * arr_size);
+    }
+    
 }
 
 void delete_graph(graph *del_graph) {
@@ -229,44 +256,18 @@ void delete_edge(graph_node *node1, graph_node *node2) {
             }
             node1->edges = realloc(
                 node1->edges, (--(node1->num_edges)) * sizeof(graph_node *));
-            // i = 0;
             return;
         }
     }
 }
 
 void delete_vertex(graph *gr, graph_node *node) {
-    int i;
-    for (i = 0; i < gr->num_vertices; ++i){
-        if (gr->vertices + i == node) {
-            for (int j = i; j < gr->num_vertices - 1; ++j){
-                gr->vertices[j].data_size = gr->vertices[j + 1].data_size;
-                gr->vertices[j].data_type = gr->vertices[j + 1].data_type;
-                gr->vertices[j].num_edges = gr->vertices[j + 1].num_edges;
-                gr->vertices[j].edges = realloc(gr->vertices[j].edges, (gr->vertices[j+1].num_edges) * sizeof(graph_node *));
-                for(int k = 0; k < gr->vertices[j].num_edges; ++k) gr->vertices[j].edges[k] = gr->vertices[j+1].edges[k];
-                for (int k = 0; k < gr->vertices[j].data_size; ++k) {
-                    switch (gr->vertices[j].data_type) {
-                        case INTEGER:
-                            *((int *)(gr->vertices[j].data) + k) = *((int *)(gr->vertices[j+1].data) + k);
-                            break;
-
-                        case DOUBLE:
-                            *((double *)(gr->vertices[j].data) + k) = *((double *)(gr->vertices[j+1].data) + k);
-                            break;
-
-                        case CHAR:
-                            *((char *)(gr->vertices[j].data) + k) = *((char *)(gr->vertices[j+1].data) + k);
-                            break;
-                    }
-                }
+    node->existent = 0;
+    for(int i = 0; i < gr->num_vertices; ++i){
+        for(int j = 0; j < gr->vertices[i].num_edges; ++j){
+            if(gr->vertices[i].edges[j] == node){
+                delete_edge(&(gr->vertices[i]), node);
             }
         }
     }
-    for (i = 0; i < gr->num_vertices - 1; ++i){
-        for(int j = 0; j < gr->vertices[i].num_edges; ++j){
-            if(gr->vertices[i].edges[j] > node) (gr->vertices[i].edges[j])--;
-        }
-    }
-    gr->vertices = realloc(gr->vertices, (--(gr->num_vertices)) * sizeof(graph_node *));
 }

@@ -19,7 +19,8 @@ int main(void){
     add_edge(&(test_graph.vertices[1]), &(test_graph.vertices[2]));
     add_edge(&(test_graph.vertices[2]), &(test_graph.vertices[0]));
     delete_edge(&(test_graph.vertices[0]), &(test_graph.vertices[1]));
-    delete_vertex(&(test_graph), &(test_graph.vertices[2]));
+    print_graph(test_graph);
+    delete_vertex(&test_graph, &(test_graph.vertices[1]));
     // delete_edge(&(test_graph.vertices[2]), &(test_graph.vertices[2]));
     print_graph(test_graph);
     grapviz_output(test_graph, "out.dot");

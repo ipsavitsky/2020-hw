@@ -4,7 +4,6 @@ enum Types {
     INTEGER,
     DOUBLE,
     CHAR
-
 };
 
 typedef struct Graph_node{
@@ -13,6 +12,7 @@ typedef struct Graph_node{
     enum Types data_type;
     struct Graph_node **edges;
     size_t num_edges;
+    unsigned short existent;
 } graph_node;
 
 typedef struct{
