@@ -87,7 +87,7 @@ void save_graph(char *filename, graph sv_graph) {
 void print_graph(graph in_graph) {
     int ctr = 0;
     for (int i = 0; i < in_graph.num_vertices; ++i) {
-        if(in_graph.vertices[i].existent){
+        if (in_graph.vertices[i].existent) {
             printf("================vertex [%d]================\n", i);
             printf("data(%zu):\n", in_graph.vertices[i].data_size);
             for (int j = 0; j < in_graph.vertices[i].data_size; ++j) {
@@ -96,7 +96,8 @@ void print_graph(graph in_graph) {
                         printf("%d ", *((int *)in_graph.vertices[i].data + j));
                         break;
                     case DOUBLE:
-                        printf("%lf ", *((double *)in_graph.vertices[i].data + j));
+                        printf("%lf ",
+                               *((double *)in_graph.vertices[i].data + j));
                         break;
                     case CHAR:
                         printf("%c", *((char *)in_graph.vertices[i].data + j));
@@ -107,80 +108,76 @@ void print_graph(graph in_graph) {
             }
             printf("\n");
             int relative_address;
-            printf("has edges to vertces(%zu):\n", in_graph.vertices[i].num_edges);
+            printf("has edges to vertices(%zu):\n",
+                   in_graph.vertices[i].num_edges);
             for (int j = 0; j < in_graph.vertices[i].num_edges; ++j) {
-                if(in_graph.vertices[i].edges[j] -> existent){
+                if (in_graph.vertices[i].edges[j]->existent) {
                     relative_address =
                         in_graph.vertices[i].edges[j] - in_graph.vertices;
-                    printf("%d ", relative_address);    
+                    printf("%d ", relative_address);
                 }
             }
             printf("\n");
-             ++ctr;
+            ++ctr;
         }
     }
     printf("===========================================\n");
-    printf("there are also %lu non-existent vertices\n", in_graph.num_vertices - ctr);
+    printf("there are also %lu non-existent vertices\n",
+           in_graph.num_vertices - ctr);
 }
 
-void add_vertex(graph *in_graph, enum Types data_type, void *data,
-                size_t data_size) {
-    int pos;
-    for(pos = 0; pos < in_graph->num_vertices; pos++)
-        if(in_graph->vertices[pos].existent == 0) break;
-    if(pos == in_graph->num_vertices){
-        in_graph->vertices = realloc(
-            in_graph->vertices, (++(in_graph->num_vertices)) * sizeof(graph_node));
-        in_graph->vertices[in_graph->num_vertices - 1].data_size = data_size;
-        in_graph->vertices[in_graph->num_vertices - 1].data_type = data_type;
-        in_graph->vertices[in_graph->num_vertices - 1].num_edges = 0;
-        in_graph->vertices[in_graph->num_vertices - 1].edges = NULL;
-        in_graph->vertices[in_graph->num_vertices - 1].existent = 1;
-        size_t arr_size;
-        switch (data_type) {
-            case INTEGER:
-                arr_size = sizeof(int);
-                break;
-
-            case DOUBLE:
-                arr_size = sizeof(double);
-                break;
-
-            case CHAR:
-                arr_size = sizeof(char);
-                break;
+graph_node *add_vertex(graph *in_graph, enum Types data_type, void *data,
+                       size_t data_size) {
+    int pos = 0;
+    for (pos = 0; pos < in_graph->num_vertices; pos++)
+        if (in_graph->vertices[pos].existent == 0) break;
+    if (pos == in_graph->num_vertices) {
+        int **relative = malloc(sizeof(int *) * in_graph->num_vertices);
+        for(int i = 0; i < in_graph->num_vertices; ++i){
+            relative[i] = malloc(sizeof(int) * in_graph->vertices[i].num_edges);
+            for(int j = 0; j < in_graph->vertices[i].num_edges; ++j){
+                relative[i][j] = in_graph->vertices[i].edges[j] - in_graph->vertices;
+                // printf("%d ", relative[i][j]);
+            }
+            // printf("\n");
+            free(in_graph->vertices[i].edges);
         }
-        in_graph->vertices[in_graph->num_vertices - 1].data =
-            malloc(data_size * arr_size);
-        
-        memmove(in_graph->vertices[in_graph->num_vertices - 1].data, data, data_size * arr_size);
-    }
-    else{
-        in_graph->vertices[pos].data_type = data_type;
-        in_graph->vertices[pos].data_size = data_size;
-        in_graph->vertices[pos].num_edges = 0;
-        in_graph->vertices[pos].edges = 0;
-        in_graph->vertices[pos].existent = 1;
-        size_t arr_size;
-        switch (data_type) {
-            case INTEGER:
-                arr_size = sizeof(int);
-                break;
-
-            case DOUBLE:
-                arr_size = sizeof(double);
-                break;
-
-            case CHAR:
-                arr_size = sizeof(char);
-                break;
+        in_graph->vertices = realloc(in_graph->vertices, (++(in_graph->num_vertices)) * sizeof(graph_node));
+        for(int i = 0; i < in_graph->num_vertices - 1; ++i){
+            in_graph->vertices[i].edges = malloc(sizeof(graph_node *) * in_graph->vertices[i].num_edges);
+            for(int j = 0; j < in_graph->vertices[i].num_edges; ++j){
+                in_graph->vertices[i].edges[j] = relative[i][j] + in_graph->vertices;
+            }
+            free(relative[i]);
         }
-        in_graph->vertices[pos].data =
-            malloc(data_size * arr_size);
-
-        memmove(in_graph->vertices[pos].data, data, data_size * arr_size);
+        free(relative);
+        pos = in_graph->num_vertices - 1;
     }
-    
+    // printf("pos: %d\n", pos);
+    in_graph->vertices[pos].data_type = data_type;
+    in_graph->vertices[pos].data_size = data_size;
+    in_graph->vertices[pos].num_edges = 0;
+    in_graph->vertices[pos].edges = 0;
+    in_graph->vertices[pos].existent = 1;
+    size_t arr_size;
+    switch (data_type) {
+        case INTEGER:
+            arr_size = sizeof(int);
+            break;
+
+        case DOUBLE:
+            arr_size = sizeof(double);
+            break;
+
+        case CHAR:
+            arr_size = sizeof(char);
+            break;
+    }
+    in_graph->vertices[pos].data = malloc(data_size * arr_size);
+
+    memmove(in_graph->vertices[pos].data, data, data_size * arr_size);
+
+    return &(in_graph->vertices[pos]);
 }
 
 void delete_graph(graph *del_graph) {
@@ -263,11 +260,13 @@ void delete_edge(graph_node *node1, graph_node *node2) {
 
 void delete_vertex(graph *gr, graph_node *node) {
     node->existent = 0;
-    for(int i = 0; i < gr->num_vertices; ++i){
-        for(int j = 0; j < gr->vertices[i].num_edges; ++j){
-            if(gr->vertices[i].edges[j] == node){
+    for (int i = 0; i < gr->num_vertices; ++i) {
+        for (int j = 0; j < gr->vertices[i].num_edges; ++j) {
+            if (gr->vertices[i].edges[j] == node) {
                 delete_edge(&(gr->vertices[i]), node);
             }
         }
     }
+    free(node->data);
+    free(node->edges);
 }
