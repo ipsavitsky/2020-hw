@@ -12,10 +12,10 @@ graph upload_graph(char *filename) {
         perror("upload_struct(): ");
         exit(1);
     }
-    fread(&struct_size, sizeof(size_t), 1, input);
+    if(fread(&struct_size, sizeof(size_t), 1, input) == 0) exit(1);
     new_arr = malloc(struct_size * sizeof(graph_node));
-    fread(new_arr, sizeof(graph_node), struct_size, input);
-    size_t arr_size;
+    if(fread(new_arr, sizeof(graph_node), struct_size, input)) exit(1);
+    size_t arr_size = 0;
     for (int i = 0; i < struct_size; ++i) {
         switch (new_arr[i].data_type) {
             case INTEGER:
@@ -29,16 +29,18 @@ graph upload_graph(char *filename) {
             case CHAR:
                 arr_size = sizeof(char);
                 break;
+            default:
+                break;
         }
         new_arr[i].data = malloc(new_arr[i].data_size * arr_size);
-        fread(new_arr[i].data, arr_size, new_arr[i].data_size, input);
+        if(fread(new_arr[i].data, arr_size, new_arr[i].data_size, input)) exit(1);
     }
     int *relative_addresses = NULL;
     for (int i = 0; i < struct_size; ++i) {
         new_arr[i].edges = malloc(new_arr[i].num_edges * sizeof(graph_node *));
         relative_addresses =
             realloc(relative_addresses, new_arr[i].num_edges * sizeof(int));
-        fread(relative_addresses, sizeof(int), new_arr[i].num_edges, input);
+        if(fread(relative_addresses, sizeof(int), new_arr[i].num_edges, input)) exit(1);
         for (int j = 0; j < new_arr[i].num_edges; ++j)
             new_arr[i].edges[j] = new_arr + relative_addresses[j];
     }
@@ -55,7 +57,7 @@ void save_graph(char *filename, graph sv_graph) {
     fwrite(&(sv_graph.num_vertices), sizeof(sv_graph.num_vertices), 1, output);
     fwrite(sv_graph.vertices, sizeof(graph_node), sv_graph.num_vertices,
            output);
-    size_t arr_size;
+    size_t arr_size = 0;
     for (int i = 0; i < sv_graph.num_vertices; ++i) {
         switch (sv_graph.vertices[i].data_type) {
             case INTEGER:
@@ -68,6 +70,8 @@ void save_graph(char *filename, graph sv_graph) {
 
             case CHAR:
                 arr_size = sizeof(char);
+                break;
+            default:
                 break;
         }
         fwrite(sv_graph.vertices[i].data, arr_size,
@@ -164,7 +168,7 @@ graph_node *add_vertex(graph *in_graph, enum Types data_type, void *data,
     in_graph->vertices[pos].num_edges = 0;
     in_graph->vertices[pos].edges = 0;
     in_graph->vertices[pos].existent = 1;
-    size_t arr_size;
+    size_t arr_size = 0;
     switch (data_type) {
         case INTEGER:
             arr_size = sizeof(int);
@@ -176,6 +180,8 @@ graph_node *add_vertex(graph *in_graph, enum Types data_type, void *data,
 
         case CHAR:
             arr_size = sizeof(char);
+            break;
+        default:
             break;
     }
     in_graph->vertices[pos].data = malloc(data_size * arr_size);
@@ -225,6 +231,8 @@ void grapviz_output(graph pr_graph, char *filename) {
                             fprintf(output, "%c",
                                     *((char *)pr_graph.vertices[i].data + k));
                             break;
+                        default:
+                            break;
                     }
                 }
                 fprintf(output, "\"->\"");
@@ -243,6 +251,8 @@ void grapviz_output(graph pr_graph, char *filename) {
 
                         case CHAR:
                             fprintf(output, "%c", *((char *)(cur->data) + k));
+                            break;
+                        default:
                             break;
                     }
                 }
@@ -283,15 +293,26 @@ void delete_vertex(graph *gr, graph_node *node) {
 
 void reduce_connections(graph *gr) {
     for (int i = 0; i < gr->num_vertices; ++i) {
-        for (int j = 0; j < gr->vertices[i].num_edges - 1; ++j) {
-            for (int k = j + 1; k < gr->vertices[i].num_edges - 1; ++k) {
+        if (gr->vertices[i].num_edges == 0) continue;
+        printf("gr->vertices[%d].num_edges = %zu\n", i,
+               gr->vertices[i].num_edges);
+        for (int j = 0; j < gr->vertices[i].num_edges; ++j) {
+            printf("checking out %d\n", j);
+            for (int k = j + 1; k < gr->vertices[i].num_edges; ++k) {
                 if (gr->vertices[i].edges[j] == gr->vertices[i].edges[k]) {
-                    memmove(gr->vertices[i].edges[k],
-                            gr->vertices[i].edges[k + 1],
-                            sizeof(graph_node *) *
-                                (gr->vertices[i].num_edges - k - 1))
+                    // printf("found %d\n", i);
+                    delete_edge(&(gr->vertices[i]), gr->vertices[i].edges[j]);
                 }
+                // printf("deleted between %d and %d/%zu\n", j, k,
+                // gr->vertices[i].num_edges);
             }
         }
     }
+}
+
+void traverse(graph *gr, data_func function) {
+    for (int i = 0; i < gr->num_vertices; ++i)
+        if (gr->vertices[i].existent != 0)
+            function(gr->vertices[i].data, gr->vertices[i].data_size,
+                     gr->vertices[i].data_type);
 }
