@@ -10,12 +10,12 @@ enum Types { INTEGER, DOUBLE, CHAR };
  * \brief структура ноды графа
  */
 typedef struct Graph_node {
-    void *data;           /* данные, хранящиеся в ноде */
-    size_t data_size;     /* КОЛИЧЕСТВО элементов в data */
-    enum Types data_type; /* тип данных в data */
-    struct Graph_node **edges; /* указатели на элементы с которыми есть ребра у данного элемента*/
-    size_t num_edges; /* количество ребер, исходящих ИЗ вершины*/
-    unsigned short existent; /*флаг существования вершины, 0 - не существует, все остальное - существует*/
+    void *data;           /*< данные, хранящиеся в ноде */
+    size_t data_size;     /*< КОЛИЧЕСТВО элементов в data */
+    enum Types data_type; /*< тип данных в data */
+    struct Graph_node **edges; /*< указатели на элементы с которыми есть ребра у данного элемента*/
+    size_t num_edges; /*< количество ребер, исходящих ИЗ вершины*/
+    unsigned short existent; /*< флаг существования вершины, 0 - не существует, все остальное - существует*/
 } graph_node;
 
 /**

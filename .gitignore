@@ -58,3 +58,6 @@ dkms.conf
 
 *.gcda
 *.gcno
+p02-2/.vscode/launch.json
+p02-2/.vscode/tasks.json
+p02-2/graph

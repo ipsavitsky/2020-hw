@@ -325,8 +325,12 @@ void traverse(graph *gr, data_func function) {
 }
 
 graph_node **match_vertices(graph_node **res, graph gr){
-    res = realloc(res, sizeof(graph_node*) * gr.num_vertices);
+    int exst_sum = 0;
     for(int i = 0; i < gr.num_vertices; ++i)
-        res[i] = &(gr.vertices[i]);
+        exst_sum += gr.vertices[i].existent;
+    res = realloc(res, sizeof(graph_node*) * exst_sum);
+    int k = 0;
+    for(int i = 0; i < gr.num_vertices; ++i)
+        if(gr.vertices[i].existent != 0) res[k++] = &(gr.vertices[i]);
     return res;
 }
