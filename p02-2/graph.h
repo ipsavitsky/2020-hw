@@ -107,4 +107,5 @@ void reduce_connections(graph *gr);
  * \param function функция которую надо применить к каждой вершине
  */
 void traverse(graph *gr, data_func function);
-void dfs(graph gr, data_func function);
+
+graph_node **match_vertices(graph_node **res, graph gr);

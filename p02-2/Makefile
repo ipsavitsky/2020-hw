@@ -20,14 +20,14 @@ graph_cov.o: graph.c	graph.h
 
 
 build_san:	main_san.o	graph_san.o
-	$(COMPILER) -fsanitize=address,undefined $^ $(LINK_COMPILER_FLAGS) graph
+	$(COMPILER) -fsanitize=address,undefined -g $^ $(LINK_COMPILER_FLAGS) graph
 main_san.o:	main.c	graph.h
-	$(COMPILER) -fsanitize=address,undefined $(COMPILER_FLAGS) -c main.c -o $@
+	$(COMPILER) -fsanitize=address,undefined -g $(COMPILER_FLAGS) -c main.c -o $@
 graph_san.o: graph.c	graph.h
-	$(COMPILER) -fsanitize=address,undefined $(COMPILER_FLAGS) -c graph.c -o $@
+	$(COMPILER) -fsanitize=address,undefined -g $(COMPILER_FLAGS) -c graph.c -o $@
 
 
-png: graph.dot
+graph.png: graph.dot
 	dot -Tpng -o $@ $^
 
 code_coverage: graph_cov.gcda main_cov.gcda
