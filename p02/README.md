@@ -1,11 +1,19 @@
-# Graphs
+# Развилка
 
-This task consists of 3 files:
+## p02-1
 
-1. graphs.h - a header for graphs.c file. REFER TO THIS FILE in case you need additional documentation. This file is also documented in doxygen(dox_conf is the config)
-2. graphs.c - implementation of graphs.h
-3. main.c - whatever you want to do with the graph
+Старая реализация графа, основана на массиве списков, хуже новой по структуре, но, кажется, стабильнее(эта реализация не проверена на ключах еджаджа! Не хватило времени, сейчас 1 ноября 23:42 и я пишу этот ридми в полной панике)
+Дополнительные функции:
 
-Note that some functions are meant to be launched in a specific manner(waycount(), for example). It WOULD be easier to write functions to properly launch such functions, but for now I reserved to writing special warnings.
+ - разворот графа
+ - поиск количества путей(dfs)
 
-This repo also has a simple makefile which utilises clang as the default compiler
+## p02-2
+
+Новая реализация графа, основанная на массиве структур с указателем `void *` на данные произвольной длины и типа. Удаление вершин происходит через флаг `existent`. Оригинальное вдохновение - графы друзей в социальных сетях. Минусы - сложность работы и необходимость в мэтчинге вершин(количесво вершин помещается в int).
+Дополнительные функции:
+
+ - удаление кратных ребер из графа
+ - проход по графу за O(n) с применением функции по выбору(в тестах - quicksort())
+
+В обоих реализация документация в виде комментариев в хэдерах и сгенерированная документация doxygen. Тесты, к сожалению, к каждой реализации 1(main.c в обоих случаях), но зато я постарался чтобы этот один тест давал максимальное покрытие по библиотеке
