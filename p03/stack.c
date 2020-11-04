@@ -34,7 +34,7 @@ int stack_pop(Stack *stack, void *resp, size_t size_res) {
     return 0;
 }
 
-int stack_push(Stack *stack, void *resp, size_t size_res) {
+int stack_push(Stack *stack, const void *resp, size_t size_res) {
     memcpy((char *)stack->stack_top, resp, size_res);
     memcpy((char *)stack->stack_top + size_res, &size_res, sizeof(Size_elem));
     stack->stack_top = &(((char *)stack->stack_top)[size_res + sizeof(Size_elem)]);

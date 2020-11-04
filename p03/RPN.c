@@ -1,4 +1,5 @@
 #include "RPN.h"
+#include <stdlib.h>
 
 int RPN_compute(RPN *notation, void *res, size_t res_size) {
     Stack stack;
@@ -16,4 +17,9 @@ int RPN_compute(RPN *notation, void *res, size_t res_size) {
     SAFE(stack_pop(&stack, res, res_size));
     stack_finalize(&stack);
     return 0;
+}
+
+
+void RPN_finalize(RPN *notation){
+    free(notation->data);
 }
