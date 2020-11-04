@@ -18,11 +18,9 @@ code_coverage: graph_cov.gcda main_cov.gcda
 	lcov -t "graph" --output-file code_coverage.info --capture --directory .
 	genhtml --branch-coverage --highlight --legend -o code_coverage code_coverage.info
 
-
 clear:
 	rm *.o
-	rm graph
-
+	rm RPN
 
 # цель очистки промежуточных файлов покрытия не входит общий clean
 clear_code_coverage:

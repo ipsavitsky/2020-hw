@@ -1,0 +1,5 @@
+enum{
+    E_MEM_ALLOC = 1,
+    E_OVERFLOW = 2,
+    E_UNDERFLOW = 3
+};

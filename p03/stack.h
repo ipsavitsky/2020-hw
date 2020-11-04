@@ -1,5 +1,8 @@
 #include <stddef.h>
 
+#include "errors.h"
+
+
 /**
  * \brief structure of a stack
  */
@@ -7,6 +10,7 @@ typedef struct {
     void *data;        /**< data of a stack */
     void *stack_top;   /**< pointer to the end of a valid stack */
     size_t stack_size; /**< size of a stack(not always to the last element) */
+    size_t cur_size;
 } Stack;
 
 typedef char Size_elem;
