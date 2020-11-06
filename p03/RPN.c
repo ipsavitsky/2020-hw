@@ -27,6 +27,8 @@ int RPN_compute(RPN *notation, void *res, size_t res_size) {
 
 int RPN_init(RPN *notation, size_t size) {
     if ((notation->data = malloc(size)) == NULL) return E_MEM_ALLOC;
+    notation->data_size = size;
+    notation->occupied = 0;
     return 0;
 }
 

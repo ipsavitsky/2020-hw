@@ -8,6 +8,7 @@
 typedef struct {
     void *data;       /**< input data of rpn */
     size_t data_size; /**< size of data_size */
+    size_t occupied;
 } RPN;
 
 

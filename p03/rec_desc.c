@@ -2,6 +2,7 @@
 
 #include <stdio.h>
 #include <string.h>
+#include <stdlib.h>
 
 #define SAFE(call)                        \
     do {                                  \
@@ -11,9 +12,9 @@
         }                                 \
     } while (0)
 
-int parse_fact(Expression *expr, RPN *stack_mach, int *cur);
-int parse_product(Expression *expr, RPN *stack_mach, int *cur);
-int parse_sum(Expression *expr, RPN *stack_mach, int *cur);
+int parse_fact(Expression *expr, RPN *stack_mach);
+int parse_product(Expression *expr, RPN *stack_mach);
+int parse_sum(Expression *expr, RPN *stack_mach);
 int parse_number(Expression *expr, double *res);
 
 int add_elem(const void *elem, Size_elem size, Stack *stack) {
@@ -43,28 +44,39 @@ int mult_double(const void *elem, Size_elem size, Stack *stack) {
     return 0;
 }
 
-int what1(RPN *expression, int *cur, double elem){
-    printf("added %lf to stackmachine to %d\n", elem, *cur);
+int put_number_in_RPN(RPN *expression, double elem){
+    // printf("added %lf to stackmachine to %d\n", elem, *cur);
     Calculate_elem *func_ptr;
-    ((char *)expression->data)[*cur] = sizeof(int) + sizeof(Calculate_elem);
-    cur += sizeof(Size_elem);
-    func_ptr = (Calculate_elem *)&(((char *)expression->data)[*cur]);
+    ((char *)expression->data)[expression->occupied] = sizeof(int) + sizeof(Calculate_elem);
+    expression->occupied += sizeof(Size_elem);
+    func_ptr = (Calculate_elem *)&(((char *)expression->data)[expression->occupied]);
     *func_ptr = add_elem;
-    cur += sizeof(*func_ptr);
+    expression->occupied += sizeof(*func_ptr);
     double add_2 = elem;
-    memcpy(&(((char *)expression->data)[*cur]), &add_2, sizeof(add_2));
-    cur += sizeof(add_2);
+    memcpy(&(((char *)expression->data)[expression->occupied]), &add_2, sizeof(add_2));
+    expression->occupied += sizeof(add_2);
     return 0;
 }
 
-int what2(RPN *expression, int *cur) {
-    printf("added addition function to %d\n", *cur);
+int put_addition_in_RPN(RPN *expression) {
+    // printf("added addition function to %d\n", *cur);
     Calculate_elem *func_ptr;
-    ((char *)expression->data)[*cur] = sizeof(Calculate_elem);
-    cur += sizeof(Size_elem);
-    func_ptr = (Calculate_elem *)&(((char *)expression->data)[*cur]);
+    ((char *)expression->data)[expression->occupied] = sizeof(Calculate_elem);
+    expression->occupied += sizeof(Size_elem);
+    func_ptr = (Calculate_elem *)&(((char *)expression->data)[expression->occupied]);
     *func_ptr = sum_double;
-    cur += sizeof(Calculate_elem);
+    expression->occupied += sizeof(Calculate_elem);
+    return 0;
+}
+
+int put_multiplication_in_RPN(RPN *expression) {
+    // printf("added addition function to %d\n", *cur);
+    Calculate_elem *func_ptr;
+    ((char *)expression->data)[expression->occupied] = sizeof(Calculate_elem);
+    expression->occupied += sizeof(Size_elem);
+    func_ptr = (Calculate_elem *)&(((char *)expression->data)[expression->occupied]);
+    *func_ptr = mult_double;
+    expression->occupied += sizeof(Calculate_elem);
     return 0;
 }
 
@@ -76,39 +88,39 @@ int init_expression(Expression *expr, char *input) {
     return 0;
 }
 
-int parse_sum(Expression *expr, RPN *stack_mach, int *cur) {
-    parse_product(expr, stack_mach, cur);
+int parse_sum(Expression *expr, RPN *stack_mach) {
+    parse_product(expr, stack_mach);
     while (*(expr->curpointer) == '+') {
         expr->curpointer++;
-        parse_product(expr, stack_mach, cur);
-        // what2(stack_mach, cur);
-        printf("added addition function to %d\n", *cur);
+        parse_product(expr, stack_mach);
+        put_addition_in_RPN(stack_mach);
+        printf("added addition function to %ld\n", stack_mach->occupied);
     }
     return 0;
 }
 
-int parse_product(Expression *expr, RPN *stack_mach, int *cur) {
-    parse_fact(expr, stack_mach, cur);
+int parse_product(Expression *expr, RPN *stack_mach) {
+    parse_fact(expr, stack_mach);
     while (*(expr->curpointer) == '*') {
         expr->curpointer++;
-        parse_fact(expr, stack_mach, cur);
-        // what2(stack_mach, cur);
-        printf("added multiplication function to %d\n", *cur);
+        parse_fact(expr, stack_mach);
+        put_multiplication_in_RPN(stack_mach);
+        printf("added multiplication function to %ld\n", stack_mach->occupied);
     }
     return 0;
 }
 
-int parse_fact(Expression *expr, RPN *stack_mach, int *cur) {
+int parse_fact(Expression *expr, RPN *stack_mach) {
     double ret;
     if ((*(expr->curpointer) > '0') && (*(expr->curpointer) < '9')){
         parse_number(expr, &ret);
-        // what1(stack_mach, cur, ret);
-        printf("added %f to stackmachine to %d\n", ret, *cur);
+        put_number_in_RPN(stack_mach, ret);
+        printf("added %f to stackmachine to %ld\n", ret, stack_mach->occupied);
         return 0;
     }
     else if (*(expr->curpointer) == '(') {
         expr->curpointer++;
-        parse_sum(expr, stack_mach, cur);
+        parse_sum(expr, stack_mach);
         // TODO: check for )
         expr->curpointer++;
         return 0;
@@ -138,12 +150,15 @@ int parse_number(Expression *expr, double *res) {
 
 int compute_expression(Expression *expr, double *res) {
     RPN stack_machine;
-    RPN_init(&stack_machine, 100);
+    RPN_init(&stack_machine, 300);
     double ret = 0;
-    int cur = 0;
-    parse_sum(expr, &stack_machine, &cur);
+    parse_sum(expr, &stack_machine);
+
+    stack_machine.data = realloc(stack_machine.data, stack_machine.occupied);
+    stack_machine.data_size = stack_machine.occupied;
+
     if (*(expr->curpointer) == '\0'){
-        // RPN_compute(&stack_machine, &ret, 100);
+        RPN_compute(&stack_machine, &ret, sizeof(double));
         *res = ret;
         RPN_finalize(&stack_machine);
         return 0;
