@@ -24,9 +24,22 @@ int add_elem(const void *elem, Size_elem size, Stack *stack) {
 
 int sum_double(const void *elem, Size_elem size, Stack *stack) {
     double elem1, elem2;
-    stack_pop(stack, &elem1, sizeof(elem1));
-    stack_pop(stack, &elem2, sizeof(elem2));
+    stack_pop(stack, &elem2, sizeof(elem1));
+    stack_pop(stack, &elem1, sizeof(elem2));
     double res = elem1 + elem2;
+    printf("%lf + %lf = %lf\n", elem1, elem2, res);
+    // res = elem1 + elem2;
+    // printf("res: %d\n", res);
+    stack_push(stack, &res, sizeof(res));
+    return 0;
+}
+
+int sub_double(const void *elem, Size_elem size, Stack *stack) {
+    double elem1, elem2;
+    stack_pop(stack, &elem2, sizeof(elem1));
+    stack_pop(stack, &elem1, sizeof(elem2));
+    double res = elem1 - elem2;
+    printf("%lf - %lf = %lf\n", elem1, elem2, res);
     // res = elem1 + elem2;
     // printf("res: %d\n", res);
     stack_push(stack, &res, sizeof(res));
@@ -35,14 +48,38 @@ int sum_double(const void *elem, Size_elem size, Stack *stack) {
 
 int mult_double(const void *elem, Size_elem size, Stack *stack) {
     double elem1, elem2;
-    stack_pop(stack, &elem1, sizeof(elem1));
-    stack_pop(stack, &elem2, sizeof(elem2));
+    stack_pop(stack, &elem2, sizeof(elem1));
+    stack_pop(stack, &elem1, sizeof(elem2));
     double res = elem1 * elem2;
+    printf("%lf * %lf = %lf\n", elem1, elem2, res);
     // res = elem1 + elem2;
     // printf("res: %d\n", res);
     stack_push(stack, &res, sizeof(res));
     return 0;
 }
+
+int div_double(const void *elem, Size_elem size, Stack *stack) {
+    double elem1, elem2;
+    stack_pop(stack, &elem2, sizeof(elem1));
+    stack_pop(stack, &elem1, sizeof(elem2));
+    double res = elem1 / elem2;
+    printf("%lf / %lf = %lf\n", elem1, elem2, res);
+    // res = elem1 + elem2;
+    // printf("res: %d\n", res);
+    stack_push(stack, &res, sizeof(res));
+    return 0;
+}
+
+int neg(const void *elem, Size_elem size, Stack *stack) {
+    double num;
+    stack_pop(stack, &num, sizeof(num));
+    num = -num;
+    stack_push(stack, &num, sizeof(num));
+    return 0;
+}
+
+
+
 
 int put_number_in_RPN(RPN *expression, double elem) {
     // printf("added %lf to stackmachine to %d\n", elem, *cur);
@@ -61,29 +98,20 @@ int put_number_in_RPN(RPN *expression, double elem) {
     return 0;
 }
 
-int put_addition_in_RPN(RPN *expression) {
+int put_func_in_RPN(RPN *expression, Calculate_elem func_in) {
     // printf("added addition function to %d\n", *cur);
     Calculate_elem *func_ptr;
     ((char *)expression->data)[expression->occupied] = sizeof(Calculate_elem);
     expression->occupied += sizeof(Size_elem);
     func_ptr =
         (Calculate_elem *)&(((char *)expression->data)[expression->occupied]);
-    *func_ptr = sum_double;
+    *func_ptr = func_in;
     expression->occupied += sizeof(Calculate_elem);
     return 0;
 }
 
-int put_multiplication_in_RPN(RPN *expression) {
-    // printf("added addition function to %d\n", *cur);
-    Calculate_elem *func_ptr;
-    ((char *)expression->data)[expression->occupied] = sizeof(Calculate_elem);
-    expression->occupied += sizeof(Size_elem);
-    func_ptr =
-        (Calculate_elem *)&(((char *)expression->data)[expression->occupied]);
-    *func_ptr = mult_double;
-    expression->occupied += sizeof(Calculate_elem);
-    return 0;
-}
+
+
 
 int init_expression(Expression *expr, char *input) {
     expr->string_form = strdup(input);
@@ -94,29 +122,39 @@ int init_expression(Expression *expr, char *input) {
 
 int parse_sum(Expression *expr, RPN *stack_mach) {
     parse_product(expr, stack_mach);
-    while (*(expr->curpointer) == '+') {
+    char operation;
+    // printf("parse_sum = %c\n", *(expr->curpointer));
+    while ((*(expr->curpointer) == '+') || (*(expr->curpointer) == '-')) {
+        operation = *(expr->curpointer);
+        // printf("operation %c\n", operation);
         expr->curpointer++;
         parse_product(expr, stack_mach);
-        put_addition_in_RPN(stack_mach);
-        // printf("added addition function to %ld\n", stack_mach->occupied);
+        if (operation == '+')
+            put_func_in_RPN(stack_mach, sum_double);
+        else
+            put_func_in_RPN(stack_mach, sub_double);
     }
     return 0;
 }
 
 int parse_product(Expression *expr, RPN *stack_mach) {
     parse_fact(expr, stack_mach);
-    while (*(expr->curpointer) == '*') {
+    char operation;
+    while ((*(expr->curpointer) == '*') || (*(expr->curpointer) == '/')) {
+        operation = *(expr->curpointer);
         expr->curpointer++;
         parse_fact(expr, stack_mach);
-        put_multiplication_in_RPN(stack_mach);
-        // printf("added multiplication function to %ld\n",
-        // stack_mach->occupied);
+        if (operation == '*')
+            put_func_in_RPN(stack_mach, mult_double);
+        else
+            put_func_in_RPN(stack_mach, div_double);
     }
     return 0;
 }
 
 int parse_fact(Expression *expr, RPN *stack_mach) {
-    if ((*(expr->curpointer) > '0') && (*(expr->curpointer) < '9')) {
+    if (((*(expr->curpointer) >= '0') && (*(expr->curpointer) <= '9')) ||
+        (*(expr->curpointer) == '-')) {
         parse_literal(expr, stack_mach);
         // printf("added %f to stackmachine to %ld\n", ret,
         // stack_mach->occupied);
@@ -133,7 +171,12 @@ int parse_fact(Expression *expr, RPN *stack_mach) {
 
 int parse_literal(Expression *expr, RPN *stack_mach) {
     double ret = 0;
-    while ((*(expr->curpointer) > '0') && (*(expr->curpointer) < '9')) {
+    short neg_flag = 1;
+    if (*(expr->curpointer) == '-' && ((expr->curpointer == expr->string_form) || (*(expr->curpointer - 1) == '('))) {
+        neg_flag = -1;
+        expr->curpointer++;
+    }
+    while ((*(expr->curpointer) >= '0') && (*(expr->curpointer) <= '9')) {
         ret *= 10;
         ret += *(expr->curpointer) - '0';
         expr->curpointer++;
@@ -141,13 +184,14 @@ int parse_literal(Expression *expr, RPN *stack_mach) {
     if (*(expr->curpointer) == '.') {
         expr->curpointer++;
         double weight = 1;
-        while ((*(expr->curpointer) > '0') && (*(expr->curpointer) < '9')) {
+        while ((*(expr->curpointer) >= '0') && (*(expr->curpointer) <= '9')) {
             weight /= 10;
             ret += (*(expr->curpointer) - '0') * weight;
             expr->curpointer++;
         }
     }
     put_number_in_RPN(stack_mach, ret);
+    if (neg_flag == -1) put_func_in_RPN(stack_mach, neg);
     return 0;
 }
 
@@ -168,7 +212,8 @@ int compute_expression(Expression *expr, double *res) {
         RPN_finalize(&stack_machine);
         return 0;
     }
-    printf("something went wrong\n");
+    RPN_finalize(&stack_machine);
+    printf("something went wrong on %c\n", *(expr->curpointer));
     return E_UNEXPECTED_SYMBOL;
 }
 
