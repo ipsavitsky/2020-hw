@@ -8,4 +8,5 @@ int main(void){
     double res;
     compute_expression(&expr, &res);
     printf("result: %lf\n", res);
+    finalize_expression(&expr);
 }

@@ -3,15 +3,15 @@ COMPILER_FLAGS = -g -O2 -ftrapv -Wall -Werror -Wformat-security -Wignored-qualif
 LINK_COMPILER_FLAGS = -o
 
 # стандартная компиляция(без кавереджа, санитайзера и прочего)
-build: test_rec_desc.o RPN.o stack.o rec_desc.o
+RPN: test_rec_desc.o RPN.o stack.o rec_desc.o
 	$(COMPILER) $^ $(LINK_COMPILER_FLAGS) RPN
 test_rec_desc.o: rec_desc.c rec_desc.h
 	$(COMPILER) $(COMPILER_FLAGS) -c test_rec_desc.c
 RPN.o: RPN.c RPN.h stack.h
 	$(COMPILER) $(COMPILER_FLAGS) -c RPN.c
-stack.o: stack.c
+stack.o: stack.c stack.h
 	$(COMPILER) $(COMPILER_FLAGS) -c stack.c
-rec_desc.o: rec_desc.c
+rec_desc.o: rec_desc.c rec_desc.h stack.h RPN.h
 	$(COMPILER) $(COMPILER_FLAGS) -c rec_desc.c
 
 # генерация отчета по покрытию
