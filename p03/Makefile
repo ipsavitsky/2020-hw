@@ -5,7 +5,7 @@ LINK_COMPILER_FLAGS = -o
 # стандартная компиляция(без кавереджа, санитайзера и прочего)
 RPN: test_rec_desc.o RPN.o stack.o rec_desc.o
 	$(COMPILER) $^ $(LINK_COMPILER_FLAGS) RPN
-test_rec_desc.o: rec_desc.c rec_desc.h
+test_rec_desc.o: test_rec_desc.c rec_desc.h
 	$(COMPILER) $(COMPILER_FLAGS) -c test_rec_desc.c
 RPN.o: RPN.c RPN.h stack.h
 	$(COMPILER) $(COMPILER_FLAGS) -c RPN.c

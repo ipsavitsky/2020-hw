@@ -3,6 +3,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <math.h>
+#include <ctype.h>
 
 #define SAFE(call)                        \
     do {                                  \
@@ -16,6 +18,7 @@ int parse_fact(Expression *expr, RPN *stack_mach);
 int parse_product(Expression *expr, RPN *stack_mach);
 int parse_sum(Expression *expr, RPN *stack_mach);
 int parse_literal(Expression *expr, RPN *stack_mach);
+int parse_variable(Expression *expr, RPN *stack_mach);
 
 int add_elem(const void *elem, Size_elem size, Stack *stack) {
     return stack_push(stack, &(((char *)elem)[sizeof(Calculate_elem)]),
@@ -62,6 +65,8 @@ int div_double(const void *elem, Size_elem size, Stack *stack) {
     double elem1, elem2;
     stack_pop(stack, &elem2, sizeof(elem1));
     stack_pop(stack, &elem1, sizeof(elem2));
+    double eps = 0.0001;
+    if (fabs(elem2) < eps) return E_ZERO_DIVISION;
     double res = elem1 / elem2;
     printf("%lf / %lf = %lf\n", elem1, elem2, res);
     // res = elem1 + elem2;
@@ -78,11 +83,42 @@ int neg(const void *elem, Size_elem size, Stack *stack) {
     return 0;
 }
 
+int lookup_var(const void *elem, Size_elem size, Stack *stack) {
+    // printf("trying to lookup: %s\n", &(((char *)elem)[sizeof(Calculate_elem)]));
+    void *elem_ptr = &(((char *)elem)[sizeof(Calculate_elem)]);
+    size_t name_size =  size - sizeof(Calculate_elem);
+    if (strncmp(elem_ptr, "avds", name_size) == 0) {
+        double p = 0;
+        printf("adding variable avds = %lf\n", p);
+        return stack_push(stack, &p, sizeof(p));
+    }
+    else if(strncmp(elem_ptr, "e", name_size) == 0){
+        double p = 2.71;
+        printf("adding variable e = %lf\n", p);
+        return stack_push(stack, &p, sizeof(p));
+    }
+    else{
+        printf("lookup failed\n");
+    }
+    return 0;
+}
 
-
+int put_var_in_RPN(RPN *expression, char *name, int name_size){
+    printf("added variable %s to stackmachine to %ld\n", name, expression->occupied);
+    Calculate_elem *func_ptr;
+    ((char *)expression->data)[expression->occupied] = name_size + sizeof(Calculate_elem);
+    expression->occupied += sizeof(Size_elem);
+    func_ptr =
+        (Calculate_elem *)&(((char *)expression->data)[expression->occupied]);
+    *func_ptr = lookup_var;
+    expression->occupied += sizeof(*func_ptr);
+    memcpy(&(((char *)expression->data)[expression->occupied]), name, name_size);
+    expression->occupied += name_size;
+    return 0;
+}
 
 int put_number_in_RPN(RPN *expression, double elem) {
-    // printf("added %lf to stackmachine to %d\n", elem, *cur);
+    printf("added %lf to stackmachine to %ld\n", elem, expression->occupied);
     Calculate_elem *func_ptr;
     ((char *)expression->data)[expression->occupied] =
         sizeof(double) + sizeof(Calculate_elem);
@@ -99,14 +135,14 @@ int put_number_in_RPN(RPN *expression, double elem) {
 }
 
 int put_func_in_RPN(RPN *expression, Calculate_elem func_in) {
-    // printf("added addition function to %d\n", *cur);
+    printf("added function to %ld\n", expression->occupied);
     Calculate_elem *func_ptr;
     ((char *)expression->data)[expression->occupied] = sizeof(Calculate_elem);
     expression->occupied += sizeof(Size_elem);
     func_ptr =
         (Calculate_elem *)&(((char *)expression->data)[expression->occupied]);
     *func_ptr = func_in;
-    expression->occupied += sizeof(Calculate_elem);
+    expression->occupied += sizeof(*func_ptr);
     return 0;
 }
 
@@ -126,7 +162,6 @@ int parse_sum(Expression *expr, RPN *stack_mach) {
     // printf("parse_sum = %c\n", *(expr->curpointer));
     while ((*(expr->curpointer) == '+') || (*(expr->curpointer) == '-')) {
         operation = *(expr->curpointer);
-        // printf("operation %c\n", operation);
         expr->curpointer++;
         parse_product(expr, stack_mach);
         if (operation == '+')
@@ -153,29 +188,45 @@ int parse_product(Expression *expr, RPN *stack_mach) {
 }
 
 int parse_fact(Expression *expr, RPN *stack_mach) {
-    if (((*(expr->curpointer) >= '0') && (*(expr->curpointer) <= '9')) ||
-        (*(expr->curpointer) == '-')) {
-        parse_literal(expr, stack_mach);
-        // printf("added %f to stackmachine to %ld\n", ret,
-        // stack_mach->occupied);
-        return 0;
-    } else if (*(expr->curpointer) == '(') {
-        expr->curpointer++;
-        parse_sum(expr, stack_mach);
-        // TODO: check for )
-        expr->curpointer++;
-        return 0;
-    } else
-        return E_UNEXPECTED_SYMBOL;
-}
-
-int parse_literal(Expression *expr, RPN *stack_mach) {
-    double ret = 0;
     short neg_flag = 1;
     if (*(expr->curpointer) == '-' && ((expr->curpointer == expr->string_form) || (*(expr->curpointer - 1) == '('))) {
         neg_flag = -1;
         expr->curpointer++;
     }
+    if (((*(expr->curpointer) >= '0') && (*(expr->curpointer) <= '9'))) {
+        parse_literal(expr, stack_mach);
+        // printf("added %f to stackmachine to %ld\n", ret,
+        // stack_mach->occupied);
+    } else if (*(expr->curpointer) == '(') {
+        expr->curpointer++;
+        parse_sum(expr, stack_mach);
+        // TODO: check for )
+        expr->curpointer++;
+    } else if(isalpha(*(expr->curpointer))){
+        parse_variable(expr, stack_mach);
+    } else
+        return E_UNEXPECTED_SYMBOL;
+    if (neg_flag == -1) put_func_in_RPN(stack_mach, neg);
+    return 0;
+}
+
+int parse_variable(Expression *expr, RPN *stack_mach){
+    int size = 0;
+    unsigned char var[6];
+    while (isalpha(*(expr->curpointer)) && (size < 6)){
+        var[size++] = *(expr->curpointer);
+        expr->curpointer++;
+    }
+    // size++;
+    // var[size] = '\0';
+    printf("variable found: %s(%d)\n", var, size);
+    put_var_in_RPN(stack_mach, var, size);
+    return 0;
+}
+
+int parse_literal(Expression *expr, RPN *stack_mach) {
+    double ret = 0;
+    
     while ((*(expr->curpointer) >= '0') && (*(expr->curpointer) <= '9')) {
         ret *= 10;
         ret += *(expr->curpointer) - '0';
@@ -191,7 +242,6 @@ int parse_literal(Expression *expr, RPN *stack_mach) {
         }
     }
     put_number_in_RPN(stack_mach, ret);
-    if (neg_flag == -1) put_func_in_RPN(stack_mach, neg);
     return 0;
 }
 

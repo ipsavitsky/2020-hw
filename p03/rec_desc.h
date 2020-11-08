@@ -1,9 +1,8 @@
 #include "RPN.h"
 
 typedef struct{
-    char *string_form;
-    char *curpointer;
-    char *recursive_pointer;
+    unsigned char *string_form;
+    unsigned char *curpointer;
 } Expression;
 
 int compute_expression(Expression *expr, double *res);
