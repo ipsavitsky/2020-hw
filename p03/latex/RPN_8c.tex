@@ -1,0 +1,97 @@
+\hypertarget{RPN_8c}{}\doxysection{R\+P\+N.\+c File Reference}
+\label{RPN_8c}\index{RPN.c@{RPN.c}}
+{\ttfamily \#include \char`\"{}R\+P\+N.\+h\char`\"{}}\newline
+{\ttfamily \#include $<$stdlib.\+h$>$}\newline
+Include dependency graph for R\+P\+N.\+c\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=221pt]{RPN_8c__incl}
+\end{center}
+\end{figure}
+\doxysubsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\#define \mbox{\hyperlink{RPN_8c_affc293f2bd85e1450e64a8f2577d5e7b}{S\+A\+FE}}(call)
+\end{DoxyCompactItemize}
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+int \mbox{\hyperlink{RPN_8c_a9f7e6d820075731b95c842f0cf8226e9}{R\+P\+N\+\_\+compute}} (\mbox{\hyperlink{structRPN}{R\+PN}} $\ast$notation, void $\ast$res, size\+\_\+t res\+\_\+size)
+\item 
+int \mbox{\hyperlink{RPN_8c_a2b6ffaa6e4d7f7e50d371c49b3cfa4ee}{R\+P\+N\+\_\+init}} (\mbox{\hyperlink{structRPN}{R\+PN}} $\ast$notation, size\+\_\+t size)
+\item 
+void \mbox{\hyperlink{RPN_8c_a624eb84603fceec3c7ea446f3a1ac3b9}{R\+P\+N\+\_\+finalize}} (\mbox{\hyperlink{structRPN}{R\+PN}} $\ast$notation)
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Macro Definition Documentation}
+\mbox{\Hypertarget{RPN_8c_affc293f2bd85e1450e64a8f2577d5e7b}\label{RPN_8c_affc293f2bd85e1450e64a8f2577d5e7b}} 
+\index{RPN.c@{RPN.c}!SAFE@{SAFE}}
+\index{SAFE@{SAFE}!RPN.c@{RPN.c}}
+\doxysubsubsection{\texorpdfstring{SAFE}{SAFE}}
+{\footnotesize\ttfamily \#define S\+A\+FE(\begin{DoxyParamCaption}\item[{}]{call }\end{DoxyParamCaption})}
+
+{\bfseries Value\+:}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{    \textcolor{keywordflow}{do} \{                            \(\backslash\)}
+\DoxyCodeLine{        if ((flag = call) != 0) \{   \(\backslash\)}
+\DoxyCodeLine{            stack\_finalize(\&stack); \(\backslash\)}
+\DoxyCodeLine{            return flag;            \(\backslash\)}
+\DoxyCodeLine{        \}                           \(\backslash\)}
+\DoxyCodeLine{    \} \textcolor{keywordflow}{while} (0)}
+
+\end{DoxyCode}
+
+
+\doxysubsection{Function Documentation}
+\mbox{\Hypertarget{RPN_8c_a9f7e6d820075731b95c842f0cf8226e9}\label{RPN_8c_a9f7e6d820075731b95c842f0cf8226e9}} 
+\index{RPN.c@{RPN.c}!RPN\_compute@{RPN\_compute}}
+\index{RPN\_compute@{RPN\_compute}!RPN.c@{RPN.c}}
+\doxysubsubsection{\texorpdfstring{RPN\_compute()}{RPN\_compute()}}
+{\footnotesize\ttfamily int R\+P\+N\+\_\+compute (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structRPN}{R\+PN}} $\ast$}]{notation,  }\item[{void $\ast$}]{res,  }\item[{size\+\_\+t}]{res\+\_\+size }\end{DoxyParamCaption})}
+
+compute the \mbox{\hyperlink{structRPN}{R\+PN}} 
+\begin{DoxyParams}{Parameters}
+{\em notation} & notation to compute \\
+\hline
+{\em res} & result of the computation \\
+\hline
+{\em res\+\_\+size} & size of res \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+error code 
+\end{DoxyReturn}
+\mbox{\Hypertarget{RPN_8c_a624eb84603fceec3c7ea446f3a1ac3b9}\label{RPN_8c_a624eb84603fceec3c7ea446f3a1ac3b9}} 
+\index{RPN.c@{RPN.c}!RPN\_finalize@{RPN\_finalize}}
+\index{RPN\_finalize@{RPN\_finalize}!RPN.c@{RPN.c}}
+\doxysubsubsection{\texorpdfstring{RPN\_finalize()}{RPN\_finalize()}}
+{\footnotesize\ttfamily void R\+P\+N\+\_\+finalize (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structRPN}{R\+PN}} $\ast$}]{notation }\end{DoxyParamCaption})}
+
+finalize an \mbox{\hyperlink{structRPN}{R\+PN}} 
+\begin{DoxyParams}{Parameters}
+{\em notation} & \mbox{\hyperlink{structRPN}{R\+PN}} to finalize \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{RPN_8c_a2b6ffaa6e4d7f7e50d371c49b3cfa4ee}\label{RPN_8c_a2b6ffaa6e4d7f7e50d371c49b3cfa4ee}} 
+\index{RPN.c@{RPN.c}!RPN\_init@{RPN\_init}}
+\index{RPN\_init@{RPN\_init}!RPN.c@{RPN.c}}
+\doxysubsubsection{\texorpdfstring{RPN\_init()}{RPN\_init()}}
+{\footnotesize\ttfamily int R\+P\+N\+\_\+init (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structRPN}{R\+PN}} $\ast$}]{notation,  }\item[{size\+\_\+t}]{size }\end{DoxyParamCaption})}
+
+initialize an \mbox{\hyperlink{structRPN}{R\+PN}} 
+\begin{DoxyParams}{Parameters}
+{\em notation} & \mbox{\hyperlink{structRPN}{R\+PN}} to initialize \\
+\hline
+{\em size} & size of the notation \\
+\hline
+\end{DoxyParams}
+
+\begin{DoxyExceptions}{Exceptions}
+{\em E\+\_\+\+M\+E\+M\+\_\+\+A\+L\+L\+OC} & Thrown in case of memory allocation error \\
+\hline
+\end{DoxyExceptions}
+\begin{DoxyReturn}{Returns}
+error code 
+\end{DoxyReturn}

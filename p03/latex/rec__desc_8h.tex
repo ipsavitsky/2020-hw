@@ -1,0 +1,87 @@
+\hypertarget{rec__desc_8h}{}\doxysection{rec\+\_\+desc.\+h File Reference}
+\label{rec__desc_8h}\index{rec\_desc.h@{rec\_desc.h}}
+{\ttfamily \#include \char`\"{}R\+P\+N.\+h\char`\"{}}\newline
+Include dependency graph for rec\+\_\+desc.\+h\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=200pt]{rec__desc_8h__incl}
+\end{center}
+\end{figure}
+This graph shows which files directly or indirectly include this file\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=250pt]{rec__desc_8h__dep__incl}
+\end{center}
+\end{figure}
+\doxysubsection*{Data Structures}
+\begin{DoxyCompactItemize}
+\item 
+struct \mbox{\hyperlink{structExpression}{Expression}}
+\end{DoxyCompactItemize}
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+int \mbox{\hyperlink{rec__desc_8h_ae1c5b642363cf01ebdc8471d6fd08a34}{compute\+\_\+expression}} (\mbox{\hyperlink{structExpression}{Expression}} $\ast$expr, double $\ast$res)
+\item 
+int \mbox{\hyperlink{rec__desc_8h_a6d554928087b56b19afc9daa3924ebc2}{init\+\_\+expression}} (\mbox{\hyperlink{structExpression}{Expression}} $\ast$expr, char $\ast$input)
+\item 
+void \mbox{\hyperlink{rec__desc_8h_a7cd36bf1b78678671806711fa454be5e}{finalize\+\_\+expression}} (\mbox{\hyperlink{structExpression}{Expression}} $\ast$expr)
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Function Documentation}
+\mbox{\Hypertarget{rec__desc_8h_ae1c5b642363cf01ebdc8471d6fd08a34}\label{rec__desc_8h_ae1c5b642363cf01ebdc8471d6fd08a34}} 
+\index{rec\_desc.h@{rec\_desc.h}!compute\_expression@{compute\_expression}}
+\index{compute\_expression@{compute\_expression}!rec\_desc.h@{rec\_desc.h}}
+\doxysubsubsection{\texorpdfstring{compute\_expression()}{compute\_expression()}}
+{\footnotesize\ttfamily int compute\+\_\+expression (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structExpression}{Expression}} $\ast$}]{expr,  }\item[{double $\ast$}]{res }\end{DoxyParamCaption})}
+
+compute an expression 
+\begin{DoxyParams}{Parameters}
+{\em expr} & expression to compute \\
+\hline
+{\em res} & result of the computation \\
+\hline
+\end{DoxyParams}
+
+\begin{DoxyExceptions}{Exceptions}
+{\em E\+\_\+\+U\+N\+E\+X\+P\+E\+C\+T\+E\+D\+\_\+\+S\+Y\+M\+B\+OL} & Thrown in case of error in parsing a string \\
+\hline
+\end{DoxyExceptions}
+\begin{DoxyReturn}{Returns}
+error code 
+\end{DoxyReturn}
+\mbox{\Hypertarget{rec__desc_8h_a7cd36bf1b78678671806711fa454be5e}\label{rec__desc_8h_a7cd36bf1b78678671806711fa454be5e}} 
+\index{rec\_desc.h@{rec\_desc.h}!finalize\_expression@{finalize\_expression}}
+\index{finalize\_expression@{finalize\_expression}!rec\_desc.h@{rec\_desc.h}}
+\doxysubsubsection{\texorpdfstring{finalize\_expression()}{finalize\_expression()}}
+{\footnotesize\ttfamily void finalize\+\_\+expression (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structExpression}{Expression}} $\ast$}]{expr }\end{DoxyParamCaption})}
+
+finalize an expression 
+\begin{DoxyParams}{Parameters}
+{\em expr} & expression to finalize \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{rec__desc_8h_a6d554928087b56b19afc9daa3924ebc2}\label{rec__desc_8h_a6d554928087b56b19afc9daa3924ebc2}} 
+\index{rec\_desc.h@{rec\_desc.h}!init\_expression@{init\_expression}}
+\index{init\_expression@{init\_expression}!rec\_desc.h@{rec\_desc.h}}
+\doxysubsubsection{\texorpdfstring{init\_expression()}{init\_expression()}}
+{\footnotesize\ttfamily int init\+\_\+expression (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structExpression}{Expression}} $\ast$}]{expr,  }\item[{char $\ast$}]{input }\end{DoxyParamCaption})}
+
+initialize an expression 
+\begin{DoxyParams}{Parameters}
+{\em expr} & which expression to initialize \\
+\hline
+{\em input} & string with which to initialize the expression \\
+\hline
+\end{DoxyParams}
+
+\begin{DoxyExceptions}{Exceptions}
+{\em E\+\_\+\+M\+E\+M\+\_\+\+A\+L\+L\+OC} & Thrown in case of memory allocation error \\
+\hline
+\end{DoxyExceptions}
+\begin{DoxyReturn}{Returns}
+error code 
+\end{DoxyReturn}

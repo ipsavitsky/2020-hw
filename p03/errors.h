@@ -1,11 +1,19 @@
+
+/**
+ * enum of all errors possible in rec_desc and all of its dependancies
+ */
 enum {
-    E_MEM_ALLOC = 1,
-    E_OVERFLOW = 2,
-    E_UNDERFLOW = 3,
-    E_UNEXPECTED_SYMBOL = 4,
-    E_ZERO_DIVISION = 5,
-    E_UNKNOWN_VAR = 6,
-    E_UNBALANCED_BRACKET = 7
+    E_MEM_ALLOC = 1,          ///< error in allocating memory
+    E_OVERFLOW = 2,           ///< error in dynamic memory overflow
+    E_UNDERFLOW = 3,          ///< error in dynamic memory underflow
+    E_UNEXPECTED_SYMBOL = 4,  ///< error in case of unexpected symbol
+    E_ZERO_DIVISION = 5,  ///< arithmetic exception in case of division on zero
+    E_UNKNOWN_VAR = 6,    ///< error in case variable lookup
+    E_UNBALANCED_BRACKET = 7  ///< error in case of an unbalanced bracket
 };
 
+/**
+ * print an error message according to the error code
+ * \param err error code
+ */
 void err_print(int err);
