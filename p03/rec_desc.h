@@ -7,6 +7,7 @@
 typedef struct{
     unsigned char *string_form; ///< string with the expression
     unsigned char *curpointer; ///< pointer to the current symbol(used internally)
+    Var_table *v_tab;
 } Expression;
 
 

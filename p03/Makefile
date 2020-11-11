@@ -1,6 +1,11 @@
 COMPILER = gcc
-COMPILER_FLAGS = -g -O2 -ftrapv -Wall -Werror -Wformat-security -Wignored-qualifiers -Winit-self -Wswitch-default -Wfloat-equal -Wshadow -Wpointer-arith -Wtype-limits -Wempty-body -Wlogical-op -Wstrict-prototypes -Wold-style-declaration -Wold-style-definition -Wmissing-parameter-type -Wmissing-field-initializers -Wnested-externs -Wno-pointer-sign -std=gnu11
-LINK_COMPILER_FLAGS = -o
+COMPILER_FLAGS = -fsanitize=address,undefined -g -O2 -ftrapv -Wall -Werror -Wformat-security -Wignored-qualifiers -Winit-self -Wswitch-default -Wfloat-equal -Wshadow -Wpointer-arith -Wtype-limits -Wempty-body -Wlogical-op -Wstrict-prototypes -Wold-style-declaration -Wold-style-definition -Wmissing-parameter-type -Wmissing-field-initializers -Wnested-externs -Wno-pointer-sign -std=gnu11
+LINK_COMPILER_FLAGS = -fsanitize=address,undefined -o
+
+# COMPILER = clang
+# COMPILER_FLAGS = -Weverything
+# LINK_COMPILER_FLAGS = -o
+
 
 # стандартная компиляция(без кавереджа, санитайзера и прочего)
 RPN: test_rec_desc.o RPN.o stack.o rec_desc.o errors.o
@@ -17,8 +22,8 @@ errors.o: errors.c errors.h
 	$(COMPILER) $(COMPILER_FLAGS) -c errors.c
 
 # генерация отчета по покрытию
-code_coverage: graph_cov.gcda main_cov.gcda
-	lcov -t "graph" --output-file code_coverage.info --capture --directory .
+code_coverage: test_rec_desc.gcda RPN.gcda stack.gcda rec_desc.gcda
+	lcov -t "RPN" --output-file code_coverage.info --capture --directory .
 	genhtml --branch-coverage --highlight --legend -o code_coverage code_coverage.info
 
 clear:

@@ -5,7 +5,7 @@ void err_print(int err){
     switch (err)
     {
         case E_MEM_ALLOC:
-            printf("Error:memory allocation\n");
+            printf("Error: memory allocation\n");
             break;
         case E_OVERFLOW:
             printf("Error: dynamic structure overflow\n");

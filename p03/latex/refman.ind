@@ -1,0 +1,232 @@
+\begin{theindex}
+
+  \item {add\_double}
+    \subitem {RPN\_test.c}, \hyperpage{24}
+  \item {add\_elem}
+    \subitem {rec\_desc.c}, \hyperpage{13}
+
+  \indexspace
+
+  \item {Calculate\_elem}
+    \subitem {RPN.h}, \hyperpage{22}
+  \item {compute\_expression}
+    \subitem {rec\_desc.c}, \hyperpage{13}
+    \subitem {rec\_desc.h}, \hyperpage{18}
+  \item {cur\_size}
+    \subitem {Stack}, \hyperpage{7}
+  \item {curpointer}
+    \subitem {Expression}, \hyperpage{5}
+
+  \indexspace
+
+  \item {data}
+    \subitem {RPN}, \hyperpage{6}
+    \subitem {Stack}, \hyperpage{7}
+  \item {data\_size}
+    \subitem {RPN}, \hyperpage{6}
+  \item {div\_double}
+    \subitem {rec\_desc.c}, \hyperpage{13}
+
+  \indexspace
+
+  \item {E\_MEM\_ALLOC}
+    \subitem {errors.h}, \hyperpage{11}
+  \item {E\_OVERFLOW}
+    \subitem {errors.h}, \hyperpage{11}
+  \item {E\_UNBALANCED\_BRACKET}
+    \subitem {errors.h}, \hyperpage{11}
+  \item {E\_UNDERFLOW}
+    \subitem {errors.h}, \hyperpage{11}
+  \item {E\_UNEXPECTED\_SYMBOL}
+    \subitem {errors.h}, \hyperpage{11}
+  \item {E\_UNKNOWN\_VAR}
+    \subitem {errors.h}, \hyperpage{11}
+  \item {E\_ZERO\_DIVISION}
+    \subitem {errors.h}, \hyperpage{11}
+  \item {err\_print}
+    \subitem {errors.c}, \hyperpage{9}
+    \subitem {errors.h}, \hyperpage{11}
+  \item {errors.c}, \hyperpage{9}
+    \subitem {err\_print}, \hyperpage{9}
+  \item {errors.h}, \hyperpage{10}
+    \subitem {E\_MEM\_ALLOC}, \hyperpage{11}
+    \subitem {E\_OVERFLOW}, \hyperpage{11}
+    \subitem {E\_UNBALANCED\_BRACKET}, \hyperpage{11}
+    \subitem {E\_UNDERFLOW}, \hyperpage{11}
+    \subitem {E\_UNEXPECTED\_SYMBOL}, \hyperpage{11}
+    \subitem {E\_UNKNOWN\_VAR}, \hyperpage{11}
+    \subitem {E\_ZERO\_DIVISION}, \hyperpage{11}
+    \subitem {err\_print}, \hyperpage{11}
+  \item {Expression}, \hyperpage{5}
+    \subitem {curpointer}, \hyperpage{5}
+    \subitem {string\_form}, \hyperpage{5}
+
+  \indexspace
+
+  \item {finalize\_expression}
+    \subitem {rec\_desc.c}, \hyperpage{14}
+    \subitem {rec\_desc.h}, \hyperpage{18}
+
+  \indexspace
+
+  \item {init\_expression}
+    \subitem {rec\_desc.c}, \hyperpage{14}
+    \subitem {rec\_desc.h}, \hyperpage{18}
+
+  \indexspace
+
+  \item {lookup\_var}
+    \subitem {rec\_desc.c}, \hyperpage{14}
+
+  \indexspace
+
+  \item {main}
+    \subitem {RPN\_test.c}, \hyperpage{24}
+    \subitem {stack\_test.c}, \hyperpage{32}
+    \subitem {test\_rec\_desc.c}, \hyperpage{33}
+  \item {MEM\_SAFE}
+    \subitem {stack.c}, \hyperpage{26}
+  \item {mult\_double}
+    \subitem {rec\_desc.c}, \hyperpage{14}
+    \subitem {RPN\_test.c}, \hyperpage{25}
+
+  \indexspace
+
+  \item {neg}
+    \subitem {rec\_desc.c}, \hyperpage{15}
+
+  \indexspace
+
+  \item {occupied}
+    \subitem {RPN}, \hyperpage{6}
+
+  \indexspace
+
+  \item {parse\_fact}
+    \subitem {rec\_desc.c}, \hyperpage{15}
+  \item {parse\_literal}
+    \subitem {rec\_desc.c}, \hyperpage{15}
+  \item {parse\_product}
+    \subitem {rec\_desc.c}, \hyperpage{15}
+  \item {parse\_sum}
+    \subitem {rec\_desc.c}, \hyperpage{15}
+  \item {parse\_variable}
+    \subitem {rec\_desc.c}, \hyperpage{15}
+  \item {put\_func\_in\_RPN}
+    \subitem {rec\_desc.c}, \hyperpage{16}
+  \item {put\_number\_in\_RPN}
+    \subitem {rec\_desc.c}, \hyperpage{16}
+  \item {put\_var\_in\_RPN}
+    \subitem {rec\_desc.c}, \hyperpage{16}
+
+  \indexspace
+
+  \item {rec\_desc.c}, \hyperpage{11}
+    \subitem {add\_elem}, \hyperpage{13}
+    \subitem {compute\_expression}, \hyperpage{13}
+    \subitem {div\_double}, \hyperpage{13}
+    \subitem {finalize\_expression}, \hyperpage{14}
+    \subitem {init\_expression}, \hyperpage{14}
+    \subitem {lookup\_var}, \hyperpage{14}
+    \subitem {mult\_double}, \hyperpage{14}
+    \subitem {neg}, \hyperpage{15}
+    \subitem {parse\_fact}, \hyperpage{15}
+    \subitem {parse\_literal}, \hyperpage{15}
+    \subitem {parse\_product}, \hyperpage{15}
+    \subitem {parse\_sum}, \hyperpage{15}
+    \subitem {parse\_variable}, \hyperpage{15}
+    \subitem {put\_func\_in\_RPN}, \hyperpage{16}
+    \subitem {put\_number\_in\_RPN}, \hyperpage{16}
+    \subitem {put\_var\_in\_RPN}, \hyperpage{16}
+    \subitem {SAFE}, \hyperpage{12}
+    \subitem {sub\_double}, \hyperpage{16}
+    \subitem {sum\_double}, \hyperpage{16}
+  \item {rec\_desc.h}, \hyperpage{17}
+    \subitem {compute\_expression}, \hyperpage{18}
+    \subitem {finalize\_expression}, \hyperpage{18}
+    \subitem {init\_expression}, \hyperpage{18}
+  \item {RPN}, \hyperpage{6}
+    \subitem {data}, \hyperpage{6}
+    \subitem {data\_size}, \hyperpage{6}
+    \subitem {occupied}, \hyperpage{6}
+  \item {RPN.c}, \hyperpage{19}
+    \subitem {RPN\_compute}, \hyperpage{20}
+    \subitem {RPN\_finalize}, \hyperpage{20}
+    \subitem {RPN\_init}, \hyperpage{21}
+    \subitem {SAFE}, \hyperpage{20}
+  \item {RPN.h}, \hyperpage{21}
+    \subitem {Calculate\_elem}, \hyperpage{22}
+    \subitem {RPN\_compute}, \hyperpage{22}
+    \subitem {RPN\_finalize}, \hyperpage{23}
+    \subitem {RPN\_init}, \hyperpage{23}
+  \item {RPN\_compute}
+    \subitem {RPN.c}, \hyperpage{20}
+    \subitem {RPN.h}, \hyperpage{22}
+  \item {RPN\_finalize}
+    \subitem {RPN.c}, \hyperpage{20}
+    \subitem {RPN.h}, \hyperpage{23}
+  \item {RPN\_init}
+    \subitem {RPN.c}, \hyperpage{21}
+    \subitem {RPN.h}, \hyperpage{23}
+  \item {RPN\_test.c}, \hyperpage{24}
+    \subitem {add\_double}, \hyperpage{24}
+    \subitem {main}, \hyperpage{24}
+    \subitem {mult\_double}, \hyperpage{25}
+    \subitem {sum\_double}, \hyperpage{25}
+
+  \indexspace
+
+  \item {SAFE}
+    \subitem {rec\_desc.c}, \hyperpage{12}
+    \subitem {RPN.c}, \hyperpage{20}
+  \item {Size\_elem}
+    \subitem {stack.h}, \hyperpage{29}
+  \item {Stack}, \hyperpage{7}
+    \subitem {cur\_size}, \hyperpage{7}
+    \subitem {data}, \hyperpage{7}
+    \subitem {stack\_size}, \hyperpage{8}
+    \subitem {stack\_top}, \hyperpage{8}
+  \item {stack.c}, \hyperpage{25}
+    \subitem {MEM\_SAFE}, \hyperpage{26}
+    \subitem {stack\_finalize}, \hyperpage{26}
+    \subitem {stack\_init}, \hyperpage{26}
+    \subitem {stack\_pop}, \hyperpage{27}
+    \subitem {stack\_push}, \hyperpage{27}
+  \item {stack.h}, \hyperpage{28}
+    \subitem {Size\_elem}, \hyperpage{29}
+    \subitem {stack\_finalize}, \hyperpage{29}
+    \subitem {stack\_init}, \hyperpage{30}
+    \subitem {stack\_pop}, \hyperpage{30}
+    \subitem {stack\_push}, \hyperpage{31}
+  \item {stack\_finalize}
+    \subitem {stack.c}, \hyperpage{26}
+    \subitem {stack.h}, \hyperpage{29}
+  \item {stack\_init}
+    \subitem {stack.c}, \hyperpage{26}
+    \subitem {stack.h}, \hyperpage{30}
+  \item {stack\_pop}
+    \subitem {stack.c}, \hyperpage{27}
+    \subitem {stack.h}, \hyperpage{30}
+  \item {stack\_push}
+    \subitem {stack.c}, \hyperpage{27}
+    \subitem {stack.h}, \hyperpage{31}
+  \item {stack\_size}
+    \subitem {Stack}, \hyperpage{8}
+  \item {stack\_test.c}, \hyperpage{31}
+    \subitem {main}, \hyperpage{32}
+  \item {stack\_top}
+    \subitem {Stack}, \hyperpage{8}
+  \item {string\_form}
+    \subitem {Expression}, \hyperpage{5}
+  \item {sub\_double}
+    \subitem {rec\_desc.c}, \hyperpage{16}
+  \item {sum\_double}
+    \subitem {rec\_desc.c}, \hyperpage{16}
+    \subitem {RPN\_test.c}, \hyperpage{25}
+
+  \indexspace
+
+  \item {test\_rec\_desc.c}, \hyperpage{32}
+    \subitem {main}, \hyperpage{33}
+
+\end{theindex}
