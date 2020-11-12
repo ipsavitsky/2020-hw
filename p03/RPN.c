@@ -2,6 +2,7 @@
 
 #include <stdlib.h>
 #include <string.h>
+#include <stdio.h>
 
 #define SAFE(call)                  \
     do {                            \
@@ -14,19 +15,26 @@
 int RPN_compute(RPN *notation, void *res, size_t res_size, Var_table *vars) {
     Stack stack;
     int flag;
+    struct input_data {
+        Size_elem size;
+        Calculate_elem f;
+    };
     if ((flag = stack_init(&stack, notation->data_size)) != 0) return flag;
-    for (size_t cur_size = 0; cur_size < notation->data_size;
-         cur_size += sizeof(Size_elem) + ((unsigned char *)notation->data)[cur_size]) {
-        void *elem = &(((char *)notation->data)[cur_size + sizeof(Size_elem)]);
-        Calculate_elem func;  // = *((Calculate_elem *)elem);
+    for (size_t cur_size = 0; cur_size < notation->data_size;) {
+        void *elem = &(((char *)notation->data)[cur_size]);
+        struct input_data in_dat = *((struct input_data *)elem);
+        // printf("{%d; %p}\n", in_dat.size, in_dat.f);
+        // Calculate_elem func;  // = *((Calculate_elem *)elem);
         // this is slow but easy and reliable :)
-        memcpy(&func, (Calculate_elem *)elem, sizeof(func));
+        // memcpy(&func, (Calculate_elem *)elem, sizeof(func));
         Calculation_data dat =
-            (Calculation_data){.elem = elem,
-                               .size = ((char *)notation->data)[cur_size],
+            (Calculation_data){.elem = &((char*)notation->data)[cur_size + sizeof(struct input_data)],
+                               .size = in_dat.size - sizeof(Calculate_elem),
                                .stack = &stack,
                                .v_tab = vars};
-        SAFE(func(&dat));
+        SAFE(in_dat.f(&dat));
+        // printf("(+%ld)\n", sizeof(struct input_data) + in_dat.size);
+        cur_size += sizeof(struct input_data) + in_dat.size - sizeof(Calculate_elem);
     }
     SAFE(stack_pop(&stack, res, res_size));
     stack_finalize(&stack);

@@ -6,6 +6,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <stdint.h>
+#include <stdalign.h>
 
 #define SAFE(call)                           \
     do {                                     \
@@ -19,9 +21,8 @@ int parse_literal(Expression *expr, RPN *stack_mach);
 int parse_variable(Expression *expr, RPN *stack_mach);
 
 int add_elem(Calculation_data *data) {
-    return stack_push(data->stack,
-                      &(((char *)(data->elem))[sizeof(Calculate_elem)]),
-                      data->size - sizeof(Calculate_elem));
+    // printf("%lf to stack\n", *((double*)&(((char *)(data->elem))[sizeof(Calculate_elem)])));
+    return stack_push(data->stack, data->elem, data->size);
 }
 
 int sum_double(Calculation_data *data) {
@@ -89,14 +90,13 @@ int neg(Calculation_data *data) {
 }
 
 int lookup_var(Calculation_data *data) {
-    void *elem_ptr = &(((char *)(data->elem))[sizeof(Calculate_elem)]);
-    size_t lookup_name_size = data->size - sizeof(Calculate_elem);
-
+    size_t lookup_name_size = strlen(data->elem);
+    // printf("looking up: %s\n", (char *)(data->elem));
     for (int i = 0; i < data->v_tab->var_num; ++i) {
-        // TODO: redo with strlen()
         size_t name_size = strlen(data->v_tab->vars[i].name);
+        // printf("%ld and %ld\n", name_size, lookup_name_size);
         if (name_size != lookup_name_size) continue;
-        if (strncmp(elem_ptr, data->v_tab->vars[i].name, name_size) == 0) {
+        if (strncmp(data->elem, data->v_tab->vars[i].name, name_size) == 0) {
             printf("%s = %lf\n", data->v_tab->vars[i].name,
                    *((double *)(data->v_tab->vars[i].data)));
             return stack_push(data->stack, data->v_tab->vars[i].data,
@@ -107,59 +107,28 @@ int lookup_var(Calculation_data *data) {
     return E_UNKNOWN_VAR;
 }
 
-int put_var_in_RPN(RPN *expression, char *name, int name_size) {
-    if (expression->occupied + sizeof(Size_elem) + sizeof(Calculate_elem) +
-            name_size >=
-        expression->data_size) {
+int put_elem_in_RPN(RPN *expression, Size_elem size, void *data, Calculate_elem func){
+    if(expression->occupied + sizeof(Size_elem) + size >= expression->data_size){
         return E_OVERFLOW;
     }
-    Calculate_elem *func_ptr;
-    ((char *)expression->data)[expression->occupied] =
-        name_size + sizeof(Calculate_elem);
-    expression->occupied += sizeof(Size_elem);
-    func_ptr =
-        (Calculate_elem *)&(((char *)expression->data)[expression->occupied]);
-    *func_ptr = lookup_var;
-    expression->occupied += sizeof(Calculate_elem);
-    memcpy(&(((char *)expression->data)[expression->occupied]), name,
-           name_size);
-    expression->occupied += name_size;
-    return 0;
-}
-
-int put_number_in_RPN(RPN *expression, double elem) {
-    if (expression->occupied + sizeof(Size_elem) + sizeof(Calculate_elem) +
-            sizeof(double) >=
-        expression->data_size) {
-        return E_OVERFLOW;
+    assert((uint64_t)&(((char *)expression->data)[expression->occupied]) % 8 == 0);
+    struct input_data{
+        Size_elem size;
+        Calculate_elem f;
+    };
+    struct input_data dat;
+    dat.size = (data == NULL) ? 8 : 16;
+    dat.f = func;
+    // printf("{%d; %p}\n", dat.size, dat.f);
+    memcpy((struct input_data *)&(((char *)expression->data)[expression->occupied]), &dat, sizeof(struct input_data));
+    expression->occupied += sizeof(struct input_data);
+    if(data != NULL){
+        memcpy((char *)expression->data + expression->occupied, data,
+               size - sizeof(Calculate_elem));
+        expression->occupied += 8;
     }
-    Calculate_elem *func_ptr;
-    ((char *)expression->data)[expression->occupied] =
-        sizeof(double) + sizeof(Calculate_elem);
-    expression->occupied += sizeof(Size_elem);
-    func_ptr =
-        (Calculate_elem *)&(((char *)expression->data)[expression->occupied]);
-    *func_ptr = add_elem;
-    expression->occupied += sizeof(Calculate_elem);
-    double el = elem;
-    memcpy(&(((char *)expression->data)[expression->occupied]), &el,
-           sizeof(el));
-    expression->occupied += sizeof(el);
-    return 0;
-}
-
-int put_func_in_RPN(RPN *expression, Calculate_elem func_in) {
-    if (expression->occupied + sizeof(Size_elem) + sizeof(Calculate_elem) >=
-        expression->data_size) {
-        return E_OVERFLOW;
-    }
-    Calculate_elem *func_ptr;
-    ((char *)expression->data)[expression->occupied] = sizeof(Calculate_elem);
-    expression->occupied += sizeof(Size_elem);
-    func_ptr =
-        (Calculate_elem *)&(((char *)expression->data)[expression->occupied]);
-    *func_ptr = func_in;
-    expression->occupied += sizeof(*func_ptr);
+    
+    // printf("new occupied = %ld(+%ld)\n", expression->occupied, sizeof(struct input_data) + size - sizeof(Calculate_elem)+padding);
     return 0;
 }
 
@@ -174,10 +143,12 @@ int parse_sum(Expression *expr, RPN *stack_mach) {
         SAFE(parse_product(expr, stack_mach));
         switch (operation) {
             case '+':
-                SAFE(put_func_in_RPN(stack_mach, sum_double));
+                SAFE(put_elem_in_RPN(stack_mach, sizeof(Calculate_elem), NULL, sum_double));
+                // SAFE(put_func_in_RPN(stack_mach, sum_double));
                 break;
             case '-':
-                SAFE(put_func_in_RPN(stack_mach, sub_double));
+                SAFE(put_elem_in_RPN(stack_mach, sizeof(Calculate_elem), NULL, sub_double));
+                // SAFE(put_func_in_RPN(stack_mach, sub_double));
                 break;
             default:
                 break;
@@ -196,10 +167,12 @@ int parse_product(Expression *expr, RPN *stack_mach) {
         SAFE(parse_fact(expr, stack_mach));
         switch (operation) {
             case '*':
-                SAFE(put_func_in_RPN(stack_mach, mult_double));
+                SAFE(put_elem_in_RPN(stack_mach, sizeof(Calculate_elem), NULL, mult_double));
+                // SAFE(put_func_in_RPN(stack_mach, mult_double));
                 break;
             case '/':
-                SAFE(put_func_in_RPN(stack_mach, div_double));
+                SAFE(put_elem_in_RPN(stack_mach, sizeof(Calculate_elem), NULL, div_double));
+                // SAFE(put_func_in_RPN(stack_mach, div_double));
                 break;
             default:
                 break;
@@ -236,7 +209,8 @@ int parse_fact(Expression *expr, RPN *stack_mach) {
         printf("un_s = %c\n", *(expr->curpointer));
         return E_UNEXPECTED_SYMBOL;
     }
-    if (neg_flag == -1) SAFE(put_func_in_RPN(stack_mach, neg));
+    // if (neg_flag == -1) SAFE(put_func_in_RPN(stack_mach, neg));
+    if (neg_flag == -1) SAFE(put_elem_in_RPN(stack_mach, sizeof(Calculate_elem), NULL, neg));
     return 0;
 }
 
@@ -246,8 +220,10 @@ int parse_variable(Expression *expr, RPN *stack_mach) {
     unsigned char var[6];
     while (isalnum(*(expr->curpointer)) && (size < 6))
         var[size++] = *(expr->curpointer++);
-    // printf("variable found: %s(  %d)\n", var, size);
-    SAFE(put_var_in_RPN(stack_mach, var, size));
+    var[size++] = '\0';
+    // printf("variable found: %s(%d)\n", var, size);
+    SAFE(put_elem_in_RPN(stack_mach, sizeof(Calculate_elem) + size, var, lookup_var));
+    // SAFE(put_var_in_RPN(stack_mach, var, size));
     return 0;
 }
 
@@ -274,7 +250,8 @@ int parse_literal(Expression *expr, RPN *stack_mach) {
     ret = strtod(expr->curpointer, &proxy_ptr);
     // printf("%lf\n", ret);
     expr->curpointer = proxy_ptr;
-    SAFE(put_number_in_RPN(stack_mach, ret));
+    SAFE(put_elem_in_RPN(stack_mach, sizeof(Calculate_elem) + sizeof(double), &ret, add_elem));
+    // SAFE(put_number_in_RPN(stack_mach, ret));
     return 0;
 }
 
@@ -293,6 +270,7 @@ int compute_expression(Expression *expr, double *res) {
     }
 
     stack_machine.data = realloc(stack_machine.data, stack_machine.occupied);
+    // printf("about to change my data_size to %ld\n", stack_machine.occupied);
     stack_machine.data_size = stack_machine.occupied;
 
     if (*(expr->curpointer) == '\0') {
