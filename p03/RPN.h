@@ -15,7 +15,6 @@ typedef struct{
     size_t data_size;
 } Var_data;
 
-
 typedef struct{
     Var_data *vars;
     size_t var_num;

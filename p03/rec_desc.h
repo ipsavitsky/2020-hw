@@ -36,3 +36,5 @@ int init_expression(Expression *expr, char *input);
  * \param expr expression to finalize
  */
 void finalize_expression(Expression *expr);
+
+int add_variable_to_table(Expression *expr, const char *name, double num);

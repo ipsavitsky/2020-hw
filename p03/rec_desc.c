@@ -89,16 +89,18 @@ int neg(Calculation_data *data) {
 }
 
 int lookup_var(Calculation_data *data) {
-    // printf("trying to lookup: %s\n", &(((char
-    // *)elem)[sizeof(Calculate_elem)]));
     void *elem_ptr = &(((char *)(data->elem))[sizeof(Calculate_elem)]);
-    // size_t name_size = data->size - sizeof(Calculate_elem);
+    size_t lookup_name_size = data->size - sizeof(Calculate_elem);
 
-    for(int i = 0; i < data->v_tab->var_num; ++i){
+    for (int i = 0; i < data->v_tab->var_num; ++i) {
+        // TODO: redo with strlen()
         size_t name_size = strlen(data->v_tab->vars[i].name);
-        if(strncmp(elem_ptr, data->v_tab->vars[i].name, name_size) == 0){
-            printf("adding variable %s = %lf\n", data->v_tab->vars[i].name, *((double*)(data->v_tab->vars[i].data)));
-            return stack_push(data->stack, data->v_tab->vars[i].data, sizeof(double));
+        if (name_size != lookup_name_size) continue;
+        if (strncmp(elem_ptr, data->v_tab->vars[i].name, name_size) == 0) {
+            printf("%s = %lf\n", data->v_tab->vars[i].name,
+                   *((double *)(data->v_tab->vars[i].data)));
+            return stack_push(data->stack, data->v_tab->vars[i].data,
+                              sizeof(double));
         }
     }
     // printf("lookup failed");
@@ -173,14 +175,20 @@ int parse_sum(Expression *expr, RPN *stack_mach) {
     SAFE(parse_product(expr, stack_mach));
     char operation;
     // printf("parse_sum = %c\n", *(expr->curpointer));
+    while (isspace(*(expr->curpointer))) expr->curpointer++;
     while ((*(expr->curpointer) == '+') || (*(expr->curpointer) == '-')) {
-        operation = *(expr->curpointer);
-        expr->curpointer++;
+        operation = *(expr->curpointer++);
         SAFE(parse_product(expr, stack_mach));
-        if (operation == '+')
+        switch (operation){
+        case '+':
             SAFE(put_func_in_RPN(stack_mach, sum_double));
-        else
+            break;
+        case '-':
             SAFE(put_func_in_RPN(stack_mach, sub_double));
+            break;
+        default:
+            break;
+        }
     }
     return 0;
 }
@@ -189,14 +197,20 @@ int parse_product(Expression *expr, RPN *stack_mach) {
     int flag;
     SAFE(parse_fact(expr, stack_mach));
     char operation;
+    while (isspace(*(expr->curpointer))) expr->curpointer++;
     while ((*(expr->curpointer) == '*') || (*(expr->curpointer) == '/')) {
-        operation = *(expr->curpointer);
-        expr->curpointer++;
+        operation = *(expr->curpointer++);
         SAFE(parse_fact(expr, stack_mach));
-        if (operation == '*')
-            SAFE(put_func_in_RPN(stack_mach, mult_double));
-        else
-            SAFE(put_func_in_RPN(stack_mach, div_double));
+        switch(operation){
+            case '*':
+                SAFE(put_func_in_RPN(stack_mach, mult_double));
+                break;
+            case '/':
+                SAFE(put_func_in_RPN(stack_mach, div_double));
+                break;
+            default:
+                break;
+        }
     }
     return 0;
 }
@@ -204,25 +218,30 @@ int parse_product(Expression *expr, RPN *stack_mach) {
 int parse_fact(Expression *expr, RPN *stack_mach) {
     int flag;
     short neg_flag = 1;
+    while (isspace(*(expr->curpointer))) expr->curpointer++;
     if (*(expr->curpointer) == '-' &&
         ((expr->curpointer == expr->string_form) ||
          (*(expr->curpointer - 1) == '('))) {
         neg_flag = -1;
         expr->curpointer++;
     }
-    if (((*(expr->curpointer) >= '0') && (*(expr->curpointer) <= '9'))) {
+    if (isdigit(*(expr->curpointer))) {
         SAFE(parse_literal(expr, stack_mach));
-        // printf("added %f to stackmachine to %ld\n", ret,
-        // stack_mach->occupied);
     } else if (*(expr->curpointer) == '(') {
         expr->curpointer++;
         SAFE(parse_sum(expr, stack_mach));
+        // FIXME: this should be here, but everything works without it
+        while (isspace(*(expr->curpointer))) expr->curpointer++;
         if (*(expr->curpointer) != ')') return E_UNBALANCED_BRACKET;
         expr->curpointer++;
+        // FIXME: i have no idea why this is here but without it everything breaks
+        while (isspace(*(expr->curpointer))) expr->curpointer++;
     } else if (isalpha(*(expr->curpointer))) {
         SAFE(parse_variable(expr, stack_mach));
-    } else
+    } else{
+        printf("un_s = %c\n", *(expr->curpointer));
         return E_UNEXPECTED_SYMBOL;
+    }
     if (neg_flag == -1) SAFE(put_func_in_RPN(stack_mach, neg));
     return 0;
 }
@@ -235,19 +254,19 @@ int parse_variable(Expression *expr, RPN *stack_mach) {
         var[size++] = *(expr->curpointer);
         expr->curpointer++;
     }
-    // printf("variable found: %s(%d)\n", var, size);
+    // printf("variable found: %s(  %d)\n", var, size);
     SAFE(put_var_in_RPN(stack_mach, var, size));
     return 0;
 }
 
-int add_variable(Expression *expr, const char *name, double num){
-
+int add_variable_to_table(Expression *expr, const char *name, double num) {
     expr->v_tab->var_num++;
     expr->v_tab->vars =
         realloc(expr->v_tab->vars, expr->v_tab->var_num * sizeof(Var_data));
     expr->v_tab->vars[expr->v_tab->var_num - 1].data_size = sizeof(double);
     expr->v_tab->vars[expr->v_tab->var_num - 1].data = malloc(sizeof(double));
-    memcpy(expr->v_tab->vars[expr->v_tab->var_num - 1].data, &num, sizeof(double));    
+    memcpy(expr->v_tab->vars[expr->v_tab->var_num - 1].data, &num,
+           sizeof(double));
     strcpy(expr->v_tab->vars[expr->v_tab->var_num - 1].name, name);
     return 0;
 }
@@ -255,21 +274,11 @@ int add_variable(Expression *expr, const char *name, double num){
 int parse_literal(Expression *expr, RPN *stack_mach) {
     double ret = 0;
     int flag;
-
-    while ((*(expr->curpointer) >= '0') && (*(expr->curpointer) <= '9')) {
-        ret *= 10;
-        ret += *(expr->curpointer) - '0';
-        expr->curpointer++;
-    }
-    if (*(expr->curpointer) == '.') {
-        expr->curpointer++;
-        double weight = 1;
-        while ((*(expr->curpointer) >= '0') && (*(expr->curpointer) <= '9')) {
-            weight /= 10;
-            ret += (*(expr->curpointer) - '0') * weight;
-            expr->curpointer++;
-        }
-    }
+    // expr->curpointer = strtok(expr->curpointer, " +-*/()");
+    char *proxy_ptr = NULL;
+    ret = strtod(expr->curpointer, &proxy_ptr);
+    // printf("%lf\n", ret);
+    expr->curpointer = proxy_ptr;
     SAFE(put_number_in_RPN(stack_mach, ret));
     return 0;
 }
@@ -282,9 +291,7 @@ int compute_expression(Expression *expr, double *res) {
         (sizeof(Size_elem) + sizeof(Calculate_elem) + sizeof(double));
     SAFE(RPN_init(&stack_machine, rpn_estimate));
     double ret = 0;
-    add_variable(expr, "avds", 0);
-    add_variable(expr, "e", 2.71);
-    add_variable(expr, "abc", 3);
+
     if ((flag = parse_sum(expr, &stack_machine)) != 0) {
         RPN_finalize(&stack_machine);
         return flag;
@@ -294,7 +301,8 @@ int compute_expression(Expression *expr, double *res) {
     stack_machine.data_size = stack_machine.occupied;
 
     if (*(expr->curpointer) == '\0') {
-        if ((flag = RPN_compute(&stack_machine, &ret, sizeof(double), expr->v_tab)) != 0) {
+        if ((flag = RPN_compute(&stack_machine, &ret, sizeof(double),
+                                expr->v_tab)) != 0) {
             RPN_finalize(&stack_machine);
             return flag;
         }
@@ -305,6 +313,7 @@ int compute_expression(Expression *expr, double *res) {
         return 0;
     }
     RPN_finalize(&stack_machine);
+    printf("un_s = %c\n", *(expr->curpointer));
     return E_UNEXPECTED_SYMBOL;
 }
 
@@ -318,9 +327,9 @@ int init_expression(Expression *expr, char *input) {
     return 0;
 }
 
-void finalize_expression(Expression *expr) { 
-    free(expr->string_form); 
-    for(int i = 0; i < expr->v_tab->var_num; ++i){
+void finalize_expression(Expression *expr) {
+    free(expr->string_form);
+    for (int i = 0; i < expr->v_tab->var_num; ++i) {
         free(expr->v_tab->vars[i].data);
     }
     free(expr->v_tab->vars);
