@@ -22,10 +22,17 @@ void err_print(int err){
         case E_UNKNOWN_VAR:
             fprintf(stderr, "Error: unknown variable\n");
             break;
-        case E_UNBALANCED_BRACKET:
-            fprintf(stderr, "Error: unbalanced bracket\n");
+        case E_UNBALANCED_LB:
+            fprintf(stderr, "Error: unbalanced \'(\'\n");
+            break;
+        case E_UNBALANCED_RB:
+            fprintf(stderr, "Error: unbalanced \')\'\n");
+            break;
+        case E_MISSED_OPERATOR:
+            fprintf(stderr, "Error: missed operator\n");
             break;
         default:
-            fprintf(stderr, "Error: unknown(%d)", err);
+            fprintf(stderr, "Error: unknown(%d)\n", err);
+            break;
     }
 }
