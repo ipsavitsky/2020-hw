@@ -2,37 +2,37 @@
 #include <stdio.h>
 
 void err_print(int err){
-    switch (err)
-    {
+    fprintf(stderr, "\033[31;1;4mError:\033[0m");
+    switch (err){
         case E_MEM_ALLOC:
-            fprintf(stderr, "Error: memory allocation\n");
+            fprintf(stderr, " memory allocation\n");
             break;
         case E_OVERFLOW:
-            fprintf(stderr, "Error: dynamic structure overflow\n");
+            fprintf(stderr, " dynamic structure overflow\n");
             break;
         case E_UNDERFLOW:
-            fprintf(stderr, "Error: dynamic structure underflow\n");
+            fprintf(stderr, " dynamic structure underflow\n");
             break;
         case E_UNEXPECTED_SYMBOL:
-            fprintf(stderr, "Error: unexpected symbol\n");
+            fprintf(stderr, " unexpected symbol\n");
             break;
         case E_ZERO_DIVISION:
-            fprintf(stderr, "Error: zero division prohibited\n");
+            fprintf(stderr, " zero division prohibited\n");
             break;
         case E_UNKNOWN_VAR:
-            fprintf(stderr, "Error: unknown variable\n");
+            fprintf(stderr, " unknown variable\n");
             break;
         case E_UNBALANCED_LB:
-            fprintf(stderr, "Error: unbalanced \'(\'\n");
+            fprintf(stderr, " unbalanced \'(\'\n");
             break;
         case E_UNBALANCED_RB:
-            fprintf(stderr, "Error: unbalanced \')\'\n");
+            fprintf(stderr, " unbalanced \')\'\n");
             break;
         case E_MISSED_OPERATOR:
-            fprintf(stderr, "Error: missed operator\n");
+            fprintf(stderr, " missed operator\n");
             break;
         default:
-            fprintf(stderr, "Error: unknown(%d)\n", err);
+            fprintf(stderr, " unknown(%d)\n", err);
             break;
     }
 }

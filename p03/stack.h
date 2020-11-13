@@ -36,6 +36,7 @@ void stack_finalize(Stack *stack);
  * \param size_res size of resp. In case of overflow returns an error
  * \exception E_UNDERFLOW Thrown in case of popping empty or corrupted stack
  * \exception E_OVERFLOW Thrown if the popped memory overflows resp
+ * \warning it is up to the caller to allocate memory for `resp`
  * \return error code
  */
 int stack_pop(Stack *stack, void *resp, size_t size_res);

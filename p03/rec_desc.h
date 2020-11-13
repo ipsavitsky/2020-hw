@@ -1,25 +1,21 @@
 #include "RPN.h"
-
-
 /**
  * structure of an infex expression
  */
-typedef struct{
-    unsigned char *string_form; ///< string with the expression
-    unsigned char *curpointer; ///< pointer to the current symbol(used internally)
-    Var_table *v_tab;
+typedef struct {
+    unsigned char *string_form;  ///< string with the expression
+    unsigned char *curpointer;   ///< pointer to the current symbol(used internally)
+    Var_table *v_tab;            ///< variable table of a current expression
 } Expression;
-
 
 /**
  * compute an expression
  * \param expr expression to compute
  * \param res result of the computation
- * \exception E_UNEXPECTED_SYMBOL Thrown in case of error in parsing a string 
+ * \exception E_UNEXPECTED_SYMBOL Thrown in case of error in parsing a string
  * \return error code
  */
 int compute_expression(Expression *expr, double *res);
-
 
 /**
  * initialize an expression
@@ -30,11 +26,17 @@ int compute_expression(Expression *expr, double *res);
  */
 int init_expression(Expression *expr, char *input);
 
-
 /**
  * finalize an expression
  * \param expr expression to finalize
  */
 void finalize_expression(Expression *expr);
 
+/**
+ * add a viriable to the variable table of `expr` or change its value
+ * \param expr expression to which add the variable
+ * \param name name of the variable to add
+ * \param num number to put in a variable
+ * \return error code
+ */
 int add_variable_to_table(Expression *expr, const char *name, double num);

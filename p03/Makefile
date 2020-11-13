@@ -8,18 +8,23 @@ LINK_COMPILER_FLAGS = -fsanitize=address,undefined -o
 
 
 # стандартная компиляция(без кавереджа, санитайзера и прочего)
-RPN: test_rec_desc.o RPN.o stack.o rec_desc.o errors.o
-	$(COMPILER) $^ $(LINK_COMPILER_FLAGS) RPN
-test_rec_desc.o: test_rec_desc.c rec_desc.h
-	$(COMPILER) $(COMPILER_FLAGS) -c test_rec_desc.c
+calc: calculator.o RPN.o stack.o rec_desc.o errors.o arithm_func.o
+	$(COMPILER) $^ $(LINK_COMPILER_FLAGS) calc
+calculator.o: calculator.c
+	$(COMPILER) $(COMPILER_FLAGS) -c calculator.c
 RPN.o: RPN.c RPN.h stack.h
 	$(COMPILER) $(COMPILER_FLAGS) -c RPN.c
 stack.o: stack.c stack.h
 	$(COMPILER) $(COMPILER_FLAGS) -c stack.c
-rec_desc.o: rec_desc.c rec_desc.h stack.h RPN.h
+rec_desc.o: rec_desc.c rec_desc.h
 	$(COMPILER) $(COMPILER_FLAGS) -c rec_desc.c
 errors.o: errors.c errors.h
 	$(COMPILER) $(COMPILER_FLAGS) -c errors.c
+arithm_func.o: arithm_func.c arithm_func.h
+	$(COMPILER) $(COMPILER_FLAGS) -c arithm_func.c
+test_rec_desc.o: test_rec_desc.c rec_desc.h
+	$(COMPILER) $(COMPILER_FLAGS) -c test_rec_desc.c
+
 
 # генерация отчета по покрытию
 code_coverage: test_rec_desc.gcda RPN.gcda stack.gcda rec_desc.gcda
@@ -28,7 +33,7 @@ code_coverage: test_rec_desc.gcda RPN.gcda stack.gcda rec_desc.gcda
 
 clear:
 	rm *.o
-	rm RPN
+	rm calc
 
 # цель очистки промежуточных файлов покрытия не входит общий clean
 clear_code_coverage:

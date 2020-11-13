@@ -23,17 +23,12 @@ int RPN_compute(RPN *notation, void *res, size_t res_size, Var_table *vars) {
     for (size_t cur_size = 0; cur_size < notation->data_size;) {
         void *elem = &(((char *)notation->data)[cur_size]);
         struct input_data in_dat = *((struct input_data *)elem);
-        // printf("{%d; %p}\n", in_dat.size, in_dat.f);
-        // Calculate_elem func;  // = *((Calculate_elem *)elem);
-        // this is slow but easy and reliable :)
-        // memcpy(&func, (Calculate_elem *)elem, sizeof(func));
         Calculation_data dat =
             (Calculation_data){.elem = &((char*)notation->data)[cur_size + sizeof(struct input_data)],
                                .size = in_dat.size - sizeof(Calculate_elem),
                                .stack = &stack,
                                .v_tab = vars};
         SAFE(in_dat.f(&dat));
-        // printf("(+%ld)\n", sizeof(struct input_data) + in_dat.size);
         cur_size += sizeof(struct input_data) + in_dat.size - sizeof(Calculate_elem);
     }
     SAFE(stack_pop(&stack, res, res_size));
