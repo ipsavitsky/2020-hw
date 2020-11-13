@@ -21,7 +21,6 @@ int parse_literal(Expression *expr, RPN *stack_mach);
 int parse_variable(Expression *expr, RPN *stack_mach);
 
 int add_elem(Calculation_data *data) {
-    // printf("%lf to stack\n", *((double*)&(((char *)(data->elem))[sizeof(Calculate_elem)])));
     return stack_push(data->stack, data->elem, data->size);
 }
 
@@ -33,7 +32,6 @@ int sum_double(Calculation_data *data) {
     SAFE(stack_pop(data->stack, &elem1, sizeof(elem1)));
     double res = elem1 + elem2;
     printf("%lf + %lf = %lf\n", elem1, elem2, res);
-    // res = elem1 + elem2;
     // printf("res: %d\n", res);
     SAFE(stack_push(data->stack, &res, sizeof(res)));
     return 0;
@@ -46,7 +44,6 @@ int sub_double(Calculation_data *data) {
     SAFE(stack_pop(data->stack, &elem1, sizeof(elem2)));
     double res = elem1 - elem2;
     printf("%lf - %lf = %lf\n", elem1, elem2, res);
-    // res = elem1 + elem2;
     // printf("res: %d\n", res);
     SAFE(stack_push(data->stack, &res, sizeof(res)));
     return 0;
@@ -59,7 +56,6 @@ int mult_double(Calculation_data *data) {
     SAFE(stack_pop(data->stack, &elem1, sizeof(elem2)));
     double res = elem1 * elem2;
     printf("%lf * %lf = %lf\n", elem1, elem2, res);
-    // res = elem1 + elem2;
     // printf("res: %d\n", res);
     SAFE(stack_push(data->stack, &res, sizeof(res)));
     return 0;
@@ -74,7 +70,6 @@ int div_double(Calculation_data *data) {
     if (fabs(elem2) < eps) return E_ZERO_DIVISION;
     double res = elem1 / elem2;
     printf("%lf / %lf = %lf\n", elem1, elem2, res);
-    // res = elem1 + elem2;
     // printf("res: %d\n", res);
     SAFE(stack_push(data->stack, &res, sizeof(res)));
     return 0;
@@ -117,7 +112,8 @@ int put_elem_in_RPN(RPN *expression, Size_elem size, void *data, Calculate_elem 
         Calculate_elem f;
     };
     struct input_data dat;
-    dat.size = (data == NULL) ? 8 : 16;
+    dat.size = size;
+    if(dat.size % 8 != 0) dat.size += (8 - size % 8);
     dat.f = func;
     // printf("{%d; %p}\n", dat.size, dat.f);
     memcpy((struct input_data *)&(((char *)expression->data)[expression->occupied]), &dat, sizeof(struct input_data));
@@ -258,9 +254,13 @@ int parse_literal(Expression *expr, RPN *stack_mach) {
 int compute_expression(Expression *expr, double *res) {
     RPN stack_machine;
     int flag;
+    struct input_data {
+        Size_elem size;
+        Calculate_elem f;
+    };
     size_t rpn_estimate =
         strlen(expr->string_form) *
-        (sizeof(Size_elem) + sizeof(Calculate_elem) + sizeof(double));
+        (sizeof(struct input_data) + sizeof(double));
     SAFE(RPN_init(&stack_machine, rpn_estimate));
     double ret = 0;
 
