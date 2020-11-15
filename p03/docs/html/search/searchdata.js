@@ -1,13 +1,14 @@
 var indexSectionsWithContent =
 {
-  0: "acdefilmnoprstv",
+  0: "acdefilmnoprstvÐ",
   1: "cersv",
   2: "acerst",
   3: "acdefilmnprs",
   4: "cdenosv",
   5: "cs",
   6: "e",
-  7: "ms"
+  7: "ms",
+  8: "Ð"
 };
 
 var indexSectionNames =
@@ -19,7 +20,8 @@ var indexSectionNames =
   4: "variables",
   5: "typedefs",
   6: "enumvalues",
-  7: "defines"
+  7: "defines",
+  8: "pages"
 };
 
 var indexSectionLabels =
@@ -31,6 +33,7 @@ var indexSectionLabels =
   4: "Variables",
   5: "Typedefs",
   6: "Enumerator",
-  7: "Macros"
+  7: "Macros",
+  8: "Pages"
 };
 

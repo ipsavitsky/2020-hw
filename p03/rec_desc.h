@@ -13,6 +13,10 @@ typedef struct {
  * \param expr expression to compute
  * \param res result of the computation
  * \exception E_UNEXPECTED_SYMBOL Thrown in case of error in parsing a string
+ * \exception E_MEM_ALLOC Thrown in case of memory allocation error
+ * \exception E_UNBALANCED_RB Thrown in case of an unbalanced right bracket
+ * \exception E_MISSED_OPERATOR Thrown in case two operands presented with nothing between
+ * \exception may throw an exception thrown to it by a Calculate_elem function
  * \return error code
  */
 int compute_expression(Expression *expr, double *res);
@@ -37,6 +41,7 @@ void finalize_expression(Expression *expr);
  * \param expr expression to which add the variable
  * \param name name of the variable to add
  * \param num number to put in a variable
+ * \exception E_MEM_ALLOC Thrown in case of memory allocation error
  * \return error code
  */
 int add_variable_to_table(Expression *expr, const char *name, double num);

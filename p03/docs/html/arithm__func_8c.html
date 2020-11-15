@@ -172,6 +172,20 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+<p>add a new element to the stack machine(may be a double/string/struct of any kind) </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">data</td><td>data needed for calculation </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">E_OVERFLOW</td><td>Thrown in case of RPN/Stack overflow </td></tr>
+    <tr><td class="paramname">E_UNDERFLOW</td><td>Thrown in case of RPN/Stack underflow </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>error code </dd></dl>
 
 </div>
 </div>
@@ -190,6 +204,21 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+<p>divide two doubles from the stack machine and put the result back to the stack </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">data</td><td>data needed for calculation </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">E_OVERFLOW</td><td>Thrown in case of RPN/Stack overflow </td></tr>
+    <tr><td class="paramname">E_UNDERFLOW</td><td>Thrown in case of RPN/Stack underflow </td></tr>
+    <tr><td class="paramname">E_ZERO_DIVISION</td><td>Thrown in case there is a division by zero </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>error code </dd></dl>
 
 </div>
 </div>
@@ -208,6 +237,21 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+<p>search the name of a variable and put its value to the stack </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">data</td><td>data needed for calculation </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">E_OVERFLOW</td><td>Thrown in case of RPN/Stack overflow </td></tr>
+    <tr><td class="paramname">E_UNDERFLOW</td><td>Thrown in case of RPN/Stack underflow </td></tr>
+    <tr><td class="paramname">E_UNKNOWN_VAR</td><td>Thrown in case the variable is not found in the var table </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>error code </dd></dl>
 
 </div>
 </div>
@@ -226,6 +270,20 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+<p>multiply two doubles from the stack machine and put the result back to the stack </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">data</td><td>data needed for calculation </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">E_OVERFLOW</td><td>Thrown in case of RPN/Stack overflow </td></tr>
+    <tr><td class="paramname">E_UNDERFLOW</td><td>Thrown in case of RPN/Stack underflow </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>error code </dd></dl>
 
 </div>
 </div>
@@ -244,6 +302,20 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+<p>take a double from the stack and put its negative back to the stack </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">data</td><td>data needed for calculation </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">E_OVERFLOW</td><td>Thrown in case of RPN/Stack overflow </td></tr>
+    <tr><td class="paramname">E_UNDERFLOW</td><td>Thrown in case of RPN/Stack underflow </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>error code </dd></dl>
 
 </div>
 </div>
@@ -262,6 +334,20 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+<p>substract two doubles from the stack machine and put the result back to the stack </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">data</td><td>data needed for calculation </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">E_OVERFLOW</td><td>Thrown in case of RPN/Stack overflow </td></tr>
+    <tr><td class="paramname">E_UNDERFLOW</td><td>Thrown in case of RPN/Stack underflow </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>error code </dd></dl>
 
 </div>
 </div>
@@ -280,6 +366,20 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+<p>sum two doubles from the stack machine and put the result back to the stack </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">data</td><td>data needed for calculation </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">E_OVERFLOW</td><td>Thrown in case of RPN/Stack overflow </td></tr>
+    <tr><td class="paramname">E_UNDERFLOW</td><td>Thrown in case of RPN/Stack underflow </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>error code </dd></dl>
 
 </div>
 </div>

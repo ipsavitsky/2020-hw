@@ -25,6 +25,20 @@
 var NAVTREE =
 [
   [ "Calculator", "index.html", [
+    [ "ПРОСТОЙ КАЛЬКУЛЯТОР", "md__r_e_a_d_m_e.html", [
+      [ "Сборка", "md__r_e_a_d_m_e.html#autotoc_md1", null ],
+      [ "Программный интерфейс", "md__r_e_a_d_m_e.html#autotoc_md2", [
+        [ "<tt>stack.h</tt>", "md__r_e_a_d_m_e.html#autotoc_md3", null ],
+        [ "<tt>RPN.h</tt>", "md__r_e_a_d_m_e.html#autotoc_md4", null ],
+        [ "<tt>arithm_func.h</tt>", "md__r_e_a_d_m_e.html#autotoc_md5", null ],
+        [ "<tt>rec_desc.h</tt>", "md__r_e_a_d_m_e.html#autotoc_md6", null ],
+        [ "<tt>errors.h</tt>", "md__r_e_a_d_m_e.html#autotoc_md7", null ]
+      ] ],
+      [ "Пользовательский интерфейс", "md__r_e_a_d_m_e.html#autotoc_md8", [
+        [ "<tt>calculator.c</tt>", "md__r_e_a_d_m_e.html#autotoc_md9", null ]
+      ] ],
+      [ "TODO", "md__r_e_a_d_m_e.html#autotoc_md10", null ]
+    ] ],
     [ "Data Structures", "annotated.html", [
       [ "Data Structures", "annotated.html", "annotated_dup" ],
       [ "Data Structure Index", "classes.html", null ],

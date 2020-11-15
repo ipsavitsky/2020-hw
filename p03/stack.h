@@ -3,7 +3,7 @@
 #include "errors.h"
 
 /**
- * \brief structure of a stack
+ * structure of a stack
  */
 typedef struct {
     void *data;         ///< data of a stack
