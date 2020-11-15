@@ -4,6 +4,7 @@
 #include <stdio.h>
 #include <math.h>
 #include <string.h>
+#include <float.h>
 
 #define SAFE(call)                           \
     do {                                     \
@@ -54,11 +55,9 @@ int div_double(Calculation_data *data) {
     double elem1, elem2;
     SAFE(stack_pop(data->stack, &elem2, sizeof(elem1)));
     SAFE(stack_pop(data->stack, &elem1, sizeof(elem2)));
-    double eps = 0.0001;
-    if (fabs(elem2) < eps) return E_ZERO_DIVISION;
+    if (fabs(elem2) < DBL_EPSILON) return E_ZERO_DIVISION;
     double res = elem1 / elem2;
     printf("%lf / %lf = %lf\n", elem1, elem2, res);
-    // printf("res: %d\n", res);
     SAFE(stack_push(data->stack, &res, sizeof(res)));
     return 0;
 }

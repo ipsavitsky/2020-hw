@@ -5,24 +5,6 @@
 
 #include "rec_desc.h"
 
-char *input_code_line(char *inp_str) {
-    int c, i = 0;
-    while ((c = getchar()) != '\n') {
-        if (c == EOF) {
-            return NULL;
-        }
-        inp_str = realloc(inp_str, (++i) * sizeof(*inp_str));
-        assert(inp_str != NULL);
-        inp_str[i - 1] = c;
-    }
-    i += 2;
-    inp_str = realloc(inp_str, i * sizeof(*inp_str));
-    assert(inp_str != NULL);
-    inp_str[i - 2] = '\n';
-    inp_str[i - 1] = '\0';
-    return inp_str;
-}
-
 int main(void) {
     char *curline = NULL;
     char *eq_ptr;

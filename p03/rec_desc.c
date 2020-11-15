@@ -164,7 +164,7 @@ int parse_fact(Expression *expr, RPN *stack_mach) {
     } else if (isalpha(*(expr->curpointer))) {
         SAFE(parse_variable(expr, stack_mach));
     } else {
-        printf("un_s = %c\n", *(expr->curpointer));
+        // printf("un_s = %c\n", *(expr->curpointer));
         return E_UNEXPECTED_SYMBOL;
     }
     if (neg_flag == -1) SAFE(put_elem_in_RPN(stack_mach, sizeof(Calculate_elem), NULL, neg));
@@ -261,7 +261,7 @@ int compute_expression(Expression *expr, double *res) {
         return E_MISSED_OPERATOR;
     }
     RPN_finalize(&stack_machine);
-    printf("un_s = %c(%d)\n", *(expr->curpointer), *(expr->curpointer));
+    // printf("un_s = %c(%d)\n", *(expr->curpointer), *(expr->curpointer));
     return E_UNEXPECTED_SYMBOL;
 }
 

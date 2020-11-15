@@ -5,6 +5,7 @@ var files_dup =
     [ "calculator.c", "calculator_8c.html", "calculator_8c" ],
     [ "errors.c", "errors_8c.html", "errors_8c" ],
     [ "errors.h", "errors_8h.html", "errors_8h" ],
+    [ "fuzz.c", "fuzz_8c.html", "fuzz_8c" ],
     [ "rec_desc.c", "rec__desc_8c.html", "rec__desc_8c" ],
     [ "rec_desc.h", "rec__desc_8h.html", "rec__desc_8h" ],
     [ "RPN.c", "_r_p_n_8c.html", "_r_p_n_8c" ],
