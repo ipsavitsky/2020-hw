@@ -1,3 +1,4 @@
+#include <errno.h>
 #include <signal.h>
 #include <stdio.h>
 #include <sys/ptrace.h>
@@ -6,7 +7,6 @@
 #include <sys/user.h>
 #include <sys/wait.h>
 #include <unistd.h>
-#include <errno.h>
 
 void track_policy(pid_t pid) {
     int status;
@@ -16,22 +16,26 @@ void track_policy(pid_t pid) {
         struct user_regs_struct state;
 
         ptrace(PTRACE_SYSCALL, pid, 0, 0);
-        waitpid(pid, &status, 0);
-        if(WIFSIGNALED(status)) return;
+        pid_t elif;
+        elif = wait(&status);
+
+        // waitpid(pid, &status, 0);
+        if (WIFSIGNALED(status) || WIFEXITED(status)) continue; //waitpid(pid, &status, 0);
 
         // at syscall
         if (WIFSTOPPED(status) && WSTOPSIG(status) & 0x80) {
             ptrace(PTRACE_GETREGS, pid, 0, &state);
             // printf("SYSCALL %lld\n", state.orig_rax);
-            long long int rax = state.orig_rax;
 
-            if (rax == __NR_execve) {
+            if (state.orig_rax == __NR_execve) {
                 printf("process %d tried to execute a binary! killing process!\n", pid);
                 state.rax = __NR_kill;
                 state.rdi = pid;
                 state.rsi = SIGKILL;
                 ptrace(PTRACE_SETREGS, pid, 0, &state);
                 ptrace(PTRACE_CONT, pid, 0, 0);
+                waitpid(pid, NULL, 0);
+                return;
             }
 
             // if (rax == __NR_openat) {
@@ -44,23 +48,25 @@ void track_policy(pid_t pid) {
             // printf("waiting for pid: %d\n", pid);
             ptrace(PTRACE_SYSCALL, pid, 0, 0);
             waitpid(pid, &status, 0);
-            if (WIFSIGNALED(status)) return;
+            if (WIFSIGNALED(status) || WIFEXITED(status)) return;
 
-            ptrace(PTRACE_GETREGS, pid, 0, &state);
             if (state.orig_rax == __NR_clone) {
+                ptrace(PTRACE_GETREGS, pid, 0, &state);
                 pid_t sys_res = state.rax;
                 printf("child process pid %d\n", sys_res);
-                ptrace(PTRACE_ATTACH, sys_res, 0, 0);
-                printf("attached %d to %d\n", getpid(), sys_res);
-                track_policy(sys_res);
+                if (fork() == 0) {
+                    ptrace(PTRACE_ATTACH, sys_res, 0, 0);
+                    waitpid(sys_res, &status, 0);
+                    ptrace(PTRACE_SETOPTIONS, sys_res, 0, PTRACE_O_TRACESYSGOOD);
+                    pid = sys_res;
+                }
             }
         }
     }
-    return;
 }
 
 int main(int argc, char *argv[]) {
-    if(argc < 2){
+    if (argc < 2) {
         printf("specify a program you want to run!\n");
         return 1;
     }

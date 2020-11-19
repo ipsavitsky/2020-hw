@@ -11,22 +11,13 @@ int main(int argc, char *argv[]) {
     int status;
     if ((pid1 = fork()) != -1) {
         if (pid1 == 0) {
-            // printf("i am the first child\n");
+            printf("i am the first child\n");
             execlp(argv[1], argv[1], NULL);
         } else {
-            // printf("luke! i am your fuzzer\n");
+            printf("luke! i am your fuzzer\n");
             wait(NULL);
-            // printf("the wait is over\n");
-            CHECKSTATUS(status);
-            if ((pid2 = fork()) != -1) {
-                if (pid2 == 0) {
-                    // printf("i am the second child\n");
-                    execvp(argv[2], &argv[2]);
-                } else {
-                    // wait(&status);
-                    // CHECKSTATUS(status);
-                }
-            }
+            printf("the wait is over\n");
+            // CHECKSTATUS(status);
         }
     }
     // FILE *f;
