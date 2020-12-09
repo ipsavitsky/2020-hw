@@ -111,6 +111,7 @@ void track_policy(pid_t pid) {
                     filename[fn_size++] = dat.chars[0];
                     filename[fn_size++] = dat.chars[1];
                     cur_addr += 2;
+                    if (dat.chars[1] == '\0') break;
                 }
                 if ((strcmp(filename, "/etc/ld.so.cache") != 0) &&
                     (strcmp(filename, "/lib/x86_64-linux-gnu/libc.so.6") != 0) &&
@@ -141,9 +142,10 @@ void track_policy(pid_t pid) {
                     filename[fn_size++] = dat.chars[0];
                     filename[fn_size++] = dat.chars[1];
                     cur_addr += 2;
+                    if (dat.chars[1] == '\0') break;
                 }
-                printf("process %d: illegal file manipulation at %s", pid, filename);
                 if (!is_relative(filename, fn_size)) {
+                    printf("process %d: illegal file manipulation at %s", pid, filename);
                     // kill process!
                     kill_in_syscall(pid, &state);
                     return;
@@ -159,7 +161,7 @@ void track_policy(pid_t pid) {
             }
 
             else if (state.orig_rax == __NR_chdir) {
-                printf("process %d tried to get current working directory!\n", pid);
+                printf("process %d tried to change current working directory!\n", pid);
                 kill_in_syscall(pid, &state);
                 return;
             } else if (state.orig_rax == __NR_execve) {
