@@ -13,7 +13,10 @@ enum {
     E_UNBALANCED_RB = 8,      ///< error in case of an unbalanced bracket
     E_MISSED_OPERATOR = 9,    ///< error in case of missed operator
     E_UNKNOWN_EXEC = 10,
-    E_OPENING_FILE = 11
+    E_OPENING_FILE = 11,
+    E_FILE_OP = 12,
+    E_PIPE = 13,
+    E_REDERECT = 14
 };
 
 /**

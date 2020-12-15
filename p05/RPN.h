@@ -9,29 +9,16 @@ typedef struct {
     size_t occupied;   ///< tracking of the last written element
 } RPN;
 
-/**
- * struct of a variable table
- */
-typedef struct {
-    /**
-     * struct of a single variable
-     */
-    struct Var_data {
-        char name[7];  ///< name of the varibale, null-terminated(constrained by +1(\0) by the task)
-        void *data;    ///< data written to the variable
-        size_t data_size;  ///< size of the data in the variable
-    } *vars; ///< array of variables
-    size_t var_num;  ///< amount of variables in a table
-} Var_table;
 
 /**
  * struct of a data passed to calculation functions
  */
 typedef struct {
+    RPN *expression;
     const void *elem;  ///< pointer to the data
     Size_elem size;    ///< size of elem
     Stack *stack;      ///< stack for the stack machine
-    Var_table *v_tab;  ///< variable table
+    size_t *pos_jmp;
 } Calculation_data;
 
 typedef int (*Calculate_elem)(Calculation_data *data);
@@ -45,7 +32,7 @@ typedef int (*Calculate_elem)(Calculation_data *data);
  * \exception may throw an exception thrown to it by a Calculate_elem function 
  * \return error code
  */
-int RPN_compute(RPN *notation, void *res, size_t res_size, Var_table *vars);
+int RPN_compute(RPN *notation, void *res, size_t res_size);
 
 /**
  * initialize an RPN

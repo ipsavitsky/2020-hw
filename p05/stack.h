@@ -12,7 +12,7 @@ typedef struct {
     size_t cur_size;  ///< control of the current sie of stack(used internally)
 } Stack;
 
-typedef char Size_elem;
+typedef unsigned short Size_elem;
 
 /**
  * initialize a stack

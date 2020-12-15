@@ -12,7 +12,7 @@
         }                           \
     } while (0)
 
-int RPN_compute(RPN *notation, void *res, size_t res_size, Var_table *vars) {
+int RPN_compute(RPN *notation, void *res, size_t res_size) {
     Stack stack;
     int flag;
     struct input_data {
@@ -24,14 +24,19 @@ int RPN_compute(RPN *notation, void *res, size_t res_size, Var_table *vars) {
         void *elem = &(((char *)notation->data)[cur_size]);
         struct input_data in_dat = *((struct input_data *)elem);
         Calculation_data dat =
-            (Calculation_data){.elem = &((char*)notation->data)[cur_size + sizeof(struct input_data)],
+            (Calculation_data){.expression = notation,
+                               .elem = &((char*)notation->data)[cur_size + sizeof(struct input_data)],
                                .size = in_dat.size,
                                .stack = &stack,
-                               .v_tab = vars};
+                               .pos_jmp = &cur_size};
+        size_t save_cur_pos = cur_size;
         SAFE(in_dat.f(&dat));
-        cur_size += sizeof(struct input_data) + in_dat.size;
+        if(save_cur_pos == cur_size){
+            cur_size += sizeof(struct input_data) + in_dat.size;
+        }
     }
-    SAFE(stack_pop(&stack, res, res_size));
+    // SAFE(stack_pop(&stack, res, res_size));
+    *(int *)res = 0;
     stack_finalize(&stack);
     return 0;
 }

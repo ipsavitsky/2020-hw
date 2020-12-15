@@ -1,6 +1,6 @@
 #include "stack.h"
 
-// #include <stdio.h>
+#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
@@ -39,6 +39,7 @@ int stack_pop(Stack *stack, void *resp, size_t size_res) {
 }
 
 int stack_push(Stack *stack, const void *resp, size_t size_res) {
+    // printf("PUSHING %ld\n", size_res);
     if (stack->cur_size + size_res + sizeof(Size_elem) > stack->stack_size) return E_OVERFLOW;
     stack->cur_size += size_res + sizeof(Size_elem);
 

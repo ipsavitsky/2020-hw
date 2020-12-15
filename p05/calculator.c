@@ -3,8 +3,15 @@
 #include <stdlib.h>
 #include <assert.h>
 #include <unistd.h>
+#include <signal.h>
 
 #include "rec_desc.h"
+
+void sigint_ign(int s){
+    // printf("^C\n");
+    kill(0, SIGTERM);
+    return;
+};
 
 int main(void) {
     char *curline = NULL;
@@ -12,6 +19,8 @@ int main(void) {
     size_t what;
     int flag;
     Expression expr;
+    // signal(SIGINT, sigint_ign);
+    // signal(SIGTERM, SIG_IGN);
     init_expression(&expr, "");
     // char *cwd;
     for (;;) {
@@ -30,7 +39,7 @@ int main(void) {
             if ((flag = compute_expression(&expr, &res)) != 0) {
                 err_print(flag);
             }
-            printf("result = %d\n", res);
+            // printf("result = %d\n", res);
         }
         res = 0;
     }
