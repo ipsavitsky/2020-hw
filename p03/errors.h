@@ -7,11 +7,11 @@ enum {
     E_OVERFLOW = 2,           ///< error in dynamic memory overflow
     E_UNDERFLOW = 3,          ///< error in dynamic memory underflow
     E_UNEXPECTED_SYMBOL = 4,  ///< error in case of unexpected symbol
-    E_ZERO_DIVISION = 5,      ///< arithmetic exception in case of division by zero
-    E_UNKNOWN_VAR = 6,        ///< error in case variable lookup
-    E_UNBALANCED_LB = 7,      ///< error in case of an unbalanced bracket
-    E_UNBALANCED_RB = 8,      ///< error in case of an unbalanced bracket
-    E_MISSED_OPERATOR = 9     ///< error in case of missed operator
+    E_ZERO_DIVISION = 5,   ///< arithmetic exception in case of division by zero
+    E_UNKNOWN_VAR = 6,     ///< error in case variable lookup
+    E_UNBALANCED_LB = 7,   ///< error in case of an unbalanced bracket
+    E_UNBALANCED_RB = 8,   ///< error in case of an unbalanced bracket
+    E_MISSED_OPERATOR = 9  ///< error in case of missed operator
 };
 
 /**

@@ -22,7 +22,8 @@
  * \exception E_OVERFLOW Thrown in case of RPN overflow
  * \return error code
  */
-int put_elem_in_RPN(RPN *expression, Size_elem size, void *data, Calculate_elem func);
+int put_elem_in_RPN(RPN *expression, Size_elem size, void *data,
+                    Calculate_elem func);
 
 /**
  * parse the first layer of operations(+ or -)
@@ -72,8 +73,10 @@ int parse_variable(Expression *expr, RPN *stack_mach);
  */
 int parse_literal(Expression *expr, RPN *stack_mach);
 
-int put_elem_in_RPN(RPN *expression, Size_elem size, void *data, Calculate_elem func) {
-    if (expression->occupied + sizeof(Size_elem) + size >= expression->data_size) {
+int put_elem_in_RPN(RPN *expression, Size_elem size, void *data,
+                    Calculate_elem func) {
+    if (expression->occupied + sizeof(Size_elem) + size >=
+        expression->data_size) {
         return E_OVERFLOW;
     }
     struct input_data {
@@ -85,8 +88,9 @@ int put_elem_in_RPN(RPN *expression, Size_elem size, void *data, Calculate_elem 
     if (dat.size % 8 != 0) dat.size += (8 - size % 8);
     dat.f = func;
     // printf("{%d; %p}\n", dat.size, dat.f);
-    memcpy((struct input_data *)&(((char *)expression->data)[expression->occupied]), &dat,
-           sizeof(struct input_data));
+    memcpy((struct input_data *)&(
+               ((char *)expression->data)[expression->occupied]),
+           &dat, sizeof(struct input_data));
     expression->occupied += sizeof(struct input_data);
     if (data != NULL) {
         memcpy((char *)expression->data + expression->occupied, data,
@@ -106,10 +110,12 @@ int parse_sum_sub(Expression *expr, RPN *stack_mach) {
         SAFE(parse_mul_div(expr, stack_mach));
         switch (operation) {
             case '+':
-                SAFE(put_elem_in_RPN(stack_mach, sizeof(Calculate_elem), NULL, sum_double));
+                SAFE(put_elem_in_RPN(stack_mach, sizeof(Calculate_elem), NULL,
+                                     sum_double));
                 break;
             case '-':
-                SAFE(put_elem_in_RPN(stack_mach, sizeof(Calculate_elem), NULL, sub_double));
+                SAFE(put_elem_in_RPN(stack_mach, sizeof(Calculate_elem), NULL,
+                                     sub_double));
                 break;
             default:
                 break;
@@ -128,10 +134,12 @@ int parse_mul_div(Expression *expr, RPN *stack_mach) {
         SAFE(parse_fact(expr, stack_mach));
         switch (operation) {
             case '*':
-                SAFE(put_elem_in_RPN(stack_mach, sizeof(Calculate_elem), NULL, mult_double));
+                SAFE(put_elem_in_RPN(stack_mach, sizeof(Calculate_elem), NULL,
+                                     mult_double));
                 break;
             case '/':
-                SAFE(put_elem_in_RPN(stack_mach, sizeof(Calculate_elem), NULL, div_double));
+                SAFE(put_elem_in_RPN(stack_mach, sizeof(Calculate_elem), NULL,
+                                     div_double));
                 break;
             default:
                 break;
@@ -145,7 +153,8 @@ int parse_fact(Expression *expr, RPN *stack_mach) {
     short neg_flag = 1;
     while (isspace(*(expr->curpointer))) ++(expr->curpointer);
     if (*(expr->curpointer) == '-' &&
-        ((expr->curpointer == expr->string_form) || (*(expr->curpointer - 1) == '('))) {
+        ((expr->curpointer == expr->string_form) ||
+         (*(expr->curpointer - 1) == '('))) {
         neg_flag = -1;
         ++(expr->curpointer);
     }
@@ -167,7 +176,8 @@ int parse_fact(Expression *expr, RPN *stack_mach) {
         // printf("un_s = %c\n", *(expr->curpointer));
         return E_UNEXPECTED_SYMBOL;
     }
-    if (neg_flag == -1) SAFE(put_elem_in_RPN(stack_mach, sizeof(Calculate_elem), NULL, neg));
+    if (neg_flag == -1)
+        SAFE(put_elem_in_RPN(stack_mach, sizeof(Calculate_elem), NULL, neg));
     return 0;
 }
 
@@ -176,14 +186,17 @@ int parse_variable(Expression *expr, RPN *stack_mach) {
     int size = 0;
     // TODO: make variables ANY size
     unsigned char var[7];
-    while (isalnum(*(expr->curpointer)) && (size < 6)) var[size++] = *(expr->curpointer++);
+    while (isalnum(*(expr->curpointer)) && (size < 6))
+        var[size++] = *(expr->curpointer++);
     var[size++] = '\0';
-    SAFE(put_elem_in_RPN(stack_mach, sizeof(Calculate_elem) + size, var, lookup_var));
+    SAFE(put_elem_in_RPN(stack_mach, sizeof(Calculate_elem) + size, var,
+                         lookup_var));
     return 0;
 }
 
 int add_variable_to_table(Expression *expr, const char *name, double num) {
-    // this is here just because this is the only place where Var_data is used directly
+    // this is here just because this is the only place where Var_data is used
+    // directly
     struct Var_data {
         char name[7];
         void *data;
@@ -199,7 +212,8 @@ int add_variable_to_table(Expression *expr, const char *name, double num) {
     // }
     Var_table *cur_table = expr->v_tab;
     ++(cur_table->var_num);
-    cur_table->vars = realloc(cur_table->vars, cur_table->var_num * sizeof(struct Var_data));
+    cur_table->vars =
+        realloc(cur_table->vars, cur_table->var_num * sizeof(struct Var_data));
     if (cur_table->vars == NULL) return E_MEM_ALLOC;
     size_t last_var = cur_table->var_num - 1;
     cur_table->vars[last_var].data_size = sizeof(double);
@@ -207,7 +221,8 @@ int add_variable_to_table(Expression *expr, const char *name, double num) {
     if (cur_table->vars[last_var].data == NULL) return E_MEM_ALLOC;
     memcpy(cur_table->vars[last_var].data, &num, sizeof(double));
     strcpy(cur_table->vars[last_var].name, name);
-    // printf("added to table %s\n", expr->v_tab->vars[expr->v_tab->var_num - 1].name);
+    // printf("added to table %s\n", expr->v_tab->vars[expr->v_tab->var_num -
+    // 1].name);
     return 0;
 }
 
@@ -219,7 +234,8 @@ int parse_literal(Expression *expr, RPN *stack_mach) {
     ret = strtod(expr->curpointer, &proxy_ptr);
     // printf("%lf\n", ret);
     expr->curpointer = proxy_ptr;
-    SAFE(put_elem_in_RPN(stack_mach, sizeof(Calculate_elem) + sizeof(double), &ret, add_elem));
+    SAFE(put_elem_in_RPN(stack_mach, sizeof(Calculate_elem) + sizeof(double),
+                         &ret, add_elem));
     // SAFE(put_number_in_RPN(stack_mach, ret));
     return 0;
 }
@@ -231,7 +247,8 @@ int compute_expression(Expression *expr, double *res) {
         Size_elem size;
         Calculate_elem f;
     };
-    size_t rpn_estimate = strlen(expr->string_form) * (sizeof(struct input_data) + sizeof(double));
+    size_t rpn_estimate = strlen(expr->string_form) *
+                          (sizeof(struct input_data) + sizeof(double));
     SAFE(RPN_init(&stack_machine, rpn_estimate));
     double ret = 0;
 
@@ -239,14 +256,16 @@ int compute_expression(Expression *expr, double *res) {
         RPN_finalize(&stack_machine);
         return flag;
     }
-    // this realloc will never do anything because we demand a smaller chunk of memory so it will
-    // always return the same pointer therefore there will never be an error
+    // this realloc will never do anything because we demand a smaller chunk of
+    // memory so it will always return the same pointer therefore there will
+    // never be an error
     stack_machine.data = realloc(stack_machine.data, stack_machine.occupied);
     stack_machine.data_size = stack_machine.occupied;
     while (isspace(*(expr->curpointer))) ++(expr->curpointer);
 
     if ((*(expr->curpointer) == '\0')) {
-        if ((flag = RPN_compute(&stack_machine, &ret, sizeof(double), expr->v_tab)) != 0) {
+        if ((flag = RPN_compute(&stack_machine, &ret, sizeof(double),
+                                expr->v_tab)) != 0) {
             RPN_finalize(&stack_machine);
             return flag;
         }

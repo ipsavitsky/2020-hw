@@ -39,12 +39,14 @@ int stack_pop(Stack *stack, void *resp, size_t size_res) {
 }
 
 int stack_push(Stack *stack, const void *resp, size_t size_res) {
-    if (stack->cur_size + size_res + sizeof(Size_elem) > stack->stack_size) return E_OVERFLOW;
+    if (stack->cur_size + size_res + sizeof(Size_elem) > stack->stack_size)
+        return E_OVERFLOW;
     stack->cur_size += size_res + sizeof(Size_elem);
 
     memcpy((char *)stack->stack_top, resp, size_res);
     memcpy((char *)stack->stack_top + size_res, &size_res, sizeof(Size_elem));
 
-    stack->stack_top = &(((char *)stack->stack_top)[size_res + sizeof(Size_elem)]);
+    stack->stack_top =
+        &(((char *)stack->stack_top)[size_res + sizeof(Size_elem)]);
     return 0;
 }

@@ -1,8 +1,8 @@
-#include "RPN.h"
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+
+#include "RPN.h"
 
 int add_double(const void *elem, Size_elem size, Stack *stack) {
     return stack_push(stack, &(((char *)elem)[sizeof(Calculate_elem)]),
@@ -37,7 +37,6 @@ int main(void) {
     Calculate_elem *func_ptr;
 
     RPN_init(&expression, 200);
-
 
     *((char *)expression.data) = sizeof(double) + sizeof(Calculate_elem);
     cur += sizeof(Size_elem);

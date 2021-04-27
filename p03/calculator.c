@@ -1,7 +1,7 @@
-#include <stdio.h>
-#include <string.h>
-#include <stdlib.h>
 #include <assert.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 
 #include "rec_desc.h"
 
@@ -29,7 +29,7 @@ int main(void) {
             }
             curline[var_name_size] = '\0';
             add_variable_to_table(&expr, curline, res);
-        } else if ((strlen(curline) == 2) && (*curline == 'q')){
+        } else if ((strlen(curline) == 2) && (*curline == 'q')) {
             break;
         } else {
             free(expr.string_form);

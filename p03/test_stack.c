@@ -34,7 +34,7 @@ int main(void) {
     stack_init(&stack, 20);
     SAFE(stack_push(&stack, "WORLD!", strlen("WORLD!") + 1));
     SAFE(stack_push(&stack, "HELLO ", strlen("HELLO ") + 1));
-    char *word1 = malloc(sizeof(char) * 10); // 10 is a rough estimate for 7 :)
+    char *word1 = malloc(sizeof(char) * 10);  // 10 is a rough estimate for 7 :)
     char *word2 = malloc(sizeof(char) * 10);
     SAFE(stack_pop(&stack, word1, 10));
     SAFE(stack_pop(&stack, word2, 10));

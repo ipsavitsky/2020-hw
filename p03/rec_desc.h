@@ -4,8 +4,9 @@
  */
 typedef struct {
     unsigned char *string_form;  ///< string with the expression
-    unsigned char *curpointer;   ///< pointer to the current symbol(used internally)
-    Var_table *v_tab;            ///< variable table of a current expression
+    unsigned char
+        *curpointer;   ///< pointer to the current symbol(used internally)
+    Var_table *v_tab;  ///< variable table of a current expression
 } Expression;
 
 /**
@@ -15,9 +16,9 @@ typedef struct {
  * \exception E_UNEXPECTED_SYMBOL Thrown in case of error in parsing a string
  * \exception E_MEM_ALLOC Thrown in case of memory allocation error
  * \exception E_UNBALANCED_RB Thrown in case of an unbalanced right bracket
- * \exception E_MISSED_OPERATOR Thrown in case two operands presented with nothing between
- * \exception may throw an exception thrown to it by a Calculate_elem function
- * \return error code
+ * \exception E_MISSED_OPERATOR Thrown in case two operands presented with
+ * nothing between \exception may throw an exception thrown to it by a
+ * Calculate_elem function \return error code
  */
 int compute_expression(Expression *expr, double *res);
 

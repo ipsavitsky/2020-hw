@@ -5,10 +5,12 @@
 int main(void) {
     Expression expr;
     int flag;
-    // ( 2 +  789.789 ) * e +  avds - 78 + (-8) + 64 * (1 + (-1)) + 235 * (7 + 7 * (7 + 7 * (7 +
+    // ( 2 +  789.789 ) * e +  avds - 78 + (-8) + 64 * (1 + (-1)) + 235 * (7 + 7
+    // * (7 + 7 * (7 +
     // (-7))))/ abc
     init_expression(&expr,
-                    "( 2 +  789.789 ) * e +  avds - 78 + (-8) + 64 * (1 + (-1)) + 235 * (7 + 7 * "
+                    "( 2 +  789.789 ) * e +  avds - 78 + (-8) + 64 * (1 + "
+                    "(-1)) + 235 * (7 + 7 * "
                     "(7 + 7 * (7 + (-7))))/ abc");
     add_variable_to_table(&expr, "avds", 15);
     add_variable_to_table(&expr, "e", 2.71);

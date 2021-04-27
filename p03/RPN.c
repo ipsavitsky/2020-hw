@@ -1,8 +1,8 @@
 #include "RPN.h"
 
+#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <stdio.h>
 
 #define SAFE(call)                  \
     do {                            \
@@ -23,13 +23,15 @@ int RPN_compute(RPN *notation, void *res, size_t res_size, Var_table *vars) {
     for (size_t cur_size = 0; cur_size < notation->data_size;) {
         void *elem = &(((char *)notation->data)[cur_size]);
         struct input_data in_dat = *((struct input_data *)elem);
-        Calculation_data dat =
-            (Calculation_data){.elem = &((char*)notation->data)[cur_size + sizeof(struct input_data)],
-                               .size = in_dat.size - sizeof(Calculate_elem),
-                               .stack = &stack,
-                               .v_tab = vars};
+        Calculation_data dat = (Calculation_data){
+            .elem =
+                &((char *)notation->data)[cur_size + sizeof(struct input_data)],
+            .size = in_dat.size - sizeof(Calculate_elem),
+            .stack = &stack,
+            .v_tab = vars};
         SAFE(in_dat.f(&dat));
-        cur_size += sizeof(struct input_data) + in_dat.size - sizeof(Calculate_elem);
+        cur_size +=
+            sizeof(struct input_data) + in_dat.size - sizeof(Calculate_elem);
     }
     SAFE(stack_pop(&stack, res, res_size));
     stack_finalize(&stack);
